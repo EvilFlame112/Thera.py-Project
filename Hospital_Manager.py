@@ -15,7 +15,9 @@ def lgin():
     if user == "root" and pwd == "root":
         messagebox.showinfo("Status", "Login Success")
         login.destroy()
-        main = tk.Tk(className="Mainwindow")
+        main = themed_tk.ThemedTk(className="Mainwindow")
+        main.get_themes()
+        main.set_theme("adapta")
         main.geometry("1024x650")
         main.attributes("-alpha", 0.98)
         main.title("Hospital Management Software v1.0")
@@ -23,7 +25,7 @@ def lgin():
 
         menubar = Menu(main)
 
-        main.config(bg = "black", menu = menubar)
+        main.config(bg = "grey1", menu = menubar)
         main.resizable(False,False)
         main.option_add('*tearOff', False)
         menubar = Menu(main)
@@ -37,6 +39,12 @@ def lgin():
         menubar.add_cascade(menu=menu_file, label = "File")
         menu_file.add_command(label = "Exit", command = login.destroy)
 
+        styles = ttk.Style(master=main)
+        styles.theme_use("adapta")
+        styles.configure("Treeview", background="grey15", foreground="white", rowheight = 25, fieldbackground = "grey30")
+        styles.configure("TNotebook.Tab", background="cyan4")
+        styles.map("Treeview", background=[("selected", "grey40")])
+        styles.map("TNotebook.Tab", background=[("selected", "cyan")])
 
         ntbk = ttk.Notebook(master=main)
         frm1 = ttk.Frame(master=ntbk)
