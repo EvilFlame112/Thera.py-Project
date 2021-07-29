@@ -14,10 +14,11 @@ from ttkthemes import themed_tk
 
 #Declaring path variables for extensive support with asset folder
 file_path = os.path.dirname(os.path.realpath(__file__))
-ico_path = os.path.join(file_path, "Assets", "titleicon.ico")
-bg_path = os.path.join(file_path, "Assets", "img24.png")
-bgm_path = os.path.join(file_path, "Assets", "main.png")
-theme_path = os.path.join(file_path, "Assets", "sun-valley.tcl")
+asset_path = os.path.join(file_path, "Assets")
+ico_path = os.path.join(asset_path, "titleicon.ico")
+bg_path = os.path.join(asset_path, "img24.png")
+bgm_path = os.path.join(asset_path, "main.png")
+theme_path = os.path.join(asset_path, "azure-dark.tcl")
 
 #defining function to be triggered on perfect login to execute main window
 def lgin():
@@ -30,9 +31,11 @@ def lgin():
         #destroying login and loading main window
         #Giving it a theme and attributes with ttkthemes
         login.destroy()
-        main = themed_tk.ThemedTk(className="Mainwindow")
-        main.get_themes()
-        main.set_theme("equilux")
+        main = tk.Tk(className="Mainwindow")
+        style = ttk.Style()
+        os.chdir(asset_path)
+        main.tk.call("source", theme_path)
+        style.theme_use("azure-dark")
         main.geometry("1024x650")
         main.attributes("-alpha", 0.98)
         main.title("Hospital Management Software v1.0")
@@ -288,6 +291,10 @@ tmp1bg = tmpbg.resize((1024,650))
 login = tk.Tk(className="Loginwindow")
 login.geometry("1024x650")
 login.title("Hospital Management Software v1.0")
+style = ttk.Style()
+os.chdir(asset_path)
+login.tk.call("source", theme_path)
+style.theme_use("azure-dark")
 login.attributes("-alpha", 0.98)
 login.iconbitmap(ico_path)
 login.resizable(False,False)
@@ -300,11 +307,14 @@ bg = ImageTk.PhotoImage(tmp1bg)
 lbl_bg = tk.Label(master=login, image = bg)
 
 #taking username and password from user
-usern_ent = tk.Entry(master=login, width = 30, font = ("SF Pro Display", 16), bg = "grey30", fg = "white")
-passwd_ent = tk.Entry(master=login, width = 30, font = ("SF Pro Display", 16), bg = "grey30", fg = "white", show="*")
+usern_ent = ttk.Entry(master=login, width = 75)
+passwd_ent = ttk.Entry(master=login, width = 75, show="*")
 
 #login button
-btn_login = tk.Button(master=login, text = "Login", command = lgin, borderwidth=2, bg = "grey15", fg = "white", relief=tk.SUNKEN, width = 25, height = 1, font = ("SF Pro Display", 20))
+btn_login = ttk.Button(master=login, text = "Login", command = lgin, width = 25)
+
+#register button
+btn_reg = ttk.Button(master=login, text = "Register", command = 0, width = 25)
 
 #file menu
 menu_file = Menu(menubar)
@@ -317,6 +327,7 @@ lbl_bg.pack()
 usern_ent.place(x=230, y=465)
 passwd_ent.place(x=230, y=500)
 btn_login.place(x=230, y=550)
+btn_reg.place(x=430, y=550)
 login.mainloop()
 
 ###########################################################################################################################################################################################################################################################################################################################################################################################
