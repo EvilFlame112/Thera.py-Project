@@ -8,7 +8,7 @@
 #Importing necessary modules
 import tkinter as tk
 import os
-from tkinter import Menu, Variable, ttk, messagebox
+from tkinter import Menu, ttk, messagebox
 from PIL import ImageTk, Image
 from ttkthemes import themed_tk
 
