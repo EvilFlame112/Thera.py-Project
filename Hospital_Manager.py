@@ -1,5 +1,5 @@
 #Hospital management system v1.0
-#Source code credits:
+#Code credits:
 #       Frontend/GUI - Ram
 #       Backend/SQL - Sai
 #       Documentation - Yash
@@ -8,7 +8,7 @@
 #Importing necessary modules
 import tkinter as tk
 import os
-from tkinter import Menu, ttk, messagebox
+from tkinter import Menu, Variable, ttk, messagebox
 from PIL import ImageTk, Image
 from ttkthemes import themed_tk
 
@@ -171,46 +171,148 @@ def lgin():
         treedat4.heading("DOJ", text="Payment type", anchor="center")
         treedat4.heading("Salary", text="Salary", anchor="center")
 
-        #code fragment for adding data to SQL and to Treeview
+        #code fragment for adding data to SQL and to Treeview (Patient table)
         paymentval = tk.IntVar()
         statusval = tk.IntVar()
         ent_PID = ttk.Entry(master=intfrm5, width = 30)
+        lbl_PID = ttk.Label(master=intfrm5, text = "Patient ID: ")
         ent_Name = ttk.Entry(master=intfrm5, width = 30)
+        lbl_Name = ttk.Label(master=intfrm5, text = "Name: ")
         ent_ailment = ttk.Entry(master=intfrm5, width = 30)
+        lbl_ailment = ttk.Label(master=intfrm5, text = "Ailments: ")
         ent_amt = ttk.Entry(master=intfrm5, width = 30)
+        lbl_amt = ttk.Label(master=intfrm5, text = "Amount: ")
+        lbl_payment = ttk.Label(master=intfrm5, text = "Payment Type:")
         rdb_cash = ttk.Radiobutton(master=intfrm5, text="Cash", value=1, variable=paymentval)
         rdb_card = ttk.Radiobutton(master=intfrm5, text="Card", value=2, variable=paymentval)
         rdb_cheque = ttk.Radiobutton(master=intfrm5, text="Cheque", value=3, variable=paymentval)
+        lbl_status = ttk.Label(master=intfrm5, text = "Payment Status: ")
         rdb_paid = ttk.Radiobutton(master=intfrm5, text="Paid", value=1, variable=statusval)
         rdb_pending = ttk.Radiobutton(master=intfrm5, text="Pending", value=2, variable=statusval)
+
+        #separators and beautification
+        sep_pay_stat = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
+        sep_pay_stat1 = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
 
         payment = ""
         status = ""
 
-        if paymentval == 1:
-            payment = "Cash"
-        elif paymentval == 2:
-            payment = "Card"
-        else:
-            payment = "Cheque"
-        
-        if statusval == 1:
-            status = "Paid"
-        else:
-            status = "Pending"
-
-        def addrec():
+        def addrecpat():
             PID_val = ent_PID.get()
             Name_val = ent_Name.get()
             ailment_val = ent_ailment.get()
             amt_val = ent_amt.get()
+            if paymentval.get() == 1:
+                payment = "Cash"
+            elif paymentval.get() == 2:
+                payment = "Card"
+            elif paymentval.get() == 3:
+                payment = "Cheque"
+            else:
+                pass
+            
+            if statusval.get() == 1:
+                status = "Paid"
+            elif statusval.get() == 2:
+                status = "Pending"
+            else:
+                pass
             treedat1.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, ailment_val, payment, status, amt_val))
             messagebox.showinfo("Add", message="Added Successfully")
             ent_PID.delete(0, tk.END)
             ent_Name.delete(0, tk.END)
             ent_ailment.delete(0, tk.END)
             ent_amt.delete(0, tk.END)
-        addbtn = ttk.Button(master=intfrm5, text = "Add Data", command = addrec)
+        addbtnpat = ttk.Button(master=intfrm5, text = "Add Data", command = addrecpat)
+
+        #code fragment for adding data to SQL and to Treeview (Doctors)
+        datevar_doc = tk.StringVar()
+        monthvar_doc = tk.StringVar()
+        yearvar_doc = tk.StringVar()
+        ent_DID = ttk.Entry(master=intfrm6, width = 30)
+        lbl_DID = ttk.Label(master=intfrm6, text = "Doctor ID: ")
+        ent_Name_doc = ttk.Entry(master=intfrm6, width = 30)
+        lbl_Name_doc = ttk.Label(master=intfrm6, text = "Name: ")
+        ent_spec = ttk.Entry(master=intfrm6, width = 30)
+        lbl_spec = ttk.Label(master=intfrm6, text = "Specialization: ")
+        lbl_DOJ = ttk.Label(master=intfrm6, text = "Date Of Joining: ")
+
+        #small frame for DOJ
+        dojfrm_doc = ttk.Frame(master=intfrm6)
+
+        date_cbbx1 = ttk.Combobox(master=dojfrm_doc, textvariable = datevar_doc, width = 3)
+        date_cbbx1["values"] = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
+        date_cbbx1.state(["readonly"])
+        month_cbbx1 = ttk.Combobox(master=dojfrm_doc, textvariable = monthvar_doc, width = 9)
+        month_cbbx1["values"] = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+        month_cbbx1.state(["readonly"])
+        ylist = []
+        for i in range(1950, 2022):
+            ylist.append(i)
+        year_cbbx1 = ttk.Combobox(master=dojfrm_doc, textvariable = yearvar_doc, width = 5)
+        year_cbbx1["values"] = tuple(ylist)
+        year_cbbx1.state(["readonly"])
+        ent_sal = ttk.Entry(master=intfrm6, width = 30)
+        lbl_sal = ttk.Label(master=intfrm6, text = "Salary:")
+
+        def addrecdoc():
+            DID_val = ent_DID.get()
+            Name_Doc_val = ent_Name_doc.get()
+            spec_val = ent_spec.get()
+            sal_val = ent_sal.get()
+            DOJ_val_doc = f"{int(datevar_doc.get())}/{monthvar_doc.get()}/{int(yearvar_doc.get())}"
+            treedat2.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val))
+            messagebox.showinfo("Add", message="Added Successfully")
+            ent_DID.delete(0, tk.END)
+            ent_Name_doc.delete(0, tk.END)
+            ent_spec.delete(0, tk.END)
+            ent_sal.delete(0, tk.END)
+        addbtndoc = ttk.Button(master=intfrm6, text = "Add Data", command = addrecdoc)
+
+        #code fragment for adding data to SQL and to Treeview (Nurses)
+        datevar_nur = tk.StringVar()
+        monthvar_nur = tk.StringVar()
+        yearvar_nur = tk.StringVar()
+        ent_NID = ttk.Entry(master=intfrm7, width = 30)
+        lbl_NID = ttk.Label(master=intfrm7, text = "Nurse ID: ")
+        ent_Name_nur = ttk.Entry(master=intfrm7, width = 30)
+        lbl_Name_nur = ttk.Label(master=intfrm7, text = "Name: ")
+        ent_dept = ttk.Entry(master=intfrm7, width = 30)
+        lbl_dept = ttk.Label(master=intfrm7, text = "Department: ")
+        lbl_DOJ_nur = ttk.Label(master=intfrm7, text = "Date Of Joining: ")
+
+        #small frame for DOJ
+        dojfrm_nur = ttk.Frame(master=intfrm7)
+
+        date_cbbx2 = ttk.Combobox(master=dojfrm_nur, textvariable = datevar_nur, width = 3)
+        date_cbbx2["values"] = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
+        date_cbbx2.state(["readonly"])
+        month_cbbx2 = ttk.Combobox(master=dojfrm_nur, textvariable = monthvar_nur, width = 9)
+        month_cbbx2["values"] = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+        month_cbbx2.state(["readonly"])
+        ylist = []
+        for i in range(1950, 2022):
+            ylist.append(i)
+        year_cbbx2 = ttk.Combobox(master=dojfrm_nur, textvariable = yearvar_nur, width = 5)
+        year_cbbx2["values"] = tuple(ylist)
+        year_cbbx2.state(["readonly"])
+        ent_sal_nur = ttk.Entry(master=intfrm7, width = 30)
+        lbl_sal_nur = ttk.Label(master=intfrm7, text = "Salary:")
+
+        def addrecnur():
+            NID_val = ent_NID.get()
+            Name_Nur_val = ent_Name_nur.get()
+            dept_val = ent_dept.get()
+            sal_val = ent_sal_nur.get()
+            DOJ_val_nur = f"{int(datevar_nur.get())}/{monthvar_nur.get()}/{int(yearvar_nur.get())}"
+            treedat3.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val))
+            messagebox.showinfo("Add", message="Added Successfully")
+            ent_NID.delete(0, tk.END)
+            ent_Name_nur.delete(0, tk.END)
+            ent_dept.delete(0, tk.END)
+            ent_sal_nur.delete(0, tk.END)
+        addbtnnur = ttk.Button(master=intfrm7, text = "Add Data", command = addrecnur)
+
 
         #Packing and adding everything
         ntbk.add(frm1, text="View DB")
@@ -256,17 +358,55 @@ def lgin():
         treedat3.pack()
         treedat4.pack()
 
-        ent_PID.pack()
-        ent_Name.pack()
-        ent_ailment.pack()
-        
-        rdb_cash.pack()
-        rdb_card.pack()
-        rdb_cheque.pack()
-        rdb_paid.pack()
-        rdb_pending.pack()
-        ent_amt.pack()
-        addbtn.pack()
+        ent_PID.grid(row=0, column=1, pady=5)
+        lbl_PID.grid(row=0, column=0, pady=5)
+        ent_Name.grid(row=1, column=1, pady=5)
+        lbl_Name.grid(row=1, column=0, pady=5)
+        ent_ailment.grid(row=2, column=1, pady=5)
+        lbl_ailment.grid(row=2, column=0, pady=5) 
+        lbl_payment.grid(row=3, column=0, pady=5)
+        rdb_cash.grid(row=3, column=1, sticky="w", pady=5)
+        rdb_card.grid(row=4, column=1, sticky="w", pady=5)
+        rdb_cheque.grid(row=5, column=1, sticky="w", pady=5)
+        sep_pay_stat.grid(row=6, column=1, sticky='ew', pady=5)
+        sep_pay_stat1.grid(row=6, column=0, sticky='ew', pady=5)
+        lbl_status.grid(row=7, column=0, pady=5)
+        rdb_paid.grid(row=7, column=1, sticky="w")
+        rdb_pending.grid(row=8, column=1, sticky="w")
+        lbl_amt.grid(row=9, column=0, pady=5)
+        ent_amt.grid(row=9, column=1, pady=5)
+        addbtnpat.grid(row=10, column=1, pady=5)
+
+        ent_DID.grid(row=0, column=1, pady=5)
+        lbl_DID.grid(row=0, column=0, pady=5)
+        ent_Name_doc.grid(row=1, column=1, pady=5)
+        lbl_Name_doc.grid(row=1, column=0, pady=5)
+        ent_spec.grid(row=2, column=1, pady=5)
+        lbl_spec.grid(row=2, column=0, pady=5)
+        dojfrm_doc.grid(row=3, column=1, pady=5)
+        date_cbbx1.grid(row=0, column=0, padx=10, pady=5)
+        month_cbbx1.grid(row=0, column=2, padx=10, pady=5)
+        year_cbbx1.grid(row=0, column=4, padx=10, pady=5)
+        lbl_DOJ.grid(row=3, column=0, pady=5)
+        ent_sal.grid(row=4, column=1, pady=5)
+        lbl_sal.grid(row=4, column=0, pady=5)
+        addbtndoc.grid(row=5, column=1, pady=5)
+
+        ent_NID.grid(row=0, column=1, pady=5)
+        lbl_NID.grid(row=0, column=0, pady=5)
+        ent_Name_nur.grid(row=1, column=1, pady=5)
+        lbl_Name_nur.grid(row=1, column=0, pady=5)
+        ent_dept.grid(row=2, column=1, pady=5)
+        lbl_dept.grid(row=2, column=0, pady=5)
+        lbl_DOJ_nur.grid(row=3, column=0, pady=5)
+        dojfrm_nur.grid(row=3, column=1, pady=5)
+        date_cbbx2.grid(row=0, column=0, padx=10, pady=5)
+        month_cbbx2.grid(row=0, column=1, padx=10, pady=5)
+        year_cbbx2.grid(row=0, column=2, padx=10, pady=5)
+        ent_sal_nur.grid(row=4, column=1, pady=5)
+        lbl_sal_nur.grid(row=4, column=0, pady=5)
+        addbtnnur.grid(row=5, column=1, pady=5)
+
 
         l1 = [frm1, frm2, frm3, frm4]
         for i in l1:
