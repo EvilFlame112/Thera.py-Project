@@ -10,7 +10,6 @@ import tkinter as tk
 import os
 from tkinter import Menu, ttk, messagebox
 from PIL import ImageTk, Image
-from ttkthemes import themed_tk
 
 #Declaring path variables for extensive support with asset folder
 file_path = os.path.dirname(os.path.realpath(__file__))
@@ -313,6 +312,49 @@ def lgin():
             ent_sal_nur.delete(0, tk.END)
         addbtnnur = ttk.Button(master=intfrm7, text = "Add Data", command = addrecnur)
 
+        #code fragment for adding data to SQL and to Treeview (Employees)
+        datevar_emp = tk.StringVar()
+        monthvar_emp = tk.StringVar()
+        yearvar_emp = tk.StringVar()
+        ent_EID = ttk.Entry(master=intfrm8, width = 30)
+        lbl_EID = ttk.Label(master=intfrm8, text = "Employee ID: ")
+        ent_Name_emp = ttk.Entry(master=intfrm8, width = 30)
+        lbl_Name_emp = ttk.Label(master=intfrm8, text = "Name: ")
+        ent_job = ttk.Entry(master=intfrm8, width = 30)
+        lbl_job = ttk.Label(master=intfrm8, text = "Job: ")
+        lbl_DOJ_emp = ttk.Label(master=intfrm8, text = "Date Of Joining: ")
+
+        #small frame for DOJ
+        dojfrm_emp = ttk.Frame(master=intfrm8)
+
+        date_cbbx3 = ttk.Combobox(master=dojfrm_emp, textvariable = datevar_emp, width = 3)
+        date_cbbx3["values"] = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
+        date_cbbx3.state(["readonly"])
+        month_cbbx3 = ttk.Combobox(master=dojfrm_emp, textvariable = monthvar_emp, width = 9)
+        month_cbbx3["values"] = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+        month_cbbx3.state(["readonly"])
+        ylist = []
+        for i in range(1950, 2022):
+            ylist.append(i)
+        year_cbbx3 = ttk.Combobox(master=dojfrm_emp, textvariable = yearvar_emp, width = 5)
+        year_cbbx3["values"] = tuple(ylist)
+        year_cbbx3.state(["readonly"])
+        ent_sal_emp = ttk.Entry(master=intfrm8, width = 30)
+        lbl_sal_emp = ttk.Label(master=intfrm8, text = "Salary:")
+
+        def addrecemp():
+            EID_val = ent_EID.get()
+            Name_emp_val = ent_Name_emp.get()
+            job_val = ent_job.get()
+            sal_val = ent_sal_emp.get()
+            DOJ_val_emp = f"{int(datevar_emp.get())}/{monthvar_emp.get()}/{int(yearvar_emp.get())}"
+            treedat4.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val))
+            messagebox.showinfo("Add", message="Added Successfully")
+            ent_EID.delete(0, tk.END)
+            ent_Name_emp.delete(0, tk.END)
+            ent_job.delete(0, tk.END)
+            ent_sal_emp.delete(0, tk.END)
+        addbtnemp = ttk.Button(master=intfrm8, text = "Add Data", command = addrecemp)
 
         #Packing and adding everything
         ntbk.add(frm1, text="View DB")
@@ -400,6 +442,21 @@ def lgin():
         lbl_dept.grid(row=2, column=0, pady=5)
         lbl_DOJ_nur.grid(row=3, column=0, pady=5)
         dojfrm_nur.grid(row=3, column=1, pady=5)
+        date_cbbx3.grid(row=0, column=0, padx=10, pady=5)
+        month_cbbx3.grid(row=0, column=1, padx=10, pady=5)
+        year_cbbx3.grid(row=0, column=2, padx=10, pady=5)
+        ent_sal_emp.grid(row=4, column=1, pady=5)
+        lbl_sal_emp.grid(row=4, column=0, pady=5)
+        addbtnemp.grid(row=5, column=1, pady=5)
+
+        ent_EID.grid(row=0, column=1, pady=5)
+        lbl_EID.grid(row=0, column=0, pady=5)
+        ent_Name_emp.grid(row=1, column=1, pady=5)
+        lbl_Name_emp.grid(row=1, column=0, pady=5)
+        ent_job.grid(row=2, column=1, pady=5)
+        lbl_job.grid(row=2, column=0, pady=5)
+        lbl_DOJ_emp.grid(row=3, column=0, pady=5)
+        dojfrm_emp.grid(row=3, column=1, pady=5)
         date_cbbx2.grid(row=0, column=0, padx=10, pady=5)
         month_cbbx2.grid(row=0, column=1, padx=10, pady=5)
         year_cbbx2.grid(row=0, column=2, padx=10, pady=5)
