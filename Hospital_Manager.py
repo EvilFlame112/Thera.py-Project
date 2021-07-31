@@ -63,6 +63,7 @@ def lgin():
         frm2 = ttk.Frame(master=ntbk)
         frm3 = ttk.Frame(master=ntbk)
         frm4 = ttk.Frame(master=ntbk)
+        frm5 = ttk.Frame(master=ntbk)
 
         #set of internal tabs for accessing in view tab
         internalntbk = ttk.Notebook(master=frm1)
@@ -73,7 +74,7 @@ def lgin():
 
         #set of internal tabs for accessing in add tab
         internalntbk1 = ttk.Notebook(master=frm2)
-        intfrm5 = ttk.Frame(master=internalntbk1, width = 1024, height = 650)
+        intfrm5 = ttk.Frame(master=internalntbk1)
         intfrm6 = ttk.Frame(master=internalntbk1)
         intfrm7 = ttk.Frame(master=internalntbk1)
         intfrm8 = ttk.Frame(master=internalntbk1)
@@ -91,6 +92,13 @@ def lgin():
         intfrm14 = ttk.Frame(master=internalntbk3)
         intfrm15 = ttk.Frame(master=internalntbk3)
         intfrm16 = ttk.Frame(master=internalntbk3)
+
+        #set of internal tabs for accessing in search tab
+        internalntbk4 = ttk.Notebook(master=frm5)
+        intfrm17 = ttk.Frame(master=internalntbk4)
+        intfrm18 = ttk.Frame(master=internalntbk4)
+        intfrm19 = ttk.Frame(master=internalntbk4)
+        intfrm20 = ttk.Frame(master=internalntbk4)
 
         #scrollbar for scrolling (-_-)
         scrlbrfrm1 = ttk.Frame(master=intfrm1)
@@ -361,6 +369,7 @@ def lgin():
         ntbk.add(frm2, text="Add Data")
         ntbk.add(frm3, text="Delete Data")
         ntbk.add(frm4, text="Update Data")
+        ntbk.add(frm5, text="Search")
 
         internalntbk.add(intfrm1, text="Patient Table")
         internalntbk.add(intfrm2, text="Doctor Table")
@@ -382,11 +391,17 @@ def lgin():
         internalntbk3.add(intfrm15, text="Nurse Table")
         internalntbk3.add(intfrm16, text="Employee Table")
 
+        internalntbk4.add(intfrm17, text="Patient Table")
+        internalntbk4.add(intfrm18, text="Doctor Table")
+        internalntbk4.add(intfrm19, text="Nurse Table")
+        internalntbk4.add(intfrm20, text="Employee Table")
+
         ntbk.pack()
         internalntbk.pack()
         internalntbk1.pack()
         internalntbk2.pack()
         internalntbk3.pack()
+        internalntbk4.pack()
         scrlbrfrm1.pack()
         scrlbr1.pack(fill = tk.Y, side = tk.RIGHT)
         scrlbrfrm2.pack()
