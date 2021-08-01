@@ -109,6 +109,14 @@ def lgin():
         scrlbr3 = ttk.Scrollbar(master=scrlbrfrm3)
         scrlbrfrm4 = ttk.Frame(master=intfrm4)
         scrlbr4 = ttk.Scrollbar(master=scrlbrfrm4)
+        scrlbrfrm5 = ttk.Frame(master=intfrm9)
+        scrlbr5 = ttk.Scrollbar(master=scrlbrfrm5)
+        scrlbrfrm6 = ttk.Frame(master=intfrm10)
+        scrlbr6 = ttk.Scrollbar(master=scrlbrfrm6)
+        scrlbrfrm7 = ttk.Frame(master=intfrm11)
+        scrlbr7 = ttk.Scrollbar(master=scrlbrfrm7)
+        scrlbrfrm8 = ttk.Frame(master=intfrm12)
+        scrlbr8 = ttk.Scrollbar(master=scrlbrfrm8)
 
         #Making tables with treeview
         treedat1 = ttk.Treeview(master=scrlbrfrm1, yscrollcommand=scrlbr1.set)
@@ -178,9 +186,96 @@ def lgin():
         treedat4.heading("DOJ", text="Payment type", anchor="center")
         treedat4.heading("Salary", text="Salary", anchor="center")
 
+        treedat5 = ttk.Treeview(master=scrlbrfrm5, yscrollcommand=scrlbr5.set)
+        scrlbr5.config(command = treedat5.yview)
+        treedat5["columns"] = ("Patient ID", "Name", "Ailment", "Payment type", "Payment status", "Amount")
+        treedat5.column("#0", width = 0, minwidth = 0, stretch=0)
+        treedat5.column("Patient ID", anchor="center", width = 120)
+        treedat5.column("Name", anchor = "center", width = 120)
+        treedat5.column("Ailment", anchor = "center", width = 120)
+        treedat5.column("Payment type", anchor = "center", width = 120)
+        treedat5.column("Payment status", anchor = "center", width = 120)
+        treedat5.column("Amount", anchor = "center", width = 120)
+
+        treedat5.heading("#0", text="", anchor="center")
+        treedat5.heading("Patient ID", text="Patient ID", anchor="center")
+        treedat5.heading("Name", text="Name", anchor="center")
+        treedat5.heading("Ailment", text="Ailment", anchor="center")
+        treedat5.heading("Payment type", text="Payment type", anchor="center")
+        treedat5.heading("Payment status", text="Payment status", anchor="center")
+        treedat5.heading("Amount", text="Amount", anchor="center")
+
+        treedat6 = ttk.Treeview(master=scrlbrfrm6, yscrollcommand=scrlbr6.set)
+        treedat6["columns"] = ("Doctor ID", "Name", "Specialization", "DOJ", "Salary")
+        treedat6.column("#0", width = 0, minwidth = 0, stretch=0)
+        treedat6.column("Doctor ID", anchor="center", width = 120)
+        treedat6.column("Name", anchor = "center", width = 120)
+        treedat6.column("Specialization", anchor = "center", width = 120)
+        treedat6.column("DOJ", anchor = "center", width = 120)
+        treedat6.column("Salary", anchor = "center", width = 120)
+
+        treedat6.heading("#0", text="", anchor="center")
+        treedat6.heading("Doctor ID", text="Doctor ID", anchor="center")
+        treedat6.heading("Name", text="Name", anchor="center")
+        treedat6.heading("Specialization", text="Specialization", anchor="center")
+        treedat6.heading("DOJ", text="DOJ", anchor="center")
+        treedat6.heading("Salary", text="Salary", anchor="center")
+
+        treedat7 = ttk.Treeview(master=scrlbrfrm7, yscrollcommand=scrlbr7.set)
+        treedat7["columns"] = ("Nurse ID", "Name", "Department", "DOJ", "Salary")
+        treedat7.column("#0", width = 0, minwidth = 0, stretch=0)
+        treedat7.column("Nurse ID", anchor="center", width = 120)
+        treedat7.column("Name", anchor = "center", width = 120)
+        treedat7.column("Department", anchor = "center", width = 120)
+        treedat7.column("DOJ", anchor = "center", width = 120)
+        treedat7.column("Salary", anchor = "center", width = 120)
+
+        treedat7.heading("#0", text="", anchor="center")
+        treedat7.heading("Nurse ID", text="Nurse ID", anchor="center")
+        treedat7.heading("Name", text="Name", anchor="center")
+        treedat7.heading("Department", text="Department", anchor="center")
+        treedat7.heading("DOJ", text="DOJ", anchor="center")
+        treedat7.heading("Salary", text="Salary", anchor="center")
+
+        treedat8 = ttk.Treeview(master=scrlbrfrm8, yscrollcommand=scrlbr8.set)
+        treedat8["columns"] = ("Employee ID", "Name", "Job", "DOJ", "Salary")
+        treedat8.column("#0", width = 0, minwidth = 0, stretch=0)
+        treedat8.column("Employee ID", anchor="center", width = 120)
+        treedat8.column("Name", anchor = "center", width = 120)
+        treedat8.column("Job", anchor = "center", width = 120)
+        treedat8.column("DOJ", anchor = "center", width = 120)
+        treedat8.column("Salary", anchor = "center", width = 120)
+
+        treedat8.heading("#0", text="", anchor="center")
+        treedat8.heading("Employee ID", text="Employee ID", anchor="center")
+        treedat8.heading("Name", text="Name", anchor="center")
+        treedat8.heading("Job", text="Job", anchor="center")
+        treedat8.heading("DOJ", text="Payment type", anchor="center")
+        treedat8.heading("Salary", text="Salary", anchor="center")
+
+        #query commit for patient data
+        def patcomm(PID_val, Name_val, ailment_val, payment, status, amt_val):
+            treedat1.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, ailment_val, payment, status, amt_val))
+            treedat5.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, ailment_val, payment, status, amt_val))
+
+        #query commit for doctor data
+        def doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val):
+            treedat2.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val))
+            treedat6.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val))
+        
+        #query commit for nurse data
+        def nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val):
+            treedat3.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val))
+            treedat7.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val))
+        
+        #query commit for employee data
+        def empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val):
+            treedat4.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val))
+            treedat8.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val))
+
         #code fragment for adding data to SQL and to Treeview (Patient table)
-        paymentval = tk.IntVar()
-        statusval = tk.IntVar()
+        paymentval = tk.StringVar()
+        statusval = tk.StringVar()
         ent_PID = ttk.Entry(master=intfrm5, width = 30)
         lbl_PID = ttk.Label(master=intfrm5, text = "Patient ID: ")
         ent_Name = ttk.Entry(master=intfrm5, width = 30)
@@ -200,9 +295,6 @@ def lgin():
         #separators and beautification
         sep_pay_stat = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
         sep_pay_stat1 = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
-
-        payment = ""
-        status = ""
 
         def addrecpat():
             PID_val = ent_PID.get()
@@ -268,7 +360,7 @@ def lgin():
             spec_val = ent_spec.get()
             sal_val = ent_sal.get()
             DOJ_val_doc = f"{int(datevar_doc.get())}/{monthvar_doc.get()}/{int(yearvar_doc.get())}"
-            treedat2.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val))
+            doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val)
             messagebox.showinfo("Add", message="Added Successfully")
             ent_DID.delete(0, tk.END)
             ent_Name_doc.delete(0, tk.END)
@@ -312,7 +404,7 @@ def lgin():
             dept_val = ent_dept.get()
             sal_val = ent_sal_nur.get()
             DOJ_val_nur = f"{int(datevar_nur.get())}/{monthvar_nur.get()}/{int(yearvar_nur.get())}"
-            treedat3.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val))
+            nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val)
             messagebox.showinfo("Add", message="Added Successfully")
             ent_NID.delete(0, tk.END)
             ent_Name_nur.delete(0, tk.END)
@@ -356,7 +448,7 @@ def lgin():
             job_val = ent_job.get()
             sal_val = ent_sal_emp.get()
             DOJ_val_emp = f"{int(datevar_emp.get())}/{monthvar_emp.get()}/{int(yearvar_emp.get())}"
-            treedat4.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val))
+            empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val)
             messagebox.showinfo("Add", message="Added Successfully")
             ent_EID.delete(0, tk.END)
             ent_Name_emp.delete(0, tk.END)
@@ -410,10 +502,22 @@ def lgin():
         scrlbr3.pack(fill = tk.Y, side = tk.RIGHT)
         scrlbrfrm4.pack()
         scrlbr4.pack(fill = tk.Y, side = tk.RIGHT)
+        scrlbrfrm5.pack()
+        scrlbr5.pack(fill = tk.Y, side = tk.RIGHT)
+        scrlbrfrm6.pack()
+        scrlbr6.pack(fill = tk.Y, side = tk.RIGHT)
+        scrlbrfrm7.pack()
+        scrlbr7.pack(fill = tk.Y, side = tk.RIGHT)
+        scrlbrfrm8.pack()
+        scrlbr8.pack(fill = tk.Y, side = tk.RIGHT)
         treedat1.pack()
         treedat2.pack()
         treedat3.pack()
         treedat4.pack()
+        treedat5.pack()
+        treedat6.pack()
+        treedat7.pack()
+        treedat8.pack()
 
         ent_PID.grid(row=0, column=1, pady=5)
         lbl_PID.grid(row=0, column=0, pady=5)
