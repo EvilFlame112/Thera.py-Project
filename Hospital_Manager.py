@@ -11,6 +11,8 @@ import os
 from tkinter import Menu, ttk, messagebox
 from PIL import ImageTk, Image
 
+#custom sql module
+
 #Declaring path variables for extensive support with asset folder
 file_path = os.path.dirname(os.path.realpath(__file__))
 asset_path = os.path.join(file_path, "Assets")
@@ -21,7 +23,7 @@ theme_path = os.path.join(asset_path, "azure-dark.tcl")
 
 #defining function to be triggered on perfect login to execute main window
 def lgin():
-    #grabbing username and password and referencing it with database
+    #grabbing username and password and referencing it with csv
     user = usern_ent.get()
     pwd = passwd_ent.get()
     if user == "" and pwd == "":
@@ -32,7 +34,6 @@ def lgin():
         login.destroy()
         main = tk.Tk(className="Mainwindow")
         style = ttk.Style()
-        os.chdir(asset_path)
         main.tk.call("source", theme_path)
         style.theme_use("azure-dark")
         main.geometry("1024x650")
@@ -121,30 +122,35 @@ def lgin():
         #Making tables with treeview
         treedat1 = ttk.Treeview(master=scrlbrfrm1, yscrollcommand=scrlbr1.set)
         scrlbr1.config(command = treedat1.yview)
-        treedat1["columns"] = ("Patient ID", "Name", "Ailment", "Payment type", "Payment status", "Amount")
+        treedat1["columns"] = ("Patient ID", "Name", "Age", "Ailment", "Payment type", "Payment status", "Contact", "Amount")
         treedat1.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat1.column("Patient ID", anchor="center", width = 120)
         treedat1.column("Name", anchor = "center", width = 120)
+        treedat1.column("Age", anchor = "center", width = 120)
         treedat1.column("Ailment", anchor = "center", width = 120)
         treedat1.column("Payment type", anchor = "center", width = 120)
         treedat1.column("Payment status", anchor = "center", width = 120)
+        treedat1.column("Contact", anchor = "center", width = 120)
         treedat1.column("Amount", anchor = "center", width = 120)
 
         treedat1.heading("#0", text="", anchor="center")
         treedat1.heading("Patient ID", text="Patient ID", anchor="center")
         treedat1.heading("Name", text="Name", anchor="center")
+        treedat1.heading("Age", text="Age", anchor="center")
         treedat1.heading("Ailment", text="Ailment", anchor="center")
         treedat1.heading("Payment type", text="Payment type", anchor="center")
         treedat1.heading("Payment status", text="Payment status", anchor="center")
+        treedat1.heading("Contact", text="Contact", anchor="center")
         treedat1.heading("Amount", text="Amount", anchor="center")
 
         treedat2 = ttk.Treeview(master=scrlbrfrm2, yscrollcommand=scrlbr2.set)
-        treedat2["columns"] = ("Doctor ID", "Name", "Specialization", "DOJ", "Salary")
+        treedat2["columns"] = ("Doctor ID", "Name", "Specialization", "DOJ", "Contact", "Salary")
         treedat2.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat2.column("Doctor ID", anchor="center", width = 120)
         treedat2.column("Name", anchor = "center", width = 120)
         treedat2.column("Specialization", anchor = "center", width = 120)
         treedat2.column("DOJ", anchor = "center", width = 120)
+        treedat2.column("Contact", anchor = "center", width = 120)
         treedat2.column("Salary", anchor = "center", width = 120)
 
         treedat2.heading("#0", text="", anchor="center")
@@ -152,15 +158,17 @@ def lgin():
         treedat2.heading("Name", text="Name", anchor="center")
         treedat2.heading("Specialization", text="Specialization", anchor="center")
         treedat2.heading("DOJ", text="DOJ", anchor="center")
+        treedat2.heading("Contact", text="Contact", anchor="center")
         treedat2.heading("Salary", text="Salary", anchor="center")
 
         treedat3 = ttk.Treeview(master=scrlbrfrm3, yscrollcommand=scrlbr3.set)
-        treedat3["columns"] = ("Nurse ID", "Name", "Department", "DOJ", "Salary")
+        treedat3["columns"] = ("Nurse ID", "Name", "Department", "DOJ", "Contact", "Salary")
         treedat3.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat3.column("Nurse ID", anchor="center", width = 120)
         treedat3.column("Name", anchor = "center", width = 120)
         treedat3.column("Department", anchor = "center", width = 120)
         treedat3.column("DOJ", anchor = "center", width = 120)
+        treedat3.column("Contact", anchor = "center", width = 120)
         treedat3.column("Salary", anchor = "center", width = 120)
 
         treedat3.heading("#0", text="", anchor="center")
@@ -168,15 +176,17 @@ def lgin():
         treedat3.heading("Name", text="Name", anchor="center")
         treedat3.heading("Department", text="Department", anchor="center")
         treedat3.heading("DOJ", text="DOJ", anchor="center")
+        treedat3.heading("Contact", text="Contact", anchor="center")
         treedat3.heading("Salary", text="Salary", anchor="center")
 
         treedat4 = ttk.Treeview(master=scrlbrfrm4, yscrollcommand=scrlbr4.set)
-        treedat4["columns"] = ("Employee ID", "Name", "Job", "DOJ", "Salary")
+        treedat4["columns"] = ("Employee ID", "Name", "Job", "DOJ", "Contact", "Salary")
         treedat4.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat4.column("Employee ID", anchor="center", width = 120)
         treedat4.column("Name", anchor = "center", width = 120)
         treedat4.column("Job", anchor = "center", width = 120)
         treedat4.column("DOJ", anchor = "center", width = 120)
+        treedat4.column("Contact", anchor = "center", width = 120)
         treedat4.column("Salary", anchor = "center", width = 120)
 
         treedat4.heading("#0", text="", anchor="center")
@@ -184,34 +194,40 @@ def lgin():
         treedat4.heading("Name", text="Name", anchor="center")
         treedat4.heading("Job", text="Job", anchor="center")
         treedat4.heading("DOJ", text="Payment type", anchor="center")
+        treedat4.heading("Contact", text="Contact", anchor="center")
         treedat4.heading("Salary", text="Salary", anchor="center")
 
         treedat5 = ttk.Treeview(master=scrlbrfrm5, yscrollcommand=scrlbr5.set)
         scrlbr5.config(command = treedat5.yview)
-        treedat5["columns"] = ("Patient ID", "Name", "Ailment", "Payment type", "Payment status", "Amount")
+        treedat5["columns"] = ("Patient ID", "Name", "Age", "Ailment", "Payment type", "Payment status", "Contact", "Amount")
         treedat5.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat5.column("Patient ID", anchor="center", width = 120)
         treedat5.column("Name", anchor = "center", width = 120)
+        treedat5.column("Age", anchor = "center", width = 120)
         treedat5.column("Ailment", anchor = "center", width = 120)
         treedat5.column("Payment type", anchor = "center", width = 120)
         treedat5.column("Payment status", anchor = "center", width = 120)
+        treedat5.column("Contact", anchor = "center", width = 120)
         treedat5.column("Amount", anchor = "center", width = 120)
 
         treedat5.heading("#0", text="", anchor="center")
         treedat5.heading("Patient ID", text="Patient ID", anchor="center")
         treedat5.heading("Name", text="Name", anchor="center")
+        treedat5.heading("Age", text="Age", anchor="center")
         treedat5.heading("Ailment", text="Ailment", anchor="center")
         treedat5.heading("Payment type", text="Payment type", anchor="center")
         treedat5.heading("Payment status", text="Payment status", anchor="center")
+        treedat5.heading("Contact", text="Contact", anchor="center")
         treedat5.heading("Amount", text="Amount", anchor="center")
 
         treedat6 = ttk.Treeview(master=scrlbrfrm6, yscrollcommand=scrlbr6.set)
-        treedat6["columns"] = ("Doctor ID", "Name", "Specialization", "DOJ", "Salary")
+        treedat6["columns"] = ("Doctor ID", "Name", "Specialization", "DOJ", "Contact", "Salary")
         treedat6.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat6.column("Doctor ID", anchor="center", width = 120)
         treedat6.column("Name", anchor = "center", width = 120)
         treedat6.column("Specialization", anchor = "center", width = 120)
         treedat6.column("DOJ", anchor = "center", width = 120)
+        treedat6.column("Contact", anchor = "center", width = 120)
         treedat6.column("Salary", anchor = "center", width = 120)
 
         treedat6.heading("#0", text="", anchor="center")
@@ -219,15 +235,17 @@ def lgin():
         treedat6.heading("Name", text="Name", anchor="center")
         treedat6.heading("Specialization", text="Specialization", anchor="center")
         treedat6.heading("DOJ", text="DOJ", anchor="center")
+        treedat6.heading("Contact", text="Contact", anchor="center")
         treedat6.heading("Salary", text="Salary", anchor="center")
 
         treedat7 = ttk.Treeview(master=scrlbrfrm7, yscrollcommand=scrlbr7.set)
-        treedat7["columns"] = ("Nurse ID", "Name", "Department", "DOJ", "Salary")
+        treedat7["columns"] = ("Nurse ID", "Name", "Department", "DOJ", "Contact", "Salary")
         treedat7.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat7.column("Nurse ID", anchor="center", width = 120)
         treedat7.column("Name", anchor = "center", width = 120)
         treedat7.column("Department", anchor = "center", width = 120)
         treedat7.column("DOJ", anchor = "center", width = 120)
+        treedat7.column("Contact", anchor = "center", width = 120)
         treedat7.column("Salary", anchor = "center", width = 120)
 
         treedat7.heading("#0", text="", anchor="center")
@@ -235,15 +253,17 @@ def lgin():
         treedat7.heading("Name", text="Name", anchor="center")
         treedat7.heading("Department", text="Department", anchor="center")
         treedat7.heading("DOJ", text="DOJ", anchor="center")
+        treedat7.heading("Contact", text="Contact", anchor="center")
         treedat7.heading("Salary", text="Salary", anchor="center")
 
         treedat8 = ttk.Treeview(master=scrlbrfrm8, yscrollcommand=scrlbr8.set)
-        treedat8["columns"] = ("Employee ID", "Name", "Job", "DOJ", "Salary")
+        treedat8["columns"] = ("Employee ID", "Name", "Job", "DOJ", "Contact", "Salary")
         treedat8.column("#0", width = 0, minwidth = 0, stretch=0)
         treedat8.column("Employee ID", anchor="center", width = 120)
         treedat8.column("Name", anchor = "center", width = 120)
         treedat8.column("Job", anchor = "center", width = 120)
         treedat8.column("DOJ", anchor = "center", width = 120)
+        treedat1.column("Contact", anchor = "center", width = 120)
         treedat8.column("Salary", anchor = "center", width = 120)
 
         treedat8.heading("#0", text="", anchor="center")
@@ -251,31 +271,33 @@ def lgin():
         treedat8.heading("Name", text="Name", anchor="center")
         treedat8.heading("Job", text="Job", anchor="center")
         treedat8.heading("DOJ", text="Payment type", anchor="center")
+        treedat8.heading("Contact", text="Contact", anchor="center")
         treedat8.heading("Salary", text="Salary", anchor="center")
 
         #query commit for patient data
-        def patcomm(PID_val, Name_val, ailment_val, payment, status, amt_val):
-            treedat1.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, ailment_val, payment, status, amt_val))
-            treedat5.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, ailment_val, payment, status, amt_val))
+        def patcomm(PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val):
+            treedat1.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val))
+            treedat5.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val))
 
         #query commit for doctor data
-        def doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val):
-            treedat2.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val))
-            treedat6.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val))
+        def doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val):
+            treedat2.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val))
+            treedat6.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val))
         
         #query commit for nurse data
-        def nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val):
-            treedat3.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val))
-            treedat7.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, sal_val))
+        def nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val):
+            treedat3.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val))
+            treedat7.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val))
         
         #query commit for employee data
-        def empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val):
-            treedat4.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val))
-            treedat8.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, sal_val))
+        def empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val):
+            treedat4.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val))
+            treedat8.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val))
 
         #code fragment for adding data to SQL and to Treeview (Patient table)
-        paymentval = tk.StringVar()
-        statusval = tk.StringVar()
+        paymentval = tk.IntVar()
+        statusval = tk.IntVar()
+        age_val = tk.IntVar()
         ent_PID = ttk.Entry(master=intfrm5, width = 30)
         lbl_PID = ttk.Label(master=intfrm5, text = "Patient ID: ")
         ent_Name = ttk.Entry(master=intfrm5, width = 30)
@@ -291,6 +313,13 @@ def lgin():
         lbl_status = ttk.Label(master=intfrm5, text = "Payment Status: ")
         rdb_paid = ttk.Radiobutton(master=intfrm5, text="Paid", value=1, variable=statusval)
         rdb_pending = ttk.Radiobutton(master=intfrm5, text="Pending", value=2, variable=statusval)
+        age_cbbx = ttk.Combobox(master=intfrm5, textvariable=age_val, width=5)
+        agelis = [int(i) for i in range(1,120)]
+        age_cbbx["values"] = tuple(agelis)
+        age_cbbx.state(["readonly"])
+        lbl_age = ttk.Label(master=intfrm5, text="Age: ")
+        ent_contact = ttk.Entry(master=intfrm5, width=30)
+        lbl_contact = ttk.Label(master=intfrm5, text="Contact: ")
 
         #separators and beautification
         sep_pay_stat = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
@@ -301,6 +330,8 @@ def lgin():
             Name_val = ent_Name.get()
             ailment_val = ent_ailment.get()
             amt_val = ent_amt.get()
+            age = age_val.get()
+            contact = ent_contact.get()
             if paymentval.get() == 1:
                 payment = "Cash"
             elif paymentval.get() == 2:
@@ -316,7 +347,7 @@ def lgin():
                 status = "Pending"
             else:
                 pass
-            treedat1.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, ailment_val, payment, status, amt_val))
+            patcomm(PID_val, Name_val, age, ailment_val, payment, status, contact, amt_val)
             messagebox.showinfo("Add", message="Added Successfully")
             ent_PID.delete(0, tk.END)
             ent_Name.delete(0, tk.END)
@@ -351,6 +382,8 @@ def lgin():
         year_cbbx1 = ttk.Combobox(master=dojfrm_doc, textvariable = yearvar_doc, width = 5)
         year_cbbx1["values"] = tuple(ylist)
         year_cbbx1.state(["readonly"])
+        ent_contact_doc = ttk.Entry(master=intfrm6, width = 30)
+        lbl_contact_doc = ttk.Label(master=intfrm6, text="Contact: ")
         ent_sal = ttk.Entry(master=intfrm6, width = 30)
         lbl_sal = ttk.Label(master=intfrm6, text = "Salary:")
 
@@ -360,7 +393,8 @@ def lgin():
             spec_val = ent_spec.get()
             sal_val = ent_sal.get()
             DOJ_val_doc = f"{int(datevar_doc.get())}/{monthvar_doc.get()}/{int(yearvar_doc.get())}"
-            doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, sal_val)
+            contact_doc = ent_contact_doc.get()
+            doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contact_doc, sal_val)
             messagebox.showinfo("Add", message="Added Successfully")
             ent_DID.delete(0, tk.END)
             ent_Name_doc.delete(0, tk.END)
@@ -523,20 +557,24 @@ def lgin():
         lbl_PID.grid(row=0, column=0, pady=5)
         ent_Name.grid(row=1, column=1, pady=5)
         lbl_Name.grid(row=1, column=0, pady=5)
-        ent_ailment.grid(row=2, column=1, pady=5)
-        lbl_ailment.grid(row=2, column=0, pady=5) 
-        lbl_payment.grid(row=3, column=0, pady=5)
-        rdb_cash.grid(row=3, column=1, sticky="w", pady=5)
-        rdb_card.grid(row=4, column=1, sticky="w", pady=5)
-        rdb_cheque.grid(row=5, column=1, sticky="w", pady=5)
-        sep_pay_stat.grid(row=6, column=1, sticky='ew', pady=5)
-        sep_pay_stat1.grid(row=6, column=0, sticky='ew', pady=5)
-        lbl_status.grid(row=7, column=0, pady=5)
-        rdb_paid.grid(row=7, column=1, sticky="w")
-        rdb_pending.grid(row=8, column=1, sticky="w")
-        lbl_amt.grid(row=9, column=0, pady=5)
-        ent_amt.grid(row=9, column=1, pady=5)
-        addbtnpat.grid(row=10, column=1, pady=5)
+        lbl_age.grid(row=2, column=0)
+        age_cbbx.grid(row=2, column=1)
+        ent_ailment.grid(row=3, column=1, pady=5)
+        lbl_ailment.grid(row=3, column=0, pady=5) 
+        lbl_payment.grid(row=4, column=0, pady=5)
+        rdb_cash.grid(row=4, column=1, sticky="w", pady=5)
+        rdb_card.grid(row=5, column=1, sticky="w", pady=5)
+        rdb_cheque.grid(row=6, column=1, sticky="w", pady=5)
+        sep_pay_stat.grid(row=7, column=1, sticky='ew', pady=5)
+        sep_pay_stat1.grid(row=7, column=0, sticky='ew', pady=5)
+        lbl_status.grid(row=8, column=0, pady=5)
+        rdb_paid.grid(row=8, column=1, sticky="w")
+        rdb_pending.grid(row=9, column=1, sticky="w")
+        ent_contact.grid(row=10, column=1, pady=5)
+        lbl_contact.grid(row=10, column=0, pady=5)
+        lbl_amt.grid(row=11, column=0, pady=5)
+        ent_amt.grid(row=11, column=1, pady=5)
+        addbtnpat.grid(row=12, column=1, pady=5)
 
         ent_DID.grid(row=0, column=1, pady=5)
         lbl_DID.grid(row=0, column=0, pady=5)
@@ -549,6 +587,8 @@ def lgin():
         month_cbbx1.grid(row=0, column=2, padx=10, pady=5)
         year_cbbx1.grid(row=0, column=4, padx=10, pady=5)
         lbl_DOJ.grid(row=3, column=0, pady=5)
+        ent_contact_doc
+        lbl_contact_doc
         ent_sal.grid(row=4, column=1, pady=5)
         lbl_sal.grid(row=4, column=0, pady=5)
         addbtndoc.grid(row=5, column=1, pady=5)
