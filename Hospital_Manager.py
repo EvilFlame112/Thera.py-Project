@@ -75,10 +75,12 @@ def reg():
 #defining main window
 def mainwindow():
     main = tk.Tk(className="Mainwindow")
+    x = (main.winfo_screenwidth()/2)-512
+    y = (main.winfo_screenheight()/2)-325
     style = ttk.Style()
     main.tk.call("source", theme_path)
     style.theme_use("azure-dark")
-    main.geometry("1024x650")
+    main.geometry(f"1024x650+{int(x)}+{int(y)}")
     main.attributes("-alpha", 0.98)
     main.title("Hospital Management Software v1.0")
     main.iconbitmap(ico_path)
@@ -681,14 +683,17 @@ def lgin():
     with open(userdat_path, "r") as logindetes:
         reader = csv.reader(logindetes)
         found = False
-        for row in reader:
-            if row[0] == user and fernet.decrypt(eval(row[1])).decode() == pwd:
-                messagebox.showinfo("Status", "Login Success")
-                #destroying login and loading main window
-                login.destroy()
-                mainwindow()
-                found = True
-                logindetes.close()
+        try:
+            for row in reader:
+                if row[0] == user and fernet.decrypt(eval(row[1])).decode() == pwd:
+                    messagebox.showinfo("Status", "Login Success")
+                    #destroying login and loading main window
+                    found = True
+                    logindetes.close()
+                    login.destroy()
+                    mainwindow()
+        except ValueError:
+            pass
 
     if found == False:
         #Executes on login failure
@@ -722,7 +727,9 @@ tmp1bg = tmpbg.resize((1024,650))
 
 #defining login window and its attributes
 login = tk.Tk(className="Loginwindow")
-login.geometry("1024x650")
+x = (login.winfo_screenwidth()/2)-512
+y = (login.winfo_screenheight()/2)-325
+login.geometry(f"1024x650+{int(x)}+{int(y)}")
 login.title("Hospital Management Software v1.0")
 style = ttk.Style()
 os.chdir(asset_path)
