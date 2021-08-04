@@ -1,5 +1,5 @@
 import mysql.connector
-conn=mysql.connector.connect(host='localhost', user="root",  passwd="tar$1402")
+conn=mysql.connector.connect(host='localhost', user="root",  passwd="")
 cur = conn.cursor()
 def chkdb(db):
     cur.execute("show databases;")
