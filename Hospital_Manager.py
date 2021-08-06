@@ -14,6 +14,7 @@ import csv
 from cryptography.fernet import Fernet
 
 #custom sql module
+from Assets.BackEnd import sqlqueries
 
 #Declaring path variables for extensive support with asset folder
 file_path = os.path.dirname(os.path.realpath(__file__))
@@ -307,7 +308,7 @@ def mainwindow():
     treedat8.column("Name", anchor = "center", width = 120)
     treedat8.column("Job", anchor = "center", width = 120)
     treedat8.column("DOJ", anchor = "center", width = 120)
-    treedat1.column("Contact", anchor = "center", width = 120)
+    treedat8.column("Contact", anchor = "center", width = 120)
     treedat8.column("Salary", anchor = "center", width = 120)
 
     treedat8.heading("#0", text="", anchor="center")
@@ -318,25 +319,61 @@ def mainwindow():
     treedat8.heading("Contact", text="Contact", anchor="center")
     treedat8.heading("Salary", text="Salary", anchor="center")
 
+    #query for loading data
+    def loadpatient():
+        recordP = sqlqueries.query("patient")
+        for patient in recordP:
+            treedat1.insert(parent="", index=tk.END, text = "", values = (patient[0], patient[1], patient[2], patient[3], patient[4], patient[5], patient[6], patient[7]))
+            treedat5.insert(parent="", index=tk.END, text = "", values = (patient[0], patient[1], patient[2], patient[3], patient[4], patient[5], patient[6], patient[7]))
+
+    def loaddoctor():
+        recordP = sqlqueries.query("doctor")
+        for doctor in recordP:
+            treedat2.insert(parent="", index=tk.END, text = "", values = (doctor[0], doctor[1], doctor[2], doctor[3], doctor[4], doctor[5]))
+            treedat6.insert(parent="", index=tk.END, text = "", values = (doctor[0], doctor[1], doctor[2], doctor[3], doctor[4], doctor[5]))
+        
+    def loadnurse():
+        recordP = sqlqueries.query("nurse")
+        for nurse in recordP:
+            treedat3.insert(parent="", index=tk.END, text = "", values = (nurse[0], nurse[1], nurse[2], nurse[3], nurse[4], nurse[5]))
+            treedat7.insert(parent="", index=tk.END, text = "", values = (nurse[0], nurse[1], nurse[2], nurse[3], nurse[4], nurse[5]))
+
+    def loademployee():
+        recordP = sqlqueries.query("employee")
+        for employee in recordP:
+            treedat4.insert(parent="", index=tk.END, text = "", values = (employee[0], employee[1], employee[2], employee[3], employee[4], employee[5]))
+            treedat8.insert(parent="", index=tk.END, text = "", values = (employee[0], employee[1], employee[2], employee[3], employee[4], employee[5]))
+
+    loadpatient()
+    loaddoctor()
+    loadnurse()
+    loademployee()
+
     #query commit for patient data
     def patcomm(PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val):
-        treedat1.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val))
-        treedat5.insert(parent="", index=tk.END, text = "", values = (PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val))
+        sqlqueries.addtopatient(PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val)
+        treedat1.delete(*treedat1.get_children())
+        treedat5.delete(*treedat5.get_children())
+        loadpatient()
 
     #query commit for doctor data
     def doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val):
-        treedat2.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val))
-        treedat6.insert(parent="", index=tk.END, text = "", values = (DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val))
+        sqlqueries.addtodoctor(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val)
+        treedat2.delete(*treedat2.get_children())
+        treedat6.delete(*treedat6.get_children())
+        loaddoctor()
     
     #query commit for nurse data
     def nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val):
-        treedat3.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val))
-        treedat7.insert(parent="", index=tk.END, text = "", values = (NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val))
+        sqlqueries.addtonurse(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val)
+        treedat3.delete(*treedat3.get_children())
+        treedat7.delete(*treedat7.get_children())
     
     #query commit for employee data
     def empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val):
-        treedat4.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val))
-        treedat8.insert(parent="", index=tk.END, text = "", values = (EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val))
+        sqlqueries.addtoemployee(EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val)
+        treedat4.delete(*treedat4.get_children())
+        treedat8.delete(*treedat8.get_children())
 
     #code fragment for adding data to SQL and to Treeview (Patient table)
     paymentval = tk.IntVar()
@@ -534,6 +571,22 @@ def mainwindow():
         ent_sal_emp.delete(0, tk.END)
     addbtnemp = ttk.Button(master=intfrm8, text = "Add Data", command = addrecemp)
 
+    #Deleting a record (Patient)
+    def deleteallp():
+        treedat5.delete(*treedat5.get_children())
+        treedat1.delete(*treedat1.get_children())
+        sqlqueries.purgeP()
+    def deleteselectedp():
+        templist = []
+        selectedrec = treedat5.focus()
+        for patient in selectedrec:
+            valuegrabber = treedat5.item(patient, "values")[0]
+            templist.append(valuegrabber)
+        sqlqueries.delemany("patient", "Pateint_Id", templist)
+        treedat5.delete(*treedat5.get_children())
+        treedat1.delete(*treedat1.get_children())
+        loadpatient()
+        
     #Packing and adding everything
     ntbk.add(frm1, text="View DB")
     ntbk.add(frm2, text="Add Data")
@@ -672,6 +725,8 @@ def mainwindow():
     for i in l1:
         lbl_bgm = tk.Label(master=i, width = 1024, height = 650, image = bgm)
         lbl_bgm.pack()
+
+    main.protocol("WM_DELETE_WINDOW", sqlqueries.closeconnection)
 
     main.mainloop()
 
