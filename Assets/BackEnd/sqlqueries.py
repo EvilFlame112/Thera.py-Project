@@ -21,13 +21,13 @@ def addtopatient(pid, namep, age, ailment, paytypep, status, contactp, amountp):
     cur.execute(f"INSERT INTO patient values({pid}, '{namep}', {age}, '{ailment}', '{paytypep}', '{status}', {contactp}, {amountp})")
     conn.commit()
 def addtodoctor(did,named,specialization,dojd,contactd,salaryd):
-    cur.execute(f"insert into doctor values({did},{named},{specialization},{dojd},{contactd},{salaryd}) ")
+    cur.execute(f"insert into doctor values({did},'{named}','{specialization}',{dojd},{contactd},{salaryd}) ")
     conn.commit()
 def addtonurse(nid,namen,department,dojn,contactn,salaryn):
-    cur.execute(f"insert into nurse values({nid},{namen},{department},{dojn},{contactn},{salaryn})")
+    cur.execute(f"insert into nurse values({nid},'{namen}','{department}',{dojn},{contactn},{salaryn})")
     conn.commit()
-def addtoemployee(eid,namee,job,paytypee,contacte,salarye):
-    cur.execute(f"insert into employee values({eid},{namee},{job},{paytypee},{contacte},{salarye}")
+def addtoemployee(eid,namee,job,doje,contacte,salarye):
+    cur.execute(f"insert into employee values({eid},'{namee}','{job}',{doje},{contacte},{salarye}")
     conn.commit()
 def dele(tablename,id,idinput):
     cur.execute(f"delete from {tablename} where {id}={idinput}")
@@ -39,7 +39,8 @@ def query(tablename):
     cur.execute(f"SELECT * FROM {tablename}")
     return cur.fetchall()
 def delemany(tablename,id,idlist):
-    cur.executemany(f"delete from {tablename} where {id}={idlist}")
+    querydel = f"delete from {tablename} where {id}=%s"
+    cur.executemany(querydel, idlist)
     conn.commit()
 def closeconnection():
     conn.close()
