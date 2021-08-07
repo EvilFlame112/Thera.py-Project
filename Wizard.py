@@ -48,6 +48,7 @@ def wizmain():
     style = ttk.Style()
     wiz.tk.call("source", theme_path)
     wiz.iconbitmap(ico_path)
+    wiz.resizable(False,False)
     style.theme_use("azure-dark")
     x = (wiz.winfo_screenwidth()/2)-175
     y = (wiz.winfo_screenheight()/2)-175
@@ -76,6 +77,7 @@ style = ttk.Style()
 base.tk.call("source", theme_path)
 base.iconbitmap(ico_path)
 base.title("AsclepiusPy Wizard")
+base.resizable(False, False)
 style.theme_use("azure-dark")
 x = (base.winfo_screenwidth()/2)-300
 y = (base.winfo_screenheight()/2)-225

@@ -172,6 +172,14 @@ def mainwindow():
     scrlbr11 = ttk.Scrollbar(master=scrlbrfrm11)
     scrlbrfrm12 = ttk.Frame(master=intfrm16)
     scrlbr12 = ttk.Scrollbar(master=scrlbrfrm12)
+    scrlbrfrm13 = ttk.Frame(master=intfrm17)
+    scrlbr13 = ttk.Scrollbar(master=scrlbrfrm13)
+    scrlbrfrm14 = ttk.Frame(master=intfrm18)
+    scrlbr14 = ttk.Scrollbar(master=scrlbrfrm14)
+    scrlbrfrm15 = ttk.Frame(master=intfrm19)
+    scrlbr15 = ttk.Scrollbar(master=scrlbrfrm15)
+    scrlbrfrm16 = ttk.Frame(master=intfrm20)
+    scrlbr16 = ttk.Scrollbar(master=scrlbrfrm16)
 
     #Making tables with treeview
     treedat1 = ttk.Treeview(master=scrlbrfrm1, yscrollcommand=scrlbr1.set)
@@ -414,6 +422,86 @@ def mainwindow():
     treedat12.heading("Contact", text="Contact", anchor="center")
     treedat12.heading("Salary", text="Salary", anchor="center")
 
+    treedat13 = ttk.Treeview(master=scrlbrfrm13, yscrollcommand=scrlbr13.set)
+    scrlbr13.config(command = treedat13.yview)
+    treedat13["columns"] = ("Patient ID", "Name", "Age", "Ailment", "Payment type", "Payment status", "Contact", "Amount")
+    treedat13.column("#0", width = 0, minwidth = 0, stretch=0)
+    treedat13.column("Patient ID", anchor="center", width = 120)
+    treedat13.column("Name", anchor = "center", width = 120)
+    treedat13.column("Age", anchor = "center", width = 120)
+    treedat13.column("Ailment", anchor = "center", width = 120)
+    treedat13.column("Payment type", anchor = "center", width = 120)
+    treedat13.column("Payment status", anchor = "center", width = 120)
+    treedat13.column("Contact", anchor = "center", width = 120)
+    treedat13.column("Amount", anchor = "center", width = 120)
+
+    treedat13.heading("#0", text="", anchor="center")
+    treedat13.heading("Patient ID", text="Patient ID", anchor="center")
+    treedat13.heading("Name", text="Name", anchor="center")
+    treedat13.heading("Age", text="Age", anchor="center")
+    treedat13.heading("Ailment", text="Ailment", anchor="center")
+    treedat13.heading("Payment type", text="Payment type", anchor="center")
+    treedat13.heading("Payment status", text="Payment status", anchor="center")
+    treedat13.heading("Contact", text="Contact", anchor="center")
+    treedat13.heading("Amount", text="Amount", anchor="center")
+
+    treedat14 = ttk.Treeview(master=scrlbrfrm14, yscrollcommand=scrlbr14.set)
+    scrlbr14.config(command = treedat14.yview)
+    treedat14["columns"] = ("Doctor ID", "Name", "Specialization", "DOJ", "Contact", "Salary")
+    treedat14.column("#0", width = 0, minwidth = 0, stretch=0)
+    treedat14.column("Doctor ID", anchor="center", width = 120)
+    treedat14.column("Name", anchor = "center", width = 120)
+    treedat14.column("Specialization", anchor = "center", width = 120)
+    treedat14.column("DOJ", anchor = "center", width = 120)
+    treedat14.column("Contact", anchor = "center", width = 120)
+    treedat14.column("Salary", anchor = "center", width = 120)
+
+    treedat14.heading("#0", text="", anchor="center")
+    treedat14.heading("Doctor ID", text="Doctor ID", anchor="center")
+    treedat14.heading("Name", text="Name", anchor="center")
+    treedat14.heading("Specialization", text="Specialization", anchor="center")
+    treedat14.heading("DOJ", text="DOJ", anchor="center")
+    treedat14.heading("Contact", text="Contact", anchor="center")
+    treedat14.heading("Salary", text="Salary", anchor="center")
+
+    treedat15 = ttk.Treeview(master=scrlbrfrm15, yscrollcommand=scrlbr15.set)
+    scrlbr15.config(command = treedat15.yview)
+    treedat15["columns"] = ("Nurse ID", "Name", "Department", "DOJ", "Contact", "Salary")
+    treedat15.column("#0", width = 0, minwidth = 0, stretch=0)
+    treedat15.column("Nurse ID", anchor="center", width = 120)
+    treedat15.column("Name", anchor = "center", width = 120)
+    treedat15.column("Department", anchor = "center", width = 120)
+    treedat15.column("DOJ", anchor = "center", width = 120)
+    treedat15.column("Contact", anchor = "center", width = 120)
+    treedat15.column("Salary", anchor = "center", width = 120)
+
+    treedat15.heading("#0", text="", anchor="center")
+    treedat15.heading("Nurse ID", text="Nurse ID", anchor="center")
+    treedat15.heading("Name", text="Name", anchor="center")
+    treedat15.heading("Department", text="Department", anchor="center")
+    treedat15.heading("DOJ", text="DOJ", anchor="center")
+    treedat15.heading("Contact", text="Contact", anchor="center")
+    treedat15.heading("Salary", text="Salary", anchor="center")
+
+    treedat16 = ttk.Treeview(master=scrlbrfrm16, yscrollcommand=scrlbr16.set)
+    scrlbr16.config(command = treedat16.yview)
+    treedat16["columns"] = ("Employee ID", "Name", "Job", "DOJ", "Contact", "Salary")
+    treedat16.column("#0", width = 0, minwidth = 0, stretch=0)
+    treedat16.column("Employee ID", anchor="center", width = 120)
+    treedat16.column("Name", anchor = "center", width = 120)
+    treedat16.column("Job", anchor = "center", width = 120)
+    treedat16.column("DOJ", anchor = "center", width = 120)
+    treedat16.column("Contact", anchor = "center", width = 120)
+    treedat16.column("Salary", anchor = "center", width = 120)
+
+    treedat16.heading("#0", text="", anchor="center")
+    treedat16.heading("Employee ID", text="Employee ID", anchor="center")
+    treedat16.heading("Name", text="Name", anchor="center")
+    treedat16.heading("Job", text="Job", anchor="center")
+    treedat16.heading("DOJ", text="DOJ", anchor="center")
+    treedat16.heading("Contact", text="Contact", anchor="center")
+    treedat16.heading("Salary", text="Salary", anchor="center")
+
     #query for loading data
     def loadpatient():
         recordP = sqlqueries.query("patient")
@@ -421,6 +509,7 @@ def mainwindow():
             treedat1.insert(parent="", index=tk.END, text = "", values = (patient[0], patient[1], patient[2], patient[3], patient[4], patient[5], patient[6], patient[7]))
             treedat5.insert(parent="", index=tk.END, text = "", values = (patient[0], patient[1], patient[2], patient[3], patient[4], patient[5], patient[6], patient[7]))
             treedat9.insert(parent="", index=tk.END, text = "", values = (patient[0], patient[1], patient[2], patient[3], patient[4], patient[5], patient[6], patient[7]))
+            treedat13.insert(parent="", index=tk.END, text = "", values = (patient[0], patient[1], patient[2], patient[3], patient[4], patient[5], patient[6], patient[7]))
 
     def loaddoctor():
         recordP = sqlqueries.query("doctor")
@@ -428,6 +517,7 @@ def mainwindow():
             treedat2.insert(parent="", index=tk.END, text = "", values = (doctor[0], doctor[1], doctor[2], doctor[3], doctor[4], doctor[5]))
             treedat6.insert(parent="", index=tk.END, text = "", values = (doctor[0], doctor[1], doctor[2], doctor[3], doctor[4], doctor[5]))
             treedat10.insert(parent="", index=tk.END, text = "", values = (doctor[0], doctor[1], doctor[2], doctor[3], doctor[4], doctor[5]))
+            treedat14.insert(parent="", index=tk.END, text = "", values = (doctor[0], doctor[1], doctor[2], doctor[3], doctor[4], doctor[5]))
         
     def loadnurse():
         recordP = sqlqueries.query("nurse")
@@ -435,6 +525,7 @@ def mainwindow():
             treedat3.insert(parent="", index=tk.END, text = "", values = (nurse[0], nurse[1], nurse[2], nurse[3], nurse[4], nurse[5]))
             treedat7.insert(parent="", index=tk.END, text = "", values = (nurse[0], nurse[1], nurse[2], nurse[3], nurse[4], nurse[5]))
             treedat11.insert(parent="", index=tk.END, text = "", values = (nurse[0], nurse[1], nurse[2], nurse[3], nurse[4], nurse[5]))
+            treedat15.insert(parent="", index=tk.END, text = "", values = (nurse[0], nurse[1], nurse[2], nurse[3], nurse[4], nurse[5]))
 
     def loademployee():
         recordP = sqlqueries.query("employee")
@@ -442,6 +533,7 @@ def mainwindow():
             treedat4.insert(parent="", index=tk.END, text = "", values = (employee[0], employee[1], employee[2], employee[3], employee[4], employee[5]))
             treedat8.insert(parent="", index=tk.END, text = "", values = (employee[0], employee[1], employee[2], employee[3], employee[4], employee[5]))
             treedat12.insert(parent="", index=tk.END, text = "", values = (employee[0], employee[1], employee[2], employee[3], employee[4], employee[5]))
+            treedat16.insert(parent="", index=tk.END, text = "", values = (employee[0], employee[1], employee[2], employee[3], employee[4], employee[5]))
 
     loadpatient()
     loaddoctor()
@@ -454,6 +546,7 @@ def mainwindow():
         treedat1.delete(*treedat1.get_children())
         treedat5.delete(*treedat5.get_children())
         treedat9.delete(*treedat9.get_children())
+        treedat13.delete(*treedat13.get_children())
         loadpatient()
 
     #query commit for doctor data
@@ -462,6 +555,7 @@ def mainwindow():
         treedat2.delete(*treedat2.get_children())
         treedat6.delete(*treedat6.get_children())
         treedat10.delete(*treedat10.get_children())
+        treedat14.delete(*treedat14.get_children())
         loaddoctor()
     
     #query commit for nurse data
@@ -470,6 +564,7 @@ def mainwindow():
         treedat3.delete(*treedat3.get_children())
         treedat7.delete(*treedat7.get_children())
         treedat11.delete(*treedat11.get_children())
+        treedat15.delete(*treedat15.get_children())
         loadnurse()
     
     #query commit for employee data
@@ -478,6 +573,7 @@ def mainwindow():
         treedat4.delete(*treedat4.get_children())
         treedat8.delete(*treedat8.get_children())
         treedat12.delete(*treedat12.get_children())
+        treedat16.delete(*treedat16.get_children())
         loademployee()
 
     #code fragment for adding data to SQL and to Treeview (Patient table)
@@ -695,6 +791,7 @@ def mainwindow():
         if x == True:    
             treedat5.delete(*treedat5.get_children())
             treedat9.delete(*treedat9.get_children())
+            treedat13.delete(*treedat13.get_children())
             treedat1.delete(*treedat1.get_children())
             sqlqueries.purgeP()
         else:
@@ -710,6 +807,7 @@ def mainwindow():
             sqlqueries.delemany("patient", "Pateint_Id", templist)
             treedat5.delete(*treedat5.get_children())
             treedat9.delete(*treedat9.get_children())
+            treedat13.delete(*treedat13.get_children())
             treedat1.delete(*treedat1.get_children())
             loadpatient()
         else:
@@ -725,6 +823,7 @@ def mainwindow():
         if x == True:    
             treedat6.delete(*treedat6.get_children())
             treedat10.delete(*treedat10.get_children())
+            treedat14.delete(*treedat14.get_children())
             treedat2.delete(*treedat2.get_children())
             sqlqueries.purgeD()
         else:
@@ -740,6 +839,7 @@ def mainwindow():
             sqlqueries.delemany("doctor", "Doctor_Id", templist)
             treedat6.delete(*treedat6.get_children())
             treedat10.delete(*treedat10.get_children())
+            treedat14.delete(*treedat14.get_children())
             treedat2.delete(*treedat2.get_children())
             loaddoctor()
         else:
@@ -755,6 +855,7 @@ def mainwindow():
         if x == True:    
             treedat7.delete(*treedat7.get_children())
             treedat11.delete(*treedat11.get_children())
+            treedat15.delete(*treedat15.get_children())
             treedat3.delete(*treedat3.get_children())
             sqlqueries.purgeN()
         else:
@@ -770,6 +871,7 @@ def mainwindow():
             sqlqueries.delemany("nurse", "Nurse_Id", templist)
             treedat7.delete(*treedat7.get_children())
             treedat11.delete(*treedat11.get_children())
+            treedat15.delete(*treedat15.get_children())
             treedat3.delete(*treedat3.get_children())
             loadnurse()
         else:
@@ -785,6 +887,7 @@ def mainwindow():
         if x == True:    
             treedat8.delete(*treedat8.get_children())
             treedat12.delete(*treedat12.get_children())
+            treedat16.delete(*treedat16.get_children())
             treedat4.delete(*treedat4.get_children())
             sqlqueries.purgeE()
         else:
@@ -800,6 +903,7 @@ def mainwindow():
             sqlqueries.delemany("employee", "Employee_Id", templist)
             treedat8.delete(*treedat8.get_children())
             treedat12.delete(*treedat12.get_children())
+            treedat16.delete(*treedat16.get_children())
             treedat4.delete(*treedat4.get_children())
             loademployee()
         else:
@@ -809,7 +913,10 @@ def mainwindow():
     btn_delalle = ttk.Button(master=frm_dele, text="Delete All", command=deletealle)
     btn_delsele = ttk.Button(master=frm_dele, text="Delete Selected", command=deleteselectede)
 
-    #Updating records (patient)
+    #Search a record(Patient)
+    def searchP():
+        pass
+    ent_SPID = ttk.Entry(master=intfrm17)
         
     #Packing and adding everything
     ntbk.add(frm1, text="View DB")
@@ -873,6 +980,14 @@ def mainwindow():
     scrlbr11.pack(fill = tk.Y, side = tk.RIGHT)
     scrlbrfrm12.pack()
     scrlbr12.pack(fill = tk.Y, side = tk.RIGHT)
+    scrlbrfrm13.pack()
+    scrlbr13.pack(fill = tk.Y, side = tk.RIGHT)
+    scrlbrfrm14.pack()
+    scrlbr14.pack(fill = tk.Y, side = tk.RIGHT)
+    scrlbrfrm15.pack()
+    scrlbr15.pack(fill = tk.Y, side = tk.RIGHT)
+    scrlbrfrm16.pack()
+    scrlbr16.pack(fill = tk.Y, side = tk.RIGHT)
     treedat1.pack()
     treedat2.pack()
     treedat3.pack()
@@ -885,6 +1000,11 @@ def mainwindow():
     treedat10.pack()
     treedat11.pack()
     treedat12.pack()
+    treedat13.pack()
+    treedat14.pack()
+    treedat15.pack()
+    treedat16.pack()
+
 
     ent_PID.grid(row=0, column=1, pady=5)
     lbl_PID.grid(row=0, column=0, pady=5)
@@ -977,7 +1097,7 @@ def mainwindow():
     btn_delsele.pack(pady=10)
 
 
-    l1 = [frm1, frm2, frm3, frm4]
+    l1 = [frm1, frm2, frm3, frm4, frm5]
     for i in l1:
         lbl_bgm = tk.Label(master=i, width = 1024, height = 650, image = bgm)
         lbl_bgm.pack()
