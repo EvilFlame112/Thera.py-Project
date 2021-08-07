@@ -12,6 +12,7 @@ from tkinter import Menu, ttk, messagebox
 from PIL import ImageTk, Image
 import csv
 from cryptography.fernet import Fernet
+import datetime
 
 #custom sql module
 from Assets.BackEnd import sqlqueries
@@ -238,7 +239,7 @@ def mainwindow():
     treedat4.heading("Employee ID", text="Employee ID", anchor="center")
     treedat4.heading("Name", text="Name", anchor="center")
     treedat4.heading("Job", text="Job", anchor="center")
-    treedat4.heading("DOJ", text="Payment type", anchor="center")
+    treedat4.heading("DOJ", text="DOJ", anchor="center")
     treedat4.heading("Contact", text="Contact", anchor="center")
     treedat4.heading("Salary", text="Salary", anchor="center")
 
@@ -315,7 +316,7 @@ def mainwindow():
     treedat8.heading("Employee ID", text="Employee ID", anchor="center")
     treedat8.heading("Name", text="Name", anchor="center")
     treedat8.heading("Job", text="Job", anchor="center")
-    treedat8.heading("DOJ", text="Payment type", anchor="center")
+    treedat8.heading("DOJ", text="DOJ", anchor="center")
     treedat8.heading("Contact", text="Contact", anchor="center")
     treedat8.heading("Salary", text="Salary", anchor="center")
 
@@ -368,12 +369,14 @@ def mainwindow():
         sqlqueries.addtonurse(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val)
         treedat3.delete(*treedat3.get_children())
         treedat7.delete(*treedat7.get_children())
+        loadnurse()
     
     #query commit for employee data
     def empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val):
         sqlqueries.addtoemployee(EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val)
         treedat4.delete(*treedat4.get_children())
         treedat8.delete(*treedat8.get_children())
+        loademployee()
 
     #code fragment for adding data to SQL and to Treeview (Patient table)
     paymentval = tk.IntVar()
@@ -474,7 +477,8 @@ def mainwindow():
         Name_Doc_val = ent_Name_doc.get()
         spec_val = ent_spec.get()
         sal_val = ent_sal.get()
-        DOJ_val_doc = f"{int(datevar_doc.get())}/{monthvar_doc.get()}/{int(yearvar_doc.get())}"
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        DOJ_val_doc = datetime.datetime(int(yearvar_doc.get()),int(months[monthvar_doc.get()]), int(datevar_doc.get()))
         contact_doc = ent_contact_doc.get()
         doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contact_doc, sal_val)
         messagebox.showinfo("Add", message="Added Successfully")
@@ -523,7 +527,8 @@ def mainwindow():
         dept_val = ent_dept.get()
         sal_val = ent_sal_nur.get()
         contact_nur = ent_contact_nur.get()
-        DOJ_val_nur = f"{int(datevar_nur.get())}/{monthvar_nur.get()}/{int(yearvar_nur.get())}"
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        DOJ_val_nur = datetime.datetime(int(yearvar_nur.get()),int(months[monthvar_nur.get()]), int(datevar_nur.get()))
         nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contact_nur, sal_val)
         messagebox.showinfo("Add", message="Added Successfully")
         ent_NID.delete(0, tk.END)
@@ -571,7 +576,8 @@ def mainwindow():
         job_val = ent_job.get()
         sal_val = ent_sal_emp.get()
         contact_emp = ent_contact_emp.get()
-        DOJ_val_emp = f"{int(datevar_emp.get())}/{monthvar_emp.get()}/{int(yearvar_emp.get())}"
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        DOJ_val_emp = datetime.datetime(int(yearvar_emp.get()),int(months[monthvar_emp.get()]), int(datevar_emp.get()))
         empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, contact_emp, sal_val)
         messagebox.showinfo("Add", message="Added Successfully")
         ent_EID.delete(0, tk.END)
@@ -583,19 +589,115 @@ def mainwindow():
 
     #Deleting a record (Patient)
     def deleteallp():
-        treedat5.delete(*treedat5.get_children())
-        treedat1.delete(*treedat1.get_children())
-        sqlqueries.purgeP()
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete all patient records? /n This action is IRREVERSIBLE.")
+        if x == True:    
+            treedat5.delete(*treedat5.get_children())
+            treedat1.delete(*treedat1.get_children())
+            sqlqueries.purgeP()
+        else:
+            pass
     def deleteselectedp():
-        templist = []
-        selectedrec = treedat5.focus()
-        for patient in selectedrec:
-            valuegrabber = treedat5.item(patient, "values")[0]
-            templist.append(valuegrabber)
-        sqlqueries.delemany("patient", "Pateint_Id", templist)
-        treedat5.delete(*treedat5.get_children())
-        treedat1.delete(*treedat1.get_children())
-        loadpatient()
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete the selected patient records? /n This action is IRREVERSIBLE.")
+        if x == True:    
+            templist = []
+            selectedrec = treedat5.selection()
+            for patient in selectedrec:
+                valuegrabber = treedat5.item(patient, "values")
+                templist.append(valuegrabber[0])
+            sqlqueries.delemany("patient", "Pateint_Id", templist)
+            treedat5.delete(*treedat5.get_children())
+            treedat1.delete(*treedat1.get_children())
+            loadpatient()
+        else:
+            pass
+    
+    frm_delp = ttk.Frame(master=intfrm9)
+    btn_delall = ttk.Button(master=frm_delp, text="Delete All", command=deleteallp)
+    btn_delsel = ttk.Button(master=frm_delp, text="Delete Selected", command=deleteselectedp)
+
+    #Deleting a record (Doctor)
+    def deletealld():
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete all patient records? \n This action is IRREVERSIBLE.")
+        if x == True:    
+            treedat6.delete(*treedat6.get_children())
+            treedat2.delete(*treedat2.get_children())
+            sqlqueries.purgeD()
+        else:
+            pass
+    def deleteselectedd():
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete the selected patient records? \n This action is IRREVERSIBLE.")
+        if x == True:    
+            templist = []
+            selectedrec = treedat6.selection()
+            for doctor in selectedrec:
+                valuegrabber = treedat6.item(doctor, "values")
+                templist.append(valuegrabber[0])
+            sqlqueries.delemany("doctor", "Doctor_Id", templist)
+            treedat6.delete(*treedat6.get_children())
+            treedat2.delete(*treedat2.get_children())
+            loaddoctor()
+        else:
+            pass
+    
+    frm_deld = ttk.Frame(master=intfrm10)
+    btn_delalld = ttk.Button(master=frm_deld, text="Delete All", command=deletealld)
+    btn_delseld = ttk.Button(master=frm_deld, text="Delete Selected", command=deleteselectedd)
+
+    #Deleting a record (Nurse)
+    def deletealln():
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete all patient records? \n This action is IRREVERSIBLE.")
+        if x == True:    
+            treedat7.delete(*treedat7.get_children())
+            treedat3.delete(*treedat3.get_children())
+            sqlqueries.purgeN()
+        else:
+            pass
+    def deleteselectedn():
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete the selected patient records? \n This action is IRREVERSIBLE.")
+        if x == True:    
+            templist = []
+            selectedrec = treedat7.selection()
+            for nurse in selectedrec:
+                valuegrabber = treedat7.item(nurse, "values")
+                templist.append(valuegrabber[0])
+            sqlqueries.delemany("nurse", "Nurse_Id", templist)
+            treedat7.delete(*treedat7.get_children())
+            treedat3.delete(*treedat3.get_children())
+            loadnurse()
+        else:
+            pass
+    
+    frm_deln = ttk.Frame(master=intfrm11)
+    btn_delalln = ttk.Button(master=frm_deln, text="Delete All", command=deletealln)
+    btn_delseln = ttk.Button(master=frm_deln, text="Delete Selected", command=deleteselectedn)
+
+    #Deleting a record (Employee)
+    def deletealle():
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete all patient records? \n This action is IRREVERSIBLE.")
+        if x == True:    
+            treedat8.delete(*treedat8.get_children())
+            treedat4.delete(*treedat4.get_children())
+            sqlqueries.purgeE()
+        else:
+            pass
+    def deleteselectede():
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete the selected patient records? \n This action is IRREVERSIBLE.")
+        if x == True:    
+            templist = []
+            selectedrec = treedat8.selection()
+            for employee in selectedrec:
+                valuegrabber = treedat8.item(employee, "values")
+                templist.append(valuegrabber[0])
+            sqlqueries.delemany("employee", "Employee_Id", templist)
+            treedat8.delete(*treedat8.get_children())
+            treedat4.delete(*treedat4.get_children())
+            loademployee()
+        else:
+            pass
+    
+    frm_dele = ttk.Frame(master=intfrm12)
+    btn_delalle = ttk.Button(master=frm_dele, text="Delete All", command=deletealle)
+    btn_delsele = ttk.Button(master=frm_dele, text="Delete Selected", command=deleteselectede)
         
     #Packing and adding everything
     ntbk.add(frm1, text="View DB")
@@ -734,13 +836,29 @@ def mainwindow():
     lbl_sal_emp.grid(row=5, column=0, pady=5)
     addbtnemp.grid(row=6, column=1, pady=5)
 
+    frm_delp.pack(pady=20)
+    btn_delall.pack(pady=10)
+    btn_delsel.pack(pady=10)
+
+    frm_deld.pack(pady=20)
+    btn_delalld.pack(pady=10)
+    btn_delseld.pack(pady=10)
+
+    frm_deln.pack(pady=20)
+    btn_delalln.pack(pady=10)
+    btn_delseln.pack(pady=10)
+
+    frm_dele.pack(pady=20)
+    btn_delalle.pack(pady=10)
+    btn_delsele.pack(pady=10)
+
 
     l1 = [frm1, frm2, frm3, frm4]
     for i in l1:
         lbl_bgm = tk.Label(master=i, width = 1024, height = 650, image = bgm)
         lbl_bgm.pack()
 
-    main.protocol("WM_DELETE_WINDOW", sqlqueries.closeconnection)
+    main.protocol("WM_DELETE_WINDOW", lambda: sqlqueries.closeconnection(main))
 
     main.mainloop()
 
