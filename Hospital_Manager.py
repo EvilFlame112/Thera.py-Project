@@ -915,8 +915,71 @@ def mainwindow():
 
     #Search a record(Patient)
     def searchP():
-        pass
-    ent_SPID = ttk.Entry(master=intfrm17)
+        if ent_SearchP.get() != 0:
+            selections = []
+            for patient in treedat13.get_children():
+                if ent_SearchP.get() in treedat13.item(patient, "values"):
+                    selections.append(patient)
+        treedat13.selection_set(selections)
+        if len(selections) == 0:
+            messagebox.showinfo("Search", "No results found")
+
+    frm_SP = ttk.Frame(master=intfrm17)
+
+    ent_SearchP = ttk.Entry(master=frm_SP, width=30)
+    lbl_SearchP = ttk.Label(master=frm_SP, text="Search: ")
+    btn_searchP = ttk.Button(master=frm_SP, text="Search", width=25, command=searchP)
+
+    #Search a record(Doctor)
+    def searchD():
+        if ent_SearchD.get() != 0:
+            selections = []
+            for doctor in treedat14.get_children():
+                if ent_SearchD.get() in treedat14.item(doctor, "values"):
+                    selections.append(doctor)
+        treedat14.selection_set(selections)
+        if len(selections) == 0:
+            messagebox.showinfo("Search", "No results found")
+
+    frm_SD = ttk.Frame(master=intfrm18)
+
+    ent_SearchD = ttk.Entry(master=frm_SD, width=30)
+    lbl_SearchD = ttk.Label(master=frm_SD, text="Search: ")
+    btn_searchD = ttk.Button(master=frm_SD, text="Search", width=25, command=searchD)
+
+    #Search a record(Nurse)
+    def searchN():
+        if ent_SearchN.get() != 0:
+            selections = []
+            for nurse in treedat15.get_children():
+                if ent_SearchN.get() in treedat5.item(nurse, "values"):
+                    selections.append(nurse)
+        treedat13.selection_set(selections)
+        if len(selections) == 0:
+            messagebox.showinfo("Search", "No results found")
+
+    frm_SN = ttk.Frame(master=intfrm19)
+
+    ent_SearchN = ttk.Entry(master=frm_SN, width=30)
+    lbl_SearchN = ttk.Label(master=frm_SN, text="Search: ")
+    btn_searchN = ttk.Button(master=frm_SN, text="Search", width=25, command=searchN)
+
+    #Search a record(Employee)
+    def searchE():
+        if ent_SearchE.get() != 0:
+            selections = []
+            for employee in treedat16.get_children():
+                if ent_SearchE.get() in treedat16.item(employee, "values"):
+                    selections.append(employee)
+        treedat16.selection_set(selections)
+        if len(selections) == 0:
+            messagebox.showinfo("Search", "No results found")
+
+    frm_SE = ttk.Frame(master=intfrm20)
+
+    ent_SearchE = ttk.Entry(master=frm_SE, width=30)
+    lbl_SearchE= ttk.Label(master=frm_SE, text="Search: ")
+    btn_searchE = ttk.Button(master=frm_SE, text="Search", width=25, command=searchE)
         
     #Packing and adding everything
     ntbk.add(frm1, text="View DB")
@@ -1095,6 +1158,26 @@ def mainwindow():
     frm_dele.pack(pady=20)
     btn_delalle.pack(pady=10)
     btn_delsele.pack(pady=10)
+
+    frm_SP.pack()
+    lbl_SearchP.grid(row=0, column=0, pady=15)
+    ent_SearchP.grid(row=0, column=1, pady=15)
+    btn_searchP.grid(row=1, column=1, pady=15)
+
+    frm_SD.pack()
+    lbl_SearchD.grid(row=0, column=0, pady=15)
+    ent_SearchD.grid(row=0, column=1, pady=15)
+    btn_searchD.grid(row=1, column=1, pady=15)
+
+    frm_SN.pack()
+    lbl_SearchN.grid(row=0, column=0, pady=15)
+    ent_SearchN.grid(row=0, column=1, pady=15)
+    btn_searchN.grid(row=1, column=1, pady=15)
+
+    frm_SE.pack()
+    lbl_SearchE.grid(row=0, column=0, pady=15)
+    ent_SearchE.grid(row=0, column=1, pady=15)
+    btn_searchE.grid(row=1, column=1, pady=15)
 
 
     l1 = [frm1, frm2, frm3, frm4, frm5]
