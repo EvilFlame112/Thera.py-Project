@@ -32,6 +32,10 @@ fernet = Fernet(key)
 
 #registering into csv:
 def reg():
+    try:
+        msgbox_yesnoregister.destroy()
+    except NameError:
+        pass
     reg_window = tk.Toplevel(master=login)
     reg_window.geometry("400x220")
     reg_window.attributes("-alpha", 0.98)
@@ -49,12 +53,22 @@ def reg():
     def adddat():
         if ent_newpwd.get() == ent_renewpwd.get():
             newpwd = ent_newpwd.get()
-            with open(userdat_path, "w", newline="") as lgindetes:
+            with open(userdat_path, "r+", newline="") as lgindetes:
                 writer = csv.writer(lgindetes)
-                writer.writerow([ent_newuser.get(), fernet.encrypt(newpwd.encode())])
-                messagebox.showinfo("Status", "Registered successfully")
-                reg_window.destroy()
-                lgindetes.close()
+                reader = csv.reader(lgindetes)
+                temp = []
+                for i in reader:
+                    temp.append(i)
+                if ent_newuser.get() not in temp:
+                    if ent_newuser.get() != "":
+                        writer.writerow([ent_newuser.get(), fernet.encrypt(newpwd.encode())])
+                        messagebox.showinfo("Status", "Registered successfully")
+                        reg_window.destroy()
+                        lgindetes.close()
+                    elif ent_newuser.get() == "":
+                        messagebox.showinfo("Status", "Username cannot be empty")
+                elif ent_newuser.get() in temp:
+                    messagebox.showinfo("Status", "User already exists")
         else:
             messagebox.showinfo("Status", "Please check your password and confirm that the same password is entered in both fields.")
             ent_newuser.delete(0, tk.END)
@@ -1211,6 +1225,7 @@ def lgin():
 
     if found == False:
         #Executes on login failure
+        global msgbox_yesnoregister
         msgbox_yesnoregister = tk.Toplevel(login)
         msgbox_yesnoregister.title("Hospital Management Software v1.0")
         msgbox_yesnoregister.iconbitmap(ico_path)
