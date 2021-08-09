@@ -53,7 +53,7 @@ def reg():
     def adddat():
         if ent_newpwd.get() == ent_renewpwd.get():
             newpwd = ent_newpwd.get()
-            with open(userdat_path, "r+", newline="") as lgindetes:
+            with open(userdat_path, "a+", newline="") as lgindetes:
                 writer = csv.writer(lgindetes)
                 reader = csv.reader(lgindetes)
                 temp = []
