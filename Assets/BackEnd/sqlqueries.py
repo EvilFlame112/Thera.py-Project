@@ -55,3 +55,16 @@ def delemany(tablename,id,idlist):
 def closeconnection(main):
     conn.close()
     main.destroy()
+
+
+def uppatient(pid1, namep1, age1, ailment1, paytypep1, status1, contactp1, amountp1):
+    cur.execute(f"update patient set Name={namep1},Age={age1},Ailment={ailment1},Payment type={paytypep1},Payment status={status1},Contact={contactp1},Amount={amountp1} Where Paatient ID={pid1}")
+    conn.commit()
+def updoctor(did1,named1,specialization1,dojd1,contactd1,salaryd1):
+    cur.execute(f"update doctor set Name={named1},Specialization={specialization1},DOJ={dojd1},Contact={contactd1},Salary={salaryd1} where Doctor ID={did1}")
+    conn.commit()
+def upnurse(nid1,namen1,department1,dojn1,contactn1,salaryn1):
+    cur.execute(f"update nurse set Name={namen1},Depatment={department1},DOJ={dojn1},Contact{contactn1},Salary={salaryn1} where Nurse ID={nid1}" )
+    conn.commit()
+def upemployee(eid1,namee1,job1,doje1,contacte1,salarye1):
+    cur.execute(f"update employee set Name={namee1},Job={job1},DOJ={doje1},Contact={contacte1}, Salary={salarye1} where Emplyoee ID={eid1}")
