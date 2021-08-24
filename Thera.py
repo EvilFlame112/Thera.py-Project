@@ -690,7 +690,7 @@ def mainwindow():
         spec_val = ent_spec.get()
         sal_val = ent_sal.get()
         months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_doc = datetime.datetime(int(yearvar_doc.get()),int(months[monthvar_doc.get()]), int(datevar_doc.get()))
+        DOJ_val_doc = datetime.date(int(yearvar_doc.get()),int(months[monthvar_doc.get()]), int(datevar_doc.get()))
         contact_doc = ent_contact_doc.get()
         doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contact_doc, sal_val)
         messagebox.showinfo("Add", message="Added Successfully")
@@ -740,7 +740,7 @@ def mainwindow():
         sal_val = ent_sal_nur.get()
         contact_nur = ent_contact_nur.get()
         months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_nur = datetime.datetime(int(yearvar_nur.get()),int(months[monthvar_nur.get()]), int(datevar_nur.get()))
+        DOJ_val_nur = datetime.date(int(yearvar_nur.get()),int(months[monthvar_nur.get()]), int(datevar_nur.get()))
         nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contact_nur, sal_val)
         messagebox.showinfo("Add", message="Added Successfully")
         ent_NID.delete(0, tk.END)
@@ -789,7 +789,7 @@ def mainwindow():
         sal_val = ent_sal_emp.get()
         contact_emp = ent_contact_emp.get()
         months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_emp = datetime.datetime(int(yearvar_emp.get()),int(months[monthvar_emp.get()]), int(datevar_emp.get()))
+        DOJ_val_emp = datetime.date(int(yearvar_emp.get()),int(months[monthvar_emp.get()]), int(datevar_emp.get()))
         empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, contact_emp, sal_val)
         messagebox.showinfo("Add", message="Added Successfully")
         ent_EID.delete(0, tk.END)
@@ -926,6 +926,408 @@ def mainwindow():
     frm_dele = ttk.Frame(master=intfrm12)
     btn_delalle = ttk.Button(master=frm_dele, text="Delete All", command=deletealle)
     btn_delsele = ttk.Button(master=frm_dele, text="Delete Selected", command=deleteselectede)
+
+    #query commit for patient data update
+    def patcommU(PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val):
+        sqlqueries.uppatient(PID_val, Name_val, age_val, ailment_val, payment, status, contactdet, amt_val)
+        treedat1.delete(*treedat1.get_children())
+        treedat5.delete(*treedat5.get_children())
+        treedat9.delete(*treedat9.get_children())
+        treedat13.delete(*treedat13.get_children())
+        loadpatient()
+
+    #query commit for doctor data update
+    def doccommU(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val):
+        sqlqueries.updoctor(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contactdet, sal_val)
+        treedat2.delete(*treedat2.get_children())
+        treedat6.delete(*treedat6.get_children())
+        treedat10.delete(*treedat10.get_children())
+        treedat14.delete(*treedat14.get_children())
+        loaddoctor()
+    
+    #query commit for nurse data update
+    def nurcommU(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val):
+        sqlqueries.upnurse(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contactdet, sal_val)
+        treedat3.delete(*treedat3.get_children())
+        treedat7.delete(*treedat7.get_children())
+        treedat11.delete(*treedat11.get_children())
+        treedat15.delete(*treedat15.get_children())
+        loadnurse()
+    
+    #query commit for employee data update
+    def empcommU(EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val):
+        sqlqueries.upemployee(EID_val, Name_emp_val, job_val, DOJ_val_emp, contactdet, sal_val)
+        treedat4.delete(*treedat4.get_children())
+        treedat8.delete(*treedat8.get_children())
+        treedat12.delete(*treedat12.get_children())
+        treedat16.delete(*treedat16.get_children())
+        loademployee()
+
+
+    #code fragment for updating data in SQL and in Treeview (Patient table)
+    paymentvalU = tk.StringVar()
+    statusvalU = tk.StringVar()
+    age_valU = tk.IntVar()
+    frm_updateP = ttk.Frame(master=intfrm13)
+    #labelframes:
+    lblfrm1 = ttk.LabelFrame(master=frm_updateP, padding=7)
+    lblfrm2 = ttk.LabelFrame(master=frm_updateP, padding=45)
+    ent_PIDU = ttk.Entry(master=lblfrm1, width = 30, state="disabled")
+    lbl_PIDU = ttk.Label(master=lblfrm1, text = "Patient ID: ")
+    ent_NameU = ttk.Entry(master=lblfrm1, width = 30)
+    lbl_NameU = ttk.Label(master=lblfrm1, text = "Name: ")
+    ent_ailmentU = ttk.Entry(master=lblfrm1, width = 30)
+    lbl_ailmentU = ttk.Label(master=lblfrm1, text = "Ailments: ")
+    ent_amtU = ttk.Entry(master=lblfrm1, width = 30)
+    lbl_amtU = ttk.Label(master=lblfrm1, text = "Amount: ")
+    lbl_paymentU = ttk.Label(master=lblfrm2, text = "Payment Type:")
+    ptype_cbbx = ttk.Combobox(master=lblfrm2, textvariable=paymentvalU)
+    ptypevals = ("Cash", "Card", "Cheque")
+    ptype_cbbx["values"] = ptypevals
+    ptype_cbbx.state(["readonly"])
+    lbl_statusU = tk.Label(master=lblfrm2, text = "Payment Status: ")
+    pstatus_cbbx = ttk.Combobox(master=lblfrm2, textvariable=statusvalU)
+    pstatus_cbbx.state(["readonly"])
+    pstatusvals = ("Paid", "Pending")
+    pstatus_cbbx["values"] = pstatusvals
+    age_cbbxU = ttk.Combobox(master=lblfrm1, textvariable=age_valU, width=5)
+    agelisU = [int(i) for i in range(1,120)]
+    age_cbbxU["values"] = tuple(agelisU)
+    age_cbbxU.state(["readonly"])
+    lbl_ageU = ttk.Label(master=lblfrm1, text="Age: ")
+    ent_contactU = ttk.Entry(master=lblfrm1, width=30)
+    lbl_contactU = ttk.Label(master=lblfrm1, text="Contact: ")
+
+    def selp():
+        ent_PIDU.config(state="normal")
+        ent_PIDU.delete(0, tk.END)
+        ent_NameU.delete(0, tk.END)
+        ent_ailmentU.delete(0, tk.END)
+        ent_contactU.delete(0, tk.END)
+        ent_amtU.delete(0, tk.END)
+        selectedP = treedat9.focus()
+        valuesP = treedat9.item(selectedP, "values")
+        ent_PIDU.insert(0, valuesP[0])
+        ent_PIDU.config(state="disabled")
+        ent_NameU.insert(0, valuesP[1])
+        ent_ailmentU.insert(0, valuesP[3])
+        ent_contactU.insert(0, valuesP[6])
+        ent_amtU.insert(0, valuesP[7])
+        ageindex = 0
+        for i in range(0, len(agelisU)):
+            if int(valuesP[2]) == agelisU[i]:
+                ageindex = i
+        age_cbbxU.current(ageindex)
+        ptypeindex = 0
+        for i in range(0, len(ptypevals)):
+            if str(valuesP[4]) == ptypevals[i]:
+                ptypeindex = i
+        ptype_cbbx.current(ptypeindex)
+        pstatusindex = 0
+        for i in range(0, len(pstatusvals)):
+            if str(valuesP[5]) == pstatusvals[i]:
+                pstatusindex = i
+        pstatus_cbbx.current(pstatusindex)
+
+    sel_btn_P = ttk.Button(master=frm_updateP, command=selp, text="Select Highlighted Record")
+
+
+    def updatepat():
+        ent_PIDU.config(state="normal")
+        PID_val = ent_PIDU.get()
+        Name_val = ent_NameU.get()
+        ailment_val = ent_ailmentU.get()
+        amt_val = ent_amtU.get()
+        age = age_valU.get()
+        contact = ent_contactU.get()
+        payment = paymentvalU.get()
+        status = statusvalU.get()
+        patcommU(PID_val, Name_val, age, ailment_val, payment, status, contact, amt_val)
+        messagebox.showinfo("Update", message="Updated Successfully")
+        ent_PIDU.delete(0, tk.END)
+        ent_PIDU.config(state="disabled")
+        ent_NameU.delete(0, tk.END)
+        ent_ailmentU.delete(0, tk.END)
+        ent_contactU.delete(0, tk.END)
+        ent_amtU.delete(0, tk.END)
+    updatebtnpat = ttk.Button(master=frm_updateP, text = "Update Data", command = updatepat)
+
+
+    #code fragment for updating data in SQL and in Treeview (Doctor table)
+    frm_updateD = ttk.Frame(master=intfrm14)
+    lblfrm3 = ttk.LabelFrame(master=frm_updateD)
+    datevar_docU = tk.StringVar()
+    monthvar_docU = tk.StringVar()
+    yearvar_docU = tk.StringVar()
+    ent_DIDU = ttk.Entry(master=lblfrm3, width = 30)
+    lbl_DIDU = ttk.Label(master=lblfrm3, text = "Doctor ID: ")
+    ent_Name_docU = ttk.Entry(master=lblfrm3, width = 30)
+    lbl_Name_docU = ttk.Label(master=lblfrm3, text = "Name: ")
+    ent_specU = ttk.Entry(master=lblfrm3, width = 30)
+    lbl_specU = ttk.Label(master=lblfrm3, text = "Specialization: ")
+    lbl_DOJU = ttk.Label(master=lblfrm3, text = "Date Of Joining: ")
+
+    #small frame for DOJ
+    dojfrm_docU = ttk.Frame(master=lblfrm3)
+
+    date_cbbx1U = ttk.Combobox(master=dojfrm_docU, textvariable = datevar_docU, width = 3)
+    datevals1 = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
+    date_cbbx1U["values"] = datevals1
+    date_cbbx1U.state(["readonly"])
+    month_cbbx1U = ttk.Combobox(master=dojfrm_docU, textvariable = monthvar_docU, width = 9)
+    monthvals1 = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+    month_cbbx1U["values"] = monthvals1
+    month_cbbx1U.state(["readonly"])
+    ylistU = []
+    for i in range(1950, 2022):
+        ylistU.append(i)
+    year_cbbx1U = ttk.Combobox(master=dojfrm_docU, textvariable = yearvar_docU, width = 5)
+    year_cbbx1U["values"] = tuple(ylistU)
+    year_cbbx1U.state(["readonly"])
+    ent_contact_docU = ttk.Entry(master=lblfrm3, width = 30)
+    lbl_contact_docU = ttk.Label(master=lblfrm3, text="Contact: ")
+    ent_salU = ttk.Entry(master=lblfrm3, width = 30)
+    lbl_salU = ttk.Label(master=lblfrm3, text = "Salary:")
+
+    btn_frm_updoc = ttk.Frame(master=frm_updateD)
+
+    def seld():
+        ent_DIDU.config(state="normal")
+        ent_DIDU.delete(0, tk.END)
+        ent_Name_docU.delete(0, tk.END)
+        ent_specU.delete(0, tk.END)
+        ent_contact_docU.delete(0, tk.END)
+        ent_salU.delete(0, tk.END)
+        selectedD = treedat10.focus()
+        valuesD = treedat10.item(selectedD, "values")
+        ent_DIDU.insert(0, valuesD[0])
+        ent_DIDU.config(state="disabled")
+        ent_Name_docU.insert(0, valuesD[1])
+        ent_specU.insert(0, valuesD[2])
+        ent_contact_docU.insert(0, valuesD[4])
+        ent_salU.insert(0, valuesD[5])
+        dateindex = 0
+        for i in range(0, len(datevals1)):
+            if int(str(valuesD[3])[9:]) == int(datevals1[i]):
+                dateindex = i
+        date_cbbx1U.current(dateindex)
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        monthindex = 0
+        for i in range(0, len(monthvals1)):
+            if int(str(valuesD[3])[5:7]) == months.get(monthvals1[i]):
+                monthindex=i
+        month_cbbx1U.current(monthindex)
+        yearindex = 0
+        for i in range(0, len(ylistU)):
+            if int(str(valuesD[3])[:4]) == ylistU[i]:
+                yearindex = i
+        year_cbbx1U.current(yearindex)
+
+    sel_btn_D = ttk.Button(master=btn_frm_updoc, command=seld, text="Select Highlighted Record")
+
+
+    def updatedoc():
+        ent_DIDU.config(state="normal")
+        DID_val = ent_DIDU.get()
+        Name_val = ent_Name_docU.get()
+        spec_val = ent_specU.get()
+        sal_val = ent_salU.get()
+        contact = ent_contact_docU.get()
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        DOJ_val_doc = datetime.date(int(yearvar_docU.get()),int(months[monthvar_docU.get()]), int(datevar_docU.get()))
+        doccommU(DID_val, Name_val, spec_val, DOJ_val_doc, contact, sal_val)
+        messagebox.showinfo("Update", message="Updated Successfully")
+        ent_DIDU.delete(0, tk.END)
+        ent_DIDU.config(state="disabled")
+        ent_Name_docU.delete(0, tk.END)
+        ent_specU.delete(0, tk.END)
+        ent_contact_docU.delete(0, tk.END)
+        ent_salU.delete(0, tk.END)
+    updatebtndoc = ttk.Button(master=btn_frm_updoc, text = "Update Data", command = updatedoc)
+
+    #code fragment for updating data in SQL and in Treeview (Nurse table)
+    frm_updateN = ttk.Frame(master=intfrm15)
+    lblfrm4 = ttk.LabelFrame(master=frm_updateN)
+    datevar_nurU = tk.StringVar()
+    monthvar_nurU = tk.StringVar()
+    yearvar_nurU = tk.StringVar()
+    ent_NIDU = ttk.Entry(master=lblfrm4, width = 30)
+    lbl_NIDU = ttk.Label(master=lblfrm4, text = "Doctor ID: ")
+    ent_Name_nurU = ttk.Entry(master=lblfrm4, width = 30)
+    lbl_Name_nurU = ttk.Label(master=lblfrm4, text = "Name: ")
+    ent_deptU = ttk.Entry(master=lblfrm4, width = 30)
+    lbl_deptU = ttk.Label(master=lblfrm4, text = "Department: ")
+    lbl_DOJ_nurU = ttk.Label(master=lblfrm4, text = "Date Of Joining: ")
+
+    #small frame for DOJ
+    dojfrm_nurU = ttk.Frame(master=lblfrm4)
+
+    date_cbbx2U = ttk.Combobox(master=dojfrm_nurU, textvariable = datevar_nurU, width = 3)
+    datevals2 = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
+    date_cbbx2U["values"] = datevals2
+    date_cbbx2U.state(["readonly"])
+    month_cbbx2U = ttk.Combobox(master=dojfrm_nurU, textvariable = monthvar_nurU, width = 9)
+    monthvals2 = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+    month_cbbx2U["values"] = monthvals2
+    month_cbbx2U.state(["readonly"])
+    ylist1U = []
+    for i in range(1950, 2022):
+        ylist1U.append(i)
+    year_cbbx2U = ttk.Combobox(master=dojfrm_nurU, textvariable = yearvar_nurU, width = 5)
+    year_cbbx2U["values"] = tuple(ylist1U)
+    year_cbbx2U.state(["readonly"])
+    ent_contact_nurU = ttk.Entry(master=lblfrm4, width = 30)
+    lbl_contact_nurU = ttk.Label(master=lblfrm4, text="Contact: ")
+    ent_sal_nurU = ttk.Entry(master=lblfrm4, width = 30)
+    lbl_sal_nurU = ttk.Label(master=lblfrm4, text = "Salary:")
+
+    btn_frm_upnur = ttk.Frame(master=frm_updateN)
+
+    def selN():
+        ent_NIDU.config(state="normal")
+        ent_NIDU.delete(0, tk.END)
+        ent_Name_nurU.delete(0, tk.END)
+        ent_deptU.delete(0, tk.END)
+        ent_contact_nurU.delete(0, tk.END)
+        ent_sal_nurU.delete(0, tk.END)
+        selectedN = treedat11.focus()
+        valuesN = treedat11.item(selectedN, "values")
+        ent_NIDU.insert(0, valuesN[0])
+        ent_NIDU.config(state="disabled")
+        ent_Name_nurU.insert(0, valuesN[1])
+        ent_deptU.insert(0, valuesN[2])
+        ent_contact_nurU.insert(0, valuesN[4])
+        ent_sal_nurU.insert(0, valuesN[5])
+        dateindex = 0
+        for i in range(0, len(datevals2)):
+            if int(str(valuesN[3])[9:]) == int(datevals2[i]):
+                dateindex = i
+        date_cbbx2U.current(dateindex)
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        monthindex = 0
+        for i in range(0, len(monthvals2)):
+            if int(str(valuesN[3])[5:7]) == months.get(monthvals2[i]):
+                monthindex=i
+        month_cbbx2U.current(monthindex)
+        yearindex = 0
+        for i in range(0, len(ylist1U)):
+            if int(str(valuesN[3])[:4]) == ylist1U[i]:
+                yearindex = i
+        year_cbbx2U.current(yearindex)
+
+    sel_btn_N = ttk.Button(master=btn_frm_upnur, command=selN, text="Select Highlighted Record")
+
+
+    def updatenur():
+        ent_NIDU.config(state="normal")
+        NID_val = ent_NIDU.get()
+        Name_val = ent_Name_nurU.get()
+        dept_val = ent_deptU.get()
+        sal_val = ent_sal_nurU.get()
+        contact = ent_contact_nurU.get()
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        DOJ_val_nur = datetime.date(int(yearvar_nurU.get()),int(months[monthvar_nurU.get()]), int(datevar_nurU.get()))
+        nurcommU(NID_val, Name_val, dept_val, DOJ_val_nur, contact, sal_val)
+        messagebox.showinfo("Update", message="Updated Successfully")
+        ent_NIDU.delete(0, tk.END)
+        ent_NIDU.config(state="disabled")
+        ent_Name_nurU.delete(0, tk.END)
+        ent_deptU.delete(0, tk.END)
+        ent_contact_nurU.delete(0, tk.END)
+        ent_sal_nurU.delete(0, tk.END)
+    updatebtnnur = ttk.Button(master=btn_frm_upnur, text = "Update Data", command = updatenur)
+
+    #code fragment for updating data in SQL and in Treeview (Employee table)
+    frm_updateE = ttk.Frame(master=intfrm16)
+    lblfrm5 = ttk.LabelFrame(master=frm_updateE)
+    datevar_empU = tk.StringVar()
+    monthvar_empU = tk.StringVar()
+    yearvar_empU = tk.StringVar()
+    ent_EIDU = ttk.Entry(master=lblfrm5, width = 30)
+    lbl_EIDU = ttk.Label(master=lblfrm5, text = "Doctor ID: ")
+    ent_Name_empU = ttk.Entry(master=lblfrm5, width = 30)
+    lbl_Name_empU = ttk.Label(master=lblfrm5, text = "Name: ")
+    ent_jobU = ttk.Entry(master=lblfrm5, width = 30)
+    lbl_jobU = ttk.Label(master=lblfrm5, text = "Job: ")
+    lbl_DOJ_empU = ttk.Label(master=lblfrm5, text = "Date Of Joining: ")
+
+    #small frame for DOJ
+    dojfrm_empU = ttk.Frame(master=lblfrm5)
+
+    date_cbbx3U = ttk.Combobox(master=dojfrm_empU, textvariable = datevar_empU, width = 3)
+    datevals3 = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
+    date_cbbx3U["values"] = datevals3
+    date_cbbx3U.state(["readonly"])
+    month_cbbx3U = ttk.Combobox(master=dojfrm_empU, textvariable = monthvar_empU, width = 9)
+    monthvals3 = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+    month_cbbx3U["values"] = monthvals3
+    month_cbbx3U.state(["readonly"])
+    ylist2U = []
+    for i in range(1950, 2022):
+        ylist2U.append(i)
+    year_cbbx3U = ttk.Combobox(master=dojfrm_empU, textvariable = yearvar_empU, width = 5)
+    year_cbbx3U["values"] = tuple(ylist2U)
+    year_cbbx3U.state(["readonly"])
+    ent_contact_empU = ttk.Entry(master=lblfrm5, width = 30)
+    lbl_contact_empU = ttk.Label(master=lblfrm5, text="Contact: ")
+    ent_sal_empU = ttk.Entry(master=lblfrm5, width = 30)
+    lbl_sal_empU = ttk.Label(master=lblfrm5, text = "Salary:")
+
+    btn_frm_upemp = ttk.Frame(master=frm_updateE)
+
+    def selE():
+        ent_EIDU.config(state="normal")
+        ent_EIDU.delete(0, tk.END)
+        ent_Name_empU.delete(0, tk.END)
+        ent_jobU.delete(0, tk.END)
+        ent_contact_empU.delete(0, tk.END)
+        ent_sal_empU.delete(0, tk.END)
+        selectedE = treedat12.focus()
+        valuesE = treedat12.item(selectedE, "values")
+        ent_EIDU.insert(0, valuesE[0])
+        ent_EIDU.config(state="disabled")
+        ent_Name_empU.insert(0, valuesE[1])
+        ent_jobU.insert(0, valuesE[2])
+        ent_contact_empU.insert(0, valuesE[4])
+        ent_sal_empU.insert(0, valuesE[5])
+        dateindex = 0
+        for i in range(0, len(datevals3)):
+            if int(str(valuesE[3])[9:]) == int(datevals3[i]):
+                dateindex = i
+        date_cbbx3U.current(dateindex)
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        monthindex = 0
+        for i in range(0, len(monthvals3)):
+            if int(str(valuesE[3])[5:7]) == months.get(monthvals3[i]):
+                monthindex=i
+        month_cbbx3U.current(monthindex)
+        yearindex = 0
+        for i in range(0, len(ylist2U)):
+            if int(str(valuesE[3])[:4]) == ylist2U[i]:
+                yearindex = i
+        year_cbbx3U.current(yearindex)
+
+    sel_btn_E = ttk.Button(master=btn_frm_upemp, command=selE, text="Select Highlighted Record")
+
+
+    def updateemp():
+        ent_EIDU.config(state="normal")
+        EID_val = ent_EIDU.get()
+        Name_val = ent_Name_empU.get()
+        job_val = ent_jobU.get()
+        sal_val = ent_sal_empU.get()
+        contact = ent_contact_empU.get()
+        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+        DOJ_val_emp = datetime.date(int(yearvar_empU.get()),int(months[monthvar_empU.get()]), int(datevar_empU.get()))
+        empcommU(EID_val, Name_val, job_val, DOJ_val_emp, contact, sal_val)
+        messagebox.showinfo("Update", message="Updated Successfully")
+        ent_EIDU.delete(0, tk.END)
+        ent_EIDU.config(state="disabled")
+        ent_Name_empU.delete(0, tk.END)
+        ent_jobU.delete(0, tk.END)
+        ent_contact_empU.delete(0, tk.END)
+        ent_sal_empU.delete(0, tk.END)
+    updatebtnemp = ttk.Button(master=btn_frm_upemp, text = "Update Data", command = updateemp)
 
     #Search a record(Patient)
     def searchP():
@@ -1172,6 +1574,93 @@ def mainwindow():
     frm_dele.pack(pady=20)
     btn_delalle.pack(pady=10)
     btn_delsele.pack(pady=10)
+
+
+    frm_updateP.pack()
+    lblfrm1.grid(row=0, column=0)
+    lblfrm2.grid(row=0, column=1)
+    ent_PIDU.grid(row=0, column=1, pady=5)
+    lbl_PIDU.grid(row=0, column=0, pady=5)
+    ent_NameU.grid(row=1, column=1, pady=5)
+    lbl_NameU.grid(row=1, column=0, pady=5)
+    lbl_ageU.grid(row=2, column=0)
+    age_cbbxU.grid(row=2, column=1)
+    ent_ailmentU.grid(row=3, column=1, pady=5)
+    lbl_ailmentU.grid(row=3, column=0, pady=5) 
+    lbl_paymentU.grid(row=0, column=0, pady=5)
+    ptype_cbbx.grid(row=0, column=1, pady=25)
+    lbl_statusU.grid(row=1, column=0, pady=5)
+    pstatus_cbbx.grid(row=1, column=1, pady=25)
+    ent_contactU.grid(row=4, column=1, pady=5)
+    lbl_contactU.grid(row=4, column=0, pady=5)
+    lbl_amtU.grid(row=5, column=0, pady=5)
+    ent_amtU.grid(row=5, column=1, pady=5)
+    updatebtnpat.grid(row=1, column=1, pady=5, padx=5)
+    sel_btn_P.grid(row=1, column=0, pady=5, padx=5)
+
+    frm_updateD.pack()
+    lblfrm3.pack()
+    btn_frm_updoc.pack()
+    ent_DIDU.grid(row=0, column=1, pady=5)
+    lbl_DIDU.grid(row=0, column=0, pady=5)
+    ent_Name_docU.grid(row=1, column=1, pady=5)
+    lbl_Name_docU.grid(row=1, column=0, pady=5)
+    ent_specU.grid(row=2, column=1, pady=5)
+    lbl_specU.grid(row=2, column=0, pady=5)
+    dojfrm_docU.grid(row=3, column=1, pady=5)
+    date_cbbx1U.grid(row=0, column=0, padx=10, pady=5)
+    month_cbbx1U.grid(row=0, column=2, padx=10, pady=5)
+    year_cbbx1U.grid(row=0, column=4, padx=10, pady=5)
+    lbl_DOJU.grid(row=3, column=0, pady=5)
+    ent_contact_docU.grid(row=4, column=1, pady=5)
+    lbl_contact_docU.grid(row=4, column=0, pady=5)
+    ent_salU.grid(row=5, column=1, pady=5)
+    lbl_salU.grid(row=5, column=0, pady=5)
+    updatebtndoc.grid(row=0, column=1, padx=5, pady=5)
+    sel_btn_D.grid(row=0, column=0, padx=5, pady=5)
+
+    frm_updateN.pack()
+    lblfrm4.pack()
+    btn_frm_upnur.pack()
+    ent_NIDU.grid(row=0, column=1, pady=5)
+    lbl_NIDU.grid(row=0, column=0, pady=5)
+    ent_Name_nurU.grid(row=1, column=1, pady=5)
+    lbl_Name_nurU.grid(row=1, column=0, pady=5)
+    ent_deptU.grid(row=2, column=1, pady=5)
+    lbl_deptU.grid(row=2, column=0, pady=5)
+    dojfrm_nurU.grid(row=3, column=1, pady=5)
+    date_cbbx2U.grid(row=0, column=0, padx=10, pady=5)
+    month_cbbx2U.grid(row=0, column=2, padx=10, pady=5)
+    year_cbbx2U.grid(row=0, column=4, padx=10, pady=5)
+    lbl_DOJ_nurU.grid(row=3, column=0, pady=5)
+    ent_contact_nurU.grid(row=4, column=1, pady=5)
+    lbl_contact_nurU.grid(row=4, column=0, pady=5)
+    ent_sal_nurU.grid(row=5, column=1, pady=5)
+    lbl_sal_nurU.grid(row=5, column=0, pady=5)
+    updatebtnnur.grid(row=0, column=1, padx=5, pady=5)
+    sel_btn_N.grid(row=0, column=0, padx=5, pady=5)
+
+    frm_updateE.pack()
+    lblfrm5.pack()
+    btn_frm_upemp.pack()
+    ent_EIDU.grid(row=0, column=1, pady=5)
+    lbl_EIDU.grid(row=0, column=0, pady=5)
+    ent_Name_empU.grid(row=1, column=1, pady=5)
+    lbl_Name_empU.grid(row=1, column=0, pady=5)
+    ent_jobU.grid(row=2, column=1, pady=5)
+    lbl_jobU.grid(row=2, column=0, pady=5)
+    dojfrm_empU.grid(row=3, column=1, pady=5)
+    date_cbbx3U.grid(row=0, column=0, padx=10, pady=5)
+    month_cbbx3U.grid(row=0, column=2, padx=10, pady=5)
+    year_cbbx3U.grid(row=0, column=4, padx=10, pady=5)
+    lbl_DOJ_empU.grid(row=3, column=0, pady=5)
+    ent_contact_empU.grid(row=4, column=1, pady=5)
+    lbl_contact_empU.grid(row=4, column=0, pady=5)
+    ent_sal_empU.grid(row=5, column=1, pady=5)
+    lbl_sal_empU.grid(row=5, column=0, pady=5)
+    updatebtnemp.grid(row=0, column=1, padx=5, pady=5)
+    sel_btn_E.grid(row=0, column=0, padx=5, pady=5)
+    
 
     frm_SP.pack()
     lbl_SearchP.grid(row=0, column=0, pady=15)

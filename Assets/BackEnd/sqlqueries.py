@@ -34,16 +34,16 @@ def dele(tablename,id,idinput):
     conn.commit()
 def purgeP():
     cur.execute("drop table patient")
-    cur.execute("CREATE TABLE IF NOT EXISTS patient(Pateint_Id int PRIMARY KEY, Name varchar(50), Age int, Ailment varchar(50), Payment_Type varchar(10), Payment_Status varchar(50), Contact decimal(10,0), Amount decimal(10,2))")
+    cur.execute("CREATE TABLE IF NOT EXISTS patient(Patient_Id int PRIMARY KEY, Name varchar(50), Age int, Ailment varchar(50), Payment_Type varchar(10), Payment_Status varchar(50), Contact decimal(10,0), Amount decimal(10,2))")
 def purgeD():
     cur.execute("drop table doctor")
-    cur.execute("CREATE TABLE IF NOT EXISTS doctor(Doctor_Id int primary key,Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary Decimal(10,2)) ")
+    cur.execute("CREATE TABLE IF NOT EXISTS doctor(Doctor_Id int primary key,Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
 def purgeN():
     cur.execute("drop table nurse")
     cur.execute("CREATE TABLE IF NOT EXISTS nurse(Nurse_Id int primary key,Name varchar(50),Department varchar(50),DOJ date, Contact bigint,Salary decimal(10,2))")
 def purgeE():
     cur.execute("drop table employee")
-    cur.execute("CREATE TABLE IF NOT EXISTS employee(Employee_Id int primary key,Name varchar(50),Job VARCHAR(50),Payment_Type varchar(50),Contact bigint,Salary Decimal(10,2))")
+    cur.execute("CREATE TABLE IF NOT EXISTS employee(Employee_Id int primary key,Name varchar(50),Job VARCHAR(50),DOJ date,Contact bigint,Salary decimal(10,2))")
 def query(tablename):
     cur.execute(f"SELECT * FROM {tablename}")
     return cur.fetchall()
@@ -56,15 +56,15 @@ def closeconnection(main):
     conn.close()
     main.destroy()
 
-
 def uppatient(pid1, namep1, age1, ailment1, paytypep1, status1, contactp1, amountp1):
-    cur.execute(f"update patient set Name={namep1},Age={age1},Ailment={ailment1},Payment type={paytypep1},Payment status={status1},Contact={contactp1},Amount={amountp1} Where Paatient ID={pid1}")
+    cur.execute(f"update patient set Name='{namep1}',Age={age1},Ailment='{ailment1}',Payment_Type='{paytypep1}',Payment_Status='{status1}',Contact={contactp1},Amount={amountp1} Where Patient_Id={pid1}")
     conn.commit()
 def updoctor(did1,named1,specialization1,dojd1,contactd1,salaryd1):
-    cur.execute(f"update doctor set Name={named1},Specialization={specialization1},DOJ={dojd1},Contact={contactd1},Salary={salaryd1} where Doctor ID={did1}")
+    cur.execute(f"update doctor set Name='{named1}',Specialization='{specialization1}',DOJ='{dojd1}',Contact={contactd1},Salary={salaryd1} where Doctor_Id={did1}")
     conn.commit()
 def upnurse(nid1,namen1,department1,dojn1,contactn1,salaryn1):
-    cur.execute(f"update nurse set Name={namen1},Depatment={department1},DOJ={dojn1},Contact{contactn1},Salary={salaryn1} where Nurse ID={nid1}" )
+    cur.execute(f"update nurse set Name='{namen1}',Department='{department1}',DOJ='{dojn1}',Contact={contactn1},Salary={salaryn1} where Nurse_Id={nid1}" )
     conn.commit()
 def upemployee(eid1,namee1,job1,doje1,contacte1,salarye1):
-    cur.execute(f"update employee set Name={namee1},Job={job1},DOJ={doje1},Contact={contacte1}, Salary={salarye1} where Emplyoee ID={eid1}")
+    cur.execute(f"update employee set Name='{namee1}',Job='{job1}',DOJ='{doje1}',Contact={contacte1}, Salary={salarye1} where Employee_Id={eid1}")
+    conn.commit()
