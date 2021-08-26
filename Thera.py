@@ -8,6 +8,7 @@
 #Importing necessary modules
 import tkinter as tk
 import os
+import random
 from tkinter import Menu, ttk, messagebox
 from PIL import ImageTk, Image
 import csv
@@ -22,7 +23,7 @@ file_path = os.path.dirname(os.path.realpath(__file__))
 asset_path = os.path.join(file_path, "Assets")
 ico_path = os.path.join(asset_path, "titleicon.ico")
 bg_path = os.path.join(asset_path, "img24.png")
-bgm_path = os.path.join(asset_path, "main.png")
+bgm_path = os.path.join(asset_path, random.choice(["main.png","main.jpg"]))
 theme_path = os.path.join(asset_path, "azure-dark.tcl")
 userdat_path = os.path.join(asset_path, "usernamepwd.csv")
 admin_path = os.path.join(asset_path, "Backend", "adminpwd.csv")
