@@ -25,6 +25,7 @@ bg_path = os.path.join(asset_path, "img24.png")
 bgm_path = os.path.join(asset_path, "main.png")
 theme_path = os.path.join(asset_path, "azure-dark.tcl")
 userdat_path = os.path.join(asset_path, "usernamepwd.csv")
+admin_path = os.path.join(asset_path, "Backend", "adminpwd.csv")
 
 #fernet encoding:
 key = b'duq6gXwUm-RRsvoNTOIkfvfhl3-gT6l_kRz9pwJFAwQ='
@@ -37,9 +38,11 @@ def reg():
     except NameError:
         pass
     reg_window = tk.Toplevel(master=login)
-    reg_window.geometry("400x220")
+    x = (reg_window.winfo_screenwidth()/2)-200
+    y = (reg_window.winfo_screenheight()/2)-110
+    reg_window.geometry(f"400x220+{int(x)}+{int(y)}")
     reg_window.attributes("-alpha", 0.98)
-    reg_window.title("Hospital Management Software v1.0 Registering")
+    reg_window.title("TheraPy v1.0 Registering")
     reg_window.iconbitmap(ico_path)
     reg_window.option_add('*tearOff', False)
     lbl_title = tk.Label(master=reg_window, text="Register:", font=("SF Pro Display", 21))
@@ -50,32 +53,63 @@ def reg():
     ent_renewpwd = ttk.Entry(master=reg_window, width=30, show="*")
     lbl_renewpwd = ttk.Label(master=reg_window, text="Reenter Password: ")
 
-    def adddat():
-        if ent_newpwd.get() == ent_renewpwd.get():
-            newpwd = ent_newpwd.get()
-            with open(userdat_path, "a+", newline="") as lgindetes:
-                writer = csv.writer(lgindetes)
-                reader = csv.reader(lgindetes)
-                temp = []
-                for i in reader:
-                    temp.append(i)
-                if ent_newuser.get() not in temp:
-                    if ent_newuser.get() != "":
-                        writer.writerow([ent_newuser.get(), fernet.encrypt(newpwd.encode())])
-                        messagebox.showinfo("Status", "Registered successfully")
-                        reg_window.destroy()
-                        lgindetes.close()
-                    elif ent_newuser.get() == "":
-                        messagebox.showinfo("Status", "Username cannot be empty")
-                elif ent_newuser.get() in temp:
-                    messagebox.showinfo("Status", "User already exists")
-        else:
-            messagebox.showinfo("Status", "Please check your password and confirm that the same password is entered in both fields.")
-            ent_newuser.delete(0, tk.END)
-            ent_newpwd.delete(0, tk.END)
-            ent_renewpwd.delete(0, tk.END)
+    def checknadddat():
+        admin = tk.Toplevel(master=reg_window)
+        x = (admin.winfo_screenwidth()/2)-200
+        y = (admin.winfo_screenheight()/2)-110
+        admin.geometry(f"400x220+{int(x)}+{int(y)}")
+        admin.attributes("-alpha", 0.98)
+        admin.title("TheraPy v1.0 Registering")
+        admin.iconbitmap(ico_path)
+        admin.option_add('*tearOff', False)
+        lblfrm_0 = ttk.Label(master=admin)
+        lbl_adminpwd = tk.Label(master=lblfrm_0, text="Enter admin password:", font=("Helvetica", 12))
+        ent_adminpwd = ttk.Entry(master=lblfrm_0, width=30, show="*")
+        with open(admin_path, "r") as adminfile:
+            reader = csv.reader(adminfile)
+            adminpasskey = next(reader)
+            adminfile.close()
+        def adddat():
+            if ent_adminpwd.get() == fernet.decrypt(eval(adminpasskey[0])).decode():
+                if ent_newpwd.get() == ent_renewpwd.get():
+                    newpwd = ent_newpwd.get()
+                    with open(userdat_path, "a+", newline="") as lgindetes:
+                        writer = csv.writer(lgindetes)
+                        reader = csv.reader(lgindetes)
+                        temp = []
+                        for i in reader:
+                            temp.append(i)
+                        if ent_newuser.get() not in temp:
+                            if ent_newuser.get() != "":
+                                writer.writerow([ent_newuser.get(), fernet.encrypt(newpwd.encode())])
+                                messagebox.showinfo("Status", "Registered successfully")
+                                reg_window.destroy()
+                                lgindetes.close()
+                            elif ent_newuser.get() == "":
+                                messagebox.showinfo("Status", "Username cannot be empty")
+                        elif ent_newuser.get() in temp:
+                            messagebox.showinfo("Status", "User already exists")
+                else:
+                    messagebox.showinfo("Status", "Please check your password and confirm that the same password is entered in both fields.")
+                    ent_newuser.delete(0, tk.END)
+                    ent_newpwd.delete(0, tk.END)
+                    ent_renewpwd.delete(0, tk.END)
+            else:
+                messagebox.showinfo("Status", "Admin Password is Incorrect.")
+                ent_newuser.delete(0, tk.END)
+                ent_newpwd.delete(0, tk.END)
+                ent_renewpwd.delete(0, tk.END)
+                ent_adminpwd.delete(0, tk.END)
+                admin.destroy()
+                reg_window.destroy()
+        btn_check = ttk.Button(master=lblfrm_0, text="Submit", command=adddat)
+        lblfrm_0.pack()
+        lbl_adminpwd.grid(row=0, column=0, pady=10)
+        ent_adminpwd.grid(row=1, column=0, pady=10)
+        btn_check.grid(row=2, column=0, pady=10)
+
     
-    btn_submit = ttk.Button(master=reg_window, text="Submit", command=adddat, width=10)
+    btn_submit = ttk.Button(master=reg_window, text="Submit", command=checknadddat, width=10)
 
     lbl_title.grid(row=0, column=1, padx=5, pady=5)
     lbl_newuser.grid(row=1, column=0, padx=5, pady=5)
@@ -98,7 +132,7 @@ def mainwindow():
     style.theme_use("azure-dark")
     main.geometry(f"1024x650+{int(x)}+{int(y)}")
     main.attributes("-alpha", 0.98)
-    main.title("Hospital Management Software v1.0")
+    main.title("Thera.py v1.0")
     main.iconbitmap(ico_path)
 
     #making a menubar with "file" as an option
@@ -1152,7 +1186,7 @@ def mainwindow():
     monthvar_nurU = tk.StringVar()
     yearvar_nurU = tk.StringVar()
     ent_NIDU = ttk.Entry(master=lblfrm4, width = 30)
-    lbl_NIDU = ttk.Label(master=lblfrm4, text = "Doctor ID: ")
+    lbl_NIDU = ttk.Label(master=lblfrm4, text = "Nurse ID: ")
     ent_Name_nurU = ttk.Entry(master=lblfrm4, width = 30)
     lbl_Name_nurU = ttk.Label(master=lblfrm4, text = "Name: ")
     ent_deptU = ttk.Entry(master=lblfrm4, width = 30)
@@ -1244,7 +1278,7 @@ def mainwindow():
     monthvar_empU = tk.StringVar()
     yearvar_empU = tk.StringVar()
     ent_EIDU = ttk.Entry(master=lblfrm5, width = 30)
-    lbl_EIDU = ttk.Label(master=lblfrm5, text = "Doctor ID: ")
+    lbl_EIDU = ttk.Label(master=lblfrm5, text = "Employee ID: ")
     ent_Name_empU = ttk.Entry(master=lblfrm5, width = 30)
     lbl_Name_empU = ttk.Label(master=lblfrm5, text = "Name: ")
     ent_jobU = ttk.Entry(master=lblfrm5, width = 30)
@@ -1748,7 +1782,7 @@ login = tk.Tk(className="Loginwindow")
 x = (login.winfo_screenwidth()/2)-512
 y = (login.winfo_screenheight()/2)-325
 login.geometry(f"1024x650+{int(x)}+{int(y)}")
-login.title("Hospital Management Software v1.0")
+login.title("Thera.py v1.0")
 style = ttk.Style()
 os.chdir(asset_path)
 login.tk.call("source", theme_path)
