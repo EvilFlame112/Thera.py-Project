@@ -852,7 +852,7 @@ def mainwindow():
             for patient in selectedrec:
                 valuegrabber = treedat5.item(patient, "values")
                 templist.append(valuegrabber[0])
-            sqlqueries.delemany("patient", "Pateint_Id", templist)
+            sqlqueries.delemany("patient", "Patient_Id", templist)
             treedat5.delete(*treedat5.get_children())
             treedat9.delete(*treedat9.get_children())
             treedat13.delete(*treedat13.get_children())
