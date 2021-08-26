@@ -656,34 +656,38 @@ def mainwindow():
     sep_pay_stat1 = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
 
     def addrecpat():
-        PID_val = ent_PID.get()
-        Name_val = ent_Name.get()
-        ailment_val = ent_ailment.get()
-        amt_val = ent_amt.get()
-        age = age_val.get()
-        contact = ent_contact.get()
-        if paymentval.get() == 1:
-            payment = "Cash"
-        elif paymentval.get() == 2:
-            payment = "Card"
-        elif paymentval.get() == 3:
-            payment = "Cheque"
-        else:
-            pass
+        try:
+            PID_val = int(ent_PID.get())
+            amt_val = float(ent_amt.get())
+            age = int(age_val.get())
+            contact = int(ent_contact.get())
+            Name_val = ent_Name.get()
+            ailment_val = ent_ailment.get()
+            if paymentval.get() == 1:
+                payment = "Cash"
+            elif paymentval.get() == 2:
+                payment = "Card"
+            elif paymentval.get() == 3:
+                payment = "Cheque"
+            else:
+                pass
+            
+            if statusval.get() == 1:
+                status = "Paid"
+            elif statusval.get() == 2:
+                status = "Pending"
+            else:
+                pass
+            patcomm(PID_val, Name_val, age, ailment_val, payment, status, contact, amt_val)
+            messagebox.showinfo("Add", message="Added Successfully")
+            ent_PID.delete(0, tk.END)
+            ent_Name.delete(0, tk.END)
+            ent_ailment.delete(0, tk.END)
+            ent_contact.delete(0, tk.END)
+            ent_amt.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
         
-        if statusval.get() == 1:
-            status = "Paid"
-        elif statusval.get() == 2:
-            status = "Pending"
-        else:
-            pass
-        patcomm(PID_val, Name_val, age, ailment_val, payment, status, contact, amt_val)
-        messagebox.showinfo("Add", message="Added Successfully")
-        ent_PID.delete(0, tk.END)
-        ent_Name.delete(0, tk.END)
-        ent_ailment.delete(0, tk.END)
-        ent_contact.delete(0, tk.END)
-        ent_amt.delete(0, tk.END)
     addbtnpat = ttk.Button(master=intfrm5, text = "Add Data", command = addrecpat)
 
     #code fragment for adding data to SQL and to Treeview (Doctors)
@@ -719,20 +723,24 @@ def mainwindow():
     lbl_sal = ttk.Label(master=intfrm6, text = "Salary:")
 
     def addrecdoc():
-        DID_val = ent_DID.get()
-        Name_Doc_val = ent_Name_doc.get()
-        spec_val = ent_spec.get()
-        sal_val = ent_sal.get()
-        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_doc = datetime.date(int(yearvar_doc.get()),int(months[monthvar_doc.get()]), int(datevar_doc.get()))
-        contact_doc = ent_contact_doc.get()
-        doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contact_doc, sal_val)
-        messagebox.showinfo("Add", message="Added Successfully")
-        ent_DID.delete(0, tk.END)
-        ent_Name_doc.delete(0, tk.END)
-        ent_spec.delete(0, tk.END)
-        ent_contact_doc.delete(0, tk.END)
-        ent_sal.delete(0, tk.END)
+        try:
+            DID_val = int(ent_DID.get())
+            contact_doc = int(ent_contact_doc.get())
+            sal_val = float(ent_sal.get())
+            months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+            DOJ_val_doc = datetime.date(int(yearvar_doc.get()),int(months[monthvar_doc.get()]), int(datevar_doc.get()))
+            Name_Doc_val = ent_Name_doc.get()
+            spec_val = ent_spec.get()
+            doccomm(DID_val, Name_Doc_val, spec_val, DOJ_val_doc, contact_doc, sal_val)
+            messagebox.showinfo("Add", message="Added Successfully")
+            ent_DID.delete(0, tk.END)
+            ent_Name_doc.delete(0, tk.END)
+            ent_spec.delete(0, tk.END)
+            ent_contact_doc.delete(0, tk.END)
+            ent_sal.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+
     addbtndoc = ttk.Button(master=intfrm6, text = "Add Data", command = addrecdoc)
 
     #code fragment for adding data to SQL and to Treeview (Nurses)
@@ -768,20 +776,24 @@ def mainwindow():
     lbl_contact_nur = ttk.Label(master=intfrm7, text="Contact:")
 
     def addrecnur():
-        NID_val = ent_NID.get()
-        Name_Nur_val = ent_Name_nur.get()
-        dept_val = ent_dept.get()
-        sal_val = ent_sal_nur.get()
-        contact_nur = ent_contact_nur.get()
-        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_nur = datetime.date(int(yearvar_nur.get()),int(months[monthvar_nur.get()]), int(datevar_nur.get()))
-        nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contact_nur, sal_val)
-        messagebox.showinfo("Add", message="Added Successfully")
-        ent_NID.delete(0, tk.END)
-        ent_Name_nur.delete(0, tk.END)
-        ent_dept.delete(0, tk.END)
-        ent_contact_nur.delete(0, tk.END)
-        ent_sal_nur.delete(0, tk.END)
+        try:
+            NID_val = int(ent_NID.get())
+            sal_val = float(ent_sal_nur.get())
+            contact_nur = int(ent_contact_nur.get())
+            months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+            DOJ_val_nur = datetime.date(int(yearvar_nur.get()),int(months[monthvar_nur.get()]), int(datevar_nur.get()))
+            Name_Nur_val = ent_Name_nur.get()
+            dept_val = ent_dept.get()
+            nurcomm(NID_val, Name_Nur_val, dept_val, DOJ_val_nur, contact_nur, sal_val)
+            messagebox.showinfo("Add", message="Added Successfully")
+            ent_NID.delete(0, tk.END)
+            ent_Name_nur.delete(0, tk.END)
+            ent_dept.delete(0, tk.END)
+            ent_contact_nur.delete(0, tk.END)
+            ent_sal_nur.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+
     addbtnnur = ttk.Button(master=intfrm7, text = "Add Data", command = addrecnur)
 
     #code fragment for adding data to SQL and to Treeview (Employees)
@@ -817,25 +829,29 @@ def mainwindow():
     lbl_sal_emp = ttk.Label(master=intfrm8, text = "Salary:")
 
     def addrecemp():
-        EID_val = ent_EID.get()
-        Name_emp_val = ent_Name_emp.get()
-        job_val = ent_job.get()
-        sal_val = ent_sal_emp.get()
-        contact_emp = ent_contact_emp.get()
-        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_emp = datetime.date(int(yearvar_emp.get()),int(months[monthvar_emp.get()]), int(datevar_emp.get()))
-        empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, contact_emp, sal_val)
-        messagebox.showinfo("Add", message="Added Successfully")
-        ent_EID.delete(0, tk.END)
-        ent_Name_emp.delete(0, tk.END)
-        ent_job.delete(0, tk.END)
-        ent_contact_emp.delete(0, tk.END)
-        ent_sal_emp.delete(0, tk.END)
+        try:
+            EID_val = int(ent_EID.get())
+            Name_emp_val = ent_Name_emp.get()
+            job_val = ent_job.get()
+            sal_val = float(ent_sal_emp.get())
+            contact_emp = int(ent_contact_emp.get())
+            months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+            DOJ_val_emp = datetime.date(int(yearvar_emp.get()),int(months[monthvar_emp.get()]), int(datevar_emp.get()))
+            empcomm(EID_val, Name_emp_val, job_val, DOJ_val_emp, contact_emp, sal_val)
+            messagebox.showinfo("Add", message="Added Successfully")
+            ent_EID.delete(0, tk.END)
+            ent_Name_emp.delete(0, tk.END)
+            ent_job.delete(0, tk.END)
+            ent_contact_emp.delete(0, tk.END)
+            ent_sal_emp.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+
     addbtnemp = ttk.Button(master=intfrm8, text = "Add Data", command = addrecemp)
 
     #Deleting a record (Patient)
     def deleteallp():
-        x = messagebox.askyesno("Warning", "Are you sure you want to delete all patient records? /n This action is IRREVERSIBLE.")
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete all patient records? \n This action is IRREVERSIBLE.")
         if x == True:    
             treedat5.delete(*treedat5.get_children())
             treedat9.delete(*treedat9.get_children())
@@ -845,7 +861,7 @@ def mainwindow():
         else:
             pass
     def deleteselectedp():
-        x = messagebox.askyesno("Warning", "Are you sure you want to delete the selected patient records? /n This action is IRREVERSIBLE.")
+        x = messagebox.askyesno("Warning", "Are you sure you want to delete the selected patient records? \n This action is IRREVERSIBLE.")
         if x == True:    
             templist = []
             selectedrec = treedat5.selection()
@@ -1067,23 +1083,27 @@ def mainwindow():
 
 
     def updatepat():
-        ent_PIDU.config(state="normal")
-        PID_val = ent_PIDU.get()
-        Name_val = ent_NameU.get()
-        ailment_val = ent_ailmentU.get()
-        amt_val = ent_amtU.get()
-        age = age_valU.get()
-        contact = ent_contactU.get()
-        payment = paymentvalU.get()
-        status = statusvalU.get()
-        patcommU(PID_val, Name_val, age, ailment_val, payment, status, contact, amt_val)
-        messagebox.showinfo("Update", message="Updated Successfully")
-        ent_PIDU.delete(0, tk.END)
-        ent_PIDU.config(state="disabled")
-        ent_NameU.delete(0, tk.END)
-        ent_ailmentU.delete(0, tk.END)
-        ent_contactU.delete(0, tk.END)
-        ent_amtU.delete(0, tk.END)
+        try:
+            ent_PIDU.config(state="normal")
+            PID_val = ent_PIDU.get()
+            Name_val = ent_NameU.get()
+            ailment_val = ent_ailmentU.get()
+            amt_val = float(ent_amtU.get())
+            age = age_valU.get()
+            contact = int(ent_contactU.get())
+            payment = paymentvalU.get()
+            status = statusvalU.get()
+            patcommU(PID_val, Name_val, age, ailment_val, payment, status, contact, amt_val)
+            messagebox.showinfo("Update", message="Updated Successfully")
+            ent_PIDU.delete(0, tk.END)
+            ent_PIDU.config(state="disabled")
+            ent_NameU.delete(0, tk.END)
+            ent_ailmentU.delete(0, tk.END)
+            ent_contactU.delete(0, tk.END)
+            ent_amtU.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+
     updatebtnpat = ttk.Button(master=frm_updateP, text = "Update Data", command = updatepat)
 
 
@@ -1093,7 +1113,7 @@ def mainwindow():
     datevar_docU = tk.StringVar()
     monthvar_docU = tk.StringVar()
     yearvar_docU = tk.StringVar()
-    ent_DIDU = ttk.Entry(master=lblfrm3, width = 30)
+    ent_DIDU = ttk.Entry(master=lblfrm3, width = 30, state="disabled")
     lbl_DIDU = ttk.Label(master=lblfrm3, text = "Doctor ID: ")
     ent_Name_docU = ttk.Entry(master=lblfrm3, width = 30)
     lbl_Name_docU = ttk.Label(master=lblfrm3, text = "Name: ")
@@ -1161,22 +1181,26 @@ def mainwindow():
 
 
     def updatedoc():
-        ent_DIDU.config(state="normal")
-        DID_val = ent_DIDU.get()
-        Name_val = ent_Name_docU.get()
-        spec_val = ent_specU.get()
-        sal_val = ent_salU.get()
-        contact = ent_contact_docU.get()
-        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_doc = datetime.date(int(yearvar_docU.get()),int(months[monthvar_docU.get()]), int(datevar_docU.get()))
-        doccommU(DID_val, Name_val, spec_val, DOJ_val_doc, contact, sal_val)
-        messagebox.showinfo("Update", message="Updated Successfully")
-        ent_DIDU.delete(0, tk.END)
-        ent_DIDU.config(state="disabled")
-        ent_Name_docU.delete(0, tk.END)
-        ent_specU.delete(0, tk.END)
-        ent_contact_docU.delete(0, tk.END)
-        ent_salU.delete(0, tk.END)
+        try:
+            ent_DIDU.config(state="normal")
+            DID_val = ent_DIDU.get()
+            Name_val = ent_Name_docU.get()
+            spec_val = ent_specU.get()
+            sal_val = float(ent_salU.get())
+            contact = int(ent_contact_docU.get())
+            months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+            DOJ_val_doc = datetime.date(int(yearvar_docU.get()),int(months[monthvar_docU.get()]), int(datevar_docU.get()))
+            doccommU(DID_val, Name_val, spec_val, DOJ_val_doc, contact, sal_val)
+            messagebox.showinfo("Update", message="Updated Successfully")
+            ent_DIDU.delete(0, tk.END)
+            ent_DIDU.config(state="disabled")
+            ent_Name_docU.delete(0, tk.END)
+            ent_specU.delete(0, tk.END)
+            ent_contact_docU.delete(0, tk.END)
+            ent_salU.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+
     updatebtndoc = ttk.Button(master=btn_frm_updoc, text = "Update Data", command = updatedoc)
 
     #code fragment for updating data in SQL and in Treeview (Nurse table)
@@ -1185,7 +1209,7 @@ def mainwindow():
     datevar_nurU = tk.StringVar()
     monthvar_nurU = tk.StringVar()
     yearvar_nurU = tk.StringVar()
-    ent_NIDU = ttk.Entry(master=lblfrm4, width = 30)
+    ent_NIDU = ttk.Entry(master=lblfrm4, width = 30, state="disabled")
     lbl_NIDU = ttk.Label(master=lblfrm4, text = "Nurse ID: ")
     ent_Name_nurU = ttk.Entry(master=lblfrm4, width = 30)
     lbl_Name_nurU = ttk.Label(master=lblfrm4, text = "Name: ")
@@ -1253,22 +1277,26 @@ def mainwindow():
 
 
     def updatenur():
-        ent_NIDU.config(state="normal")
-        NID_val = ent_NIDU.get()
-        Name_val = ent_Name_nurU.get()
-        dept_val = ent_deptU.get()
-        sal_val = ent_sal_nurU.get()
-        contact = ent_contact_nurU.get()
-        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_nur = datetime.date(int(yearvar_nurU.get()),int(months[monthvar_nurU.get()]), int(datevar_nurU.get()))
-        nurcommU(NID_val, Name_val, dept_val, DOJ_val_nur, contact, sal_val)
-        messagebox.showinfo("Update", message="Updated Successfully")
-        ent_NIDU.delete(0, tk.END)
-        ent_NIDU.config(state="disabled")
-        ent_Name_nurU.delete(0, tk.END)
-        ent_deptU.delete(0, tk.END)
-        ent_contact_nurU.delete(0, tk.END)
-        ent_sal_nurU.delete(0, tk.END)
+        try:
+            ent_NIDU.config(state="normal")
+            NID_val = ent_NIDU.get()
+            Name_val = ent_Name_nurU.get()
+            dept_val = ent_deptU.get()
+            sal_val = float(ent_sal_nurU.get())
+            contact = int(ent_contact_nurU.get())
+            months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+            DOJ_val_nur = datetime.date(int(yearvar_nurU.get()),int(months[monthvar_nurU.get()]), int(datevar_nurU.get()))
+            nurcommU(NID_val, Name_val, dept_val, DOJ_val_nur, contact, sal_val)
+            messagebox.showinfo("Update", message="Updated Successfully")
+            ent_NIDU.delete(0, tk.END)
+            ent_NIDU.config(state="disabled")
+            ent_Name_nurU.delete(0, tk.END)
+            ent_deptU.delete(0, tk.END)
+            ent_contact_nurU.delete(0, tk.END)
+            ent_sal_nurU.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+
     updatebtnnur = ttk.Button(master=btn_frm_upnur, text = "Update Data", command = updatenur)
 
     #code fragment for updating data in SQL and in Treeview (Employee table)
@@ -1277,7 +1305,7 @@ def mainwindow():
     datevar_empU = tk.StringVar()
     monthvar_empU = tk.StringVar()
     yearvar_empU = tk.StringVar()
-    ent_EIDU = ttk.Entry(master=lblfrm5, width = 30)
+    ent_EIDU = ttk.Entry(master=lblfrm5, width = 30, state="disabled")
     lbl_EIDU = ttk.Label(master=lblfrm5, text = "Employee ID: ")
     ent_Name_empU = ttk.Entry(master=lblfrm5, width = 30)
     lbl_Name_empU = ttk.Label(master=lblfrm5, text = "Name: ")
@@ -1345,22 +1373,26 @@ def mainwindow():
 
 
     def updateemp():
-        ent_EIDU.config(state="normal")
-        EID_val = ent_EIDU.get()
-        Name_val = ent_Name_empU.get()
-        job_val = ent_jobU.get()
-        sal_val = ent_sal_empU.get()
-        contact = ent_contact_empU.get()
-        months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
-        DOJ_val_emp = datetime.date(int(yearvar_empU.get()),int(months[monthvar_empU.get()]), int(datevar_empU.get()))
-        empcommU(EID_val, Name_val, job_val, DOJ_val_emp, contact, sal_val)
-        messagebox.showinfo("Update", message="Updated Successfully")
-        ent_EIDU.delete(0, tk.END)
-        ent_EIDU.config(state="disabled")
-        ent_Name_empU.delete(0, tk.END)
-        ent_jobU.delete(0, tk.END)
-        ent_contact_empU.delete(0, tk.END)
-        ent_sal_empU.delete(0, tk.END)
+        try:
+            ent_EIDU.config(state="normal")
+            EID_val = ent_EIDU.get()
+            Name_val = ent_Name_empU.get()
+            job_val = ent_jobU.get()
+            sal_val = float(ent_sal_empU.get())
+            contact = int(ent_contact_empU.get())
+            months = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
+            DOJ_val_emp = datetime.date(int(yearvar_empU.get()),int(months[monthvar_empU.get()]), int(datevar_empU.get()))
+            empcommU(EID_val, Name_val, job_val, DOJ_val_emp, contact, sal_val)
+            messagebox.showinfo("Update", message="Updated Successfully")
+            ent_EIDU.delete(0, tk.END)
+            ent_EIDU.config(state="disabled")
+            ent_Name_empU.delete(0, tk.END)
+            ent_jobU.delete(0, tk.END)
+            ent_contact_empU.delete(0, tk.END)
+            ent_sal_empU.delete(0, tk.END)
+        except ValueError:
+            messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+
     updatebtnemp = ttk.Button(master=btn_frm_upemp, text = "Update Data", command = updateemp)
 
     #Search a record(Patient)
