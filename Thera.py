@@ -14,6 +14,7 @@ from PIL import ImageTk, Image
 import csv
 from cryptography.fernet import Fernet
 import datetime
+import mysql.connector
 
 #custom sql module
 from Assets.BackEnd import sqlqueries
@@ -75,11 +76,12 @@ def reg():
                 if ent_newpwd.get() == ent_renewpwd.get():
                     newpwd = ent_newpwd.get()
                     with open(userdat_path, "a+", newline="") as lgindetes:
+                        lgindetes.seek(0)
                         writer = csv.writer(lgindetes)
                         reader = csv.reader(lgindetes)
                         temp = []
                         for i in reader:
-                            temp.append(i)
+                            temp.append(i[0])
                         if ent_newuser.get() not in temp:
                             if ent_newuser.get() != "":
                                 writer.writerow([ent_newuser.get(), fernet.encrypt(newpwd.encode())])
@@ -688,6 +690,8 @@ def mainwindow():
             ent_amt.delete(0, tk.END)
         except ValueError:
             messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+        except mysql.connector.errors.IntegrityError:
+            messagebox.showinfo("Status", "Patient ID Already Exists!")
         
     addbtnpat = ttk.Button(master=intfrm5, text = "Add Data", command = addrecpat)
 
@@ -741,6 +745,8 @@ def mainwindow():
             ent_sal.delete(0, tk.END)
         except ValueError:
             messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+        except mysql.connector.errors.IntegrityError:
+            messagebox.showinfo("Status", "Doctor ID Already Exists!")
 
     addbtndoc = ttk.Button(master=intfrm6, text = "Add Data", command = addrecdoc)
 
@@ -794,6 +800,8 @@ def mainwindow():
             ent_sal_nur.delete(0, tk.END)
         except ValueError:
             messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+        except mysql.connector.errors.IntegrityError:
+            messagebox.showinfo("Status", "Nurse ID Already Exists!")
 
     addbtnnur = ttk.Button(master=intfrm7, text = "Add Data", command = addrecnur)
 
@@ -847,6 +855,8 @@ def mainwindow():
             ent_sal_emp.delete(0, tk.END)
         except ValueError:
             messagebox.showinfo("Status", "Incorrect Datatypes entered. Please check the data entered and ensure they are of the correct datatype")
+        except mysql.connector.errors.IntegrityError:
+            messagebox.showinfo("Status", "Employee ID Already Exists!")
 
     addbtnemp = ttk.Button(master=intfrm8, text = "Add Data", command = addrecemp)
 
