@@ -1,23 +1,35 @@
 #Wizard to be run before running main program
 #importing necessary statements:
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 import mysql.connector
 import os
 import time
+import sys
 import csv
 from cryptography.fernet import Fernet
+import zipfile
+import winshell
+from win32com.client import Dispatch
 
 key = b'duq6gXwUm-RRsvoNTOIkfvfhl3-gT6l_kRz9pwJFAwQ='
 fernet = Fernet(key)
 
-#declaring paths in variables for easier access
-file_path = os.path.dirname(os.path.realpath(__file__))
-asset_path = os.path.join(file_path, "Assets")
+#declaring paths in variables for easier access 
+file_path1 = ""
+base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+asset_path = os.path.join(base_path, "Assets")
 ico_path = os.path.join(asset_path, "titleicon.ico")
+zip_path = os.path.join(base_path, "Core.zip")
 theme_path = os.path.join(asset_path, "azure-dark.tcl")
-secret_path = os.path.join(asset_path, "BackEnd", "secret.csv")
-admin_path = os.path.join(asset_path, "BackEnd", "adminpwd.csv")
+
+
+def pathget():
+    global file_path1
+    ent_path.delete(0, tk.END)
+    file_path1 = filedialog.askdirectory()
+    ent_path.insert(0, file_path1)
+    file_path1 = ent_path.get()
 
 def adminmain():
     admin = tk.Toplevel(master=base)
@@ -35,6 +47,28 @@ def adminmain():
     ent_reenter = ttk.Entry(master=lblfrm, width=30, show="*")
 
     def wizmain():
+        with zipfile.ZipFile(zip_path, "r") as assetzip:
+            assetzip.extractall(file_path1)
+        secret_path = os.path.join(file_path1, "Thera", "Assets", "BackEnd", "secret.csv")
+        admin_path = os.path.join(file_path1, "Thera", "Assets", "BackEnd", "adminpwd.csv")
+
+        if shortcut_toggle.get() == 1:
+            #shortcut tools
+            desktopdir = winshell.desktop()
+            shortcut_path = os.path.join(desktopdir, "TheraPy Hospital Software.lnk")
+            target = os.path.join(file_path1, "Thera", "Thera.exe")
+            wrkdir = os.path.join(file_path1, "Thera")
+            icon = os.path.join(file_path1, "Thera", "Thera.exe")
+
+            shell = Dispatch('WScript.Shell')
+            shortcut = shell.CreateShortCut(shortcut_path)
+            shortcut.Targetpath = target
+            shortcut.WorkingDirectory = wrkdir
+            shortcut.IconLocation = icon
+            shortcut.save()
+        else:
+            pass
+
         if ent_adminpwd.get() == ent_reenter.get():
             with open(admin_path, "w+", newline="") as adminfile:
                 adminfile.seek(0)
@@ -110,6 +144,8 @@ def adminmain():
     ent_reenter.grid(row=3, column=0, padx=15, pady=10)
     btn_adminsave.grid(row=4, column=0, padx=15, pady=20)
 
+    admin.mainloop()
+
 base = tk.Tk()
 style = ttk.Style()
 base.tk.call("source", theme_path)
@@ -118,18 +154,22 @@ base.title("TheraPy Wizard")
 base.resizable(False, False)
 style.theme_use("azure-dark")
 x = (base.winfo_screenwidth()/2)-300
-y = (base.winfo_screenheight()/2)-225
-base.geometry(f"600x450+{int(x)}+{int(y)}")
-os.chdir(asset_path)
+y = (base.winfo_screenheight()/2)-300
+base.geometry(f"600x600+{int(x)}+{int(y)}")
 
-frm_detes = ttk.LabelFrame(master=base)
-frm_btns = ttk.Frame(master=frm_detes)
+shortcut_toggle = tk.IntVar()
+
+frm_main = ttk.Labelframe(master=base)
+frm_detes = ttk.Frame(master=frm_main)
+frm_btns = ttk.Frame(master=frm_main)
 
 lbl_welcome = tk.Label(master=base, text="Welcome to the TheraPy\nInstallation wizard", font = ("Helvetica", 25), justify="left")
 lbl_proceed = ttk.Label(master=base, text="To Continue, Please login with your MySQL credentials:", justify="left")
-ent_host = ttk.Entry(master=frm_detes, width=60)
-ent_username = ttk.Entry(master=frm_detes, width=60)
-ent_passwd = ttk.Entry(master=frm_detes, width=60, show="*")
+ent_host = ttk.Entry(master=frm_detes, width=55)
+ent_username = ttk.Entry(master=frm_detes, width=55)
+ent_passwd = ttk.Entry(master=frm_detes, width=55, show="*")
+ent_path = ttk.Entry(master=frm_detes, width=55)
+shortcut_chkbtn = ttk.Checkbutton(master=frm_detes, text="Create Desktop Shortcut", variable=shortcut_toggle, onvalue=1, offvalue=0)
 
 lbl_host = ttk.Label(master=frm_detes, text="Host:")
 lbl_username = ttk.Label(master=frm_detes, text="Username:")
@@ -137,17 +177,23 @@ lbl_password = ttk.Label(master=frm_detes, text="Password:")
 
 btn_wiz = ttk.Button(master=frm_btns, text="Submit", command=adminmain)
 btn_quit = ttk.Button(master=frm_btns, text="Quit", command=base.destroy)
+btn_path = ttk.Button(master=frm_detes, text="Path:", command=pathget)
+
 
 lbl_welcome.pack(pady=10, padx=20, fill=tk.X)
 lbl_proceed.pack(pady=10, padx=60, fill=tk.X)
-frm_detes.pack(pady=10, padx=50, fill=tk.X)
-frm_btns.grid(row=3, column=1)
+frm_main.pack(pady=10, padx=50, fill=tk.X)
+frm_detes.pack()
+frm_btns.pack(pady=10, padx=120, fill=tk.X)
 lbl_host.grid(row=0, column=0, pady=20, padx=10)
 lbl_username.grid(row=1, column=0, pady=20, padx=10)
 lbl_password.grid(row=2, column=0, pady=20, padx=10)
+btn_path.grid(row=3, column=0, pady=20, padx=10)
 ent_host.grid(row=0, column=1, pady=20, padx=20)
 ent_username.grid(row=1, column=1, pady=20, padx=20)
 ent_passwd.grid(row=2, column=1, pady=20, padx=20)
+ent_path.grid(row=3, column=1, pady=20, padx=20)
+shortcut_chkbtn.grid(row=4, column=1, padx=20, pady=5)
 btn_quit.grid(row=0, column=1, pady=20, padx=20)
 btn_wiz.grid(row=0, column=0, pady=20, padx=20)
 
