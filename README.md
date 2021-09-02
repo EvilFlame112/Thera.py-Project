@@ -51,10 +51,12 @@ Python Libraries required:
         	usernamepwd.csv
     o	Thera.py
     o	Wizard.py
+	
+	note: Source Code only. In EXE, All of this is bundled
     
 # How to run the application?
 •	Open Wizard.py
 •	Enter your MySQL credentials into Wizard.py and enter a secure password only known to the admin.    This password will be used later to register.
-•	Open the Thera.py file and click on the “Register” button if this is your first time. Register your Username and Password (Admin password is required for authorization)
+•	Open the Thera.py shortcut on desktop and click on the “Register” button if this is your first time. Register your Username and Password (Admin password is required for authorization)
 •	Once you have registered enter your Username and Password in the login window and click on the “Login” button.
 
