@@ -153,7 +153,7 @@ def mainwindow():
     menu_file = Menu(menubar)
 
     menubar.add_cascade(menu=menu_file, label = "File")
-    menu_file.add_command(label = "Exit", command = login.destroy)
+    menu_file.add_command(label = "Exit", command = main.destroy)
 
     #making a notebook with tabs for accessing different tables from database
     ntbk = ttk.Notebook(master=main)
