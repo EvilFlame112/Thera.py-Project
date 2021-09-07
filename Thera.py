@@ -10,7 +10,7 @@ import tkinter as tk
 import os
 import random
 from tkinter import Menu, ttk, messagebox
-from PIL import ImageTk, Image
+from PIL import ImageTk, Image, ImageFilter
 import csv
 from cryptography.fernet import Fernet
 import datetime
@@ -24,7 +24,7 @@ file_path = os.path.dirname(os.path.realpath(__file__))
 asset_path = os.path.join(file_path, "Assets")
 ico_path = os.path.join(asset_path, "titleicon.ico")
 bg_path = os.path.join(asset_path, "img24.png")
-bgm_path = os.path.join(asset_path, random.choice(["main.png","main.jpg"]))
+bgm_path = os.path.join(asset_path, "main1.jpg")
 theme_path = os.path.join(asset_path, "azure-dark.tcl")
 userdat_path = os.path.join(asset_path, "usernamepwd.csv")
 admin_path = os.path.join(asset_path, "Backend", "adminpwd.csv")
@@ -147,8 +147,10 @@ def mainwindow():
     menubar = Menu(main)
     main.config(menu = menubar)
     tmpbgm = Image.open(bgm_path)
-    tmp1bgm = tmpbgm.resize((1024,650))
-    bgm = ImageTk.PhotoImage(tmp1bgm)
+    tmp0bgm = tmpbgm.transpose(Image.ROTATE_90)
+    tmp1bgm = tmp0bgm.resize((1024,310))
+    tmp2bgm = tmp1bgm.filter(ImageFilter.GaussianBlur(radius = 2))
+    bgm = ImageTk.PhotoImage(tmp2bgm)
 
     menu_file = Menu(menubar)
 
