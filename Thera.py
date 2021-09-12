@@ -8,7 +8,6 @@
 #Importing necessary modules
 import tkinter as tk
 import os
-import random
 from tkinter import Menu, ttk, messagebox
 from PIL import ImageTk, Image, ImageFilter
 import csv
