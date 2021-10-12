@@ -24,7 +24,8 @@ asset_path = os.path.join(file_path, "Assets")
 ico_path = os.path.join(asset_path, "titleicon.ico")
 bg_path = os.path.join(asset_path, "img24.png")
 bgm_path = os.path.join(asset_path, "main1.jpg")
-theme_path = os.path.join(asset_path, "azure-dark.tcl")
+ltheme_path = os.path.join(asset_path, "azure.tcl")
+dtheme_path = os.path.join(asset_path, "azure-dark.tcl")
 userdat_path = os.path.join(asset_path, "usernamepwd.csv")
 admin_path = os.path.join(asset_path, "Backend", "adminpwd.csv")
 
@@ -129,10 +130,13 @@ def mainwindow():
     main = tk.Tk(className="Mainwindow")
     x = (main.winfo_screenwidth()/2)-512
     y = (main.winfo_screenheight()/2)-325
-    style = ttk.Style()
-    main.tk.call("source", theme_path)
-    style.theme_use("azure-dark")
     main.geometry(f"1024x650+{int(x)}+{int(y)}")
+    
+    style = ttk.Style()
+    main.tk.call("source", ltheme_path)
+    main.tk.call("source", dtheme_path)
+    style.theme_use("azure")
+
     main.attributes("-alpha", 0.98)
     main.title("Thera.py v1.0")
     main.iconbitmap(ico_path)
@@ -145,6 +149,7 @@ def mainwindow():
     main.option_add('*tearOff', False)
     menubar = Menu(main)
     main.config(menu = menubar)
+    
     tmpbgm = Image.open(bgm_path)
     tmp0bgm = tmpbgm.transpose(Image.ROTATE_90)
     tmp1bgm = tmp0bgm.resize((1024,310))
@@ -152,9 +157,21 @@ def mainwindow():
     bgm = ImageTk.PhotoImage(tmp2bgm)
 
     menu_file = Menu(menubar)
+    menu_options = Menu(menubar)
 
     menubar.add_cascade(menu=menu_file, label = "File")
     menu_file.add_command(label = "Exit", command = main.destroy)
+
+    def themedark():
+        style.theme_use("azure-dark")
+    def themelight():
+        style.theme_use("azure")
+
+    menubar.add_cascade(menu=menu_options, label="Options")
+    menu_themes = Menu(menu_options)
+    menu_options.add_cascade(menu=menu_themes, label="Change Theme")
+    menu_themes.add_command(label="Light Theme", command=themelight)
+    menu_themes.add_command(label="Dark Theme", command=themedark)
 
     #making a notebook with tabs for accessing different tables from database
     ntbk = ttk.Notebook(master=main)
@@ -170,34 +187,39 @@ def mainwindow():
     intfrm2 = ttk.Frame(master=internalntbk)
     intfrm3 = ttk.Frame(master=internalntbk)
     intfrm4 = ttk.Frame(master=internalntbk)
+    intfrm5 = ttk.Frame(master=internalntbk)
 
     #set of internal tabs for accessing in add tab
     internalntbk1 = ttk.Notebook(master=frm2)
-    intfrm5 = ttk.Frame(master=internalntbk1)
     intfrm6 = ttk.Frame(master=internalntbk1)
     intfrm7 = ttk.Frame(master=internalntbk1)
     intfrm8 = ttk.Frame(master=internalntbk1)
+    intfrm9 = ttk.Frame(master=internalntbk1)
+    intfrm10 = ttk.Frame(master=internalntbk1)
 
     #set of internal tabs for accessing in delete tab
     internalntbk2 = ttk.Notebook(master=frm3)
-    intfrm9 = ttk.Frame(master=internalntbk2)
-    intfrm10 = ttk.Frame(master=internalntbk2)
     intfrm11 = ttk.Frame(master=internalntbk2)
-    intfrm12= ttk.Frame(master=internalntbk2)
+    intfrm12 = ttk.Frame(master=internalntbk2)
+    intfrm13 = ttk.Frame(master=internalntbk2)
+    intfrm14 = ttk.Frame(master=internalntbk2)
+    intfrm15 = ttk.Frame(master=internalntbk2)
 
     #set of internal tabs for accessing in update tab
     internalntbk3 = ttk.Notebook(master=frm4)
-    intfrm13 = ttk.Frame(master=internalntbk3)
-    intfrm14 = ttk.Frame(master=internalntbk3)
-    intfrm15 = ttk.Frame(master=internalntbk3)
     intfrm16 = ttk.Frame(master=internalntbk3)
+    intfrm17 = ttk.Frame(master=internalntbk3)
+    intfrm18 = ttk.Frame(master=internalntbk3)
+    intfrm19 = ttk.Frame(master=internalntbk3)
+    intfrm20 = ttk.Frame(master=internalntbk3)
 
     #set of internal tabs for accessing in search tab
     internalntbk4 = ttk.Notebook(master=frm5)
-    intfrm17 = ttk.Frame(master=internalntbk4)
-    intfrm18 = ttk.Frame(master=internalntbk4)
-    intfrm19 = ttk.Frame(master=internalntbk4)
-    intfrm20 = ttk.Frame(master=internalntbk4)
+    intfrm21 = ttk.Frame(master=internalntbk4)
+    intfrm22 = ttk.Frame(master=internalntbk4)
+    intfrm23 = ttk.Frame(master=internalntbk4)
+    intfrm24 = ttk.Frame(master=internalntbk4)
+    intfrm25 = ttk.Frame(master=internalntbk4)
 
     #scrollbar for scrolling (-_-)
     scrlbrfrm1 = ttk.Frame(master=intfrm1)
@@ -208,30 +230,38 @@ def mainwindow():
     scrlbr3 = ttk.Scrollbar(master=scrlbrfrm3)
     scrlbrfrm4 = ttk.Frame(master=intfrm4)
     scrlbr4 = ttk.Scrollbar(master=scrlbrfrm4)
-    scrlbrfrm5 = ttk.Frame(master=intfrm9)
+    scrlbrfrm5 = ttk.Frame(master=intfrm11)
     scrlbr5 = ttk.Scrollbar(master=scrlbrfrm5)
-    scrlbrfrm6 = ttk.Frame(master=intfrm10)
+    scrlbrfrm6 = ttk.Frame(master=intfrm12)
     scrlbr6 = ttk.Scrollbar(master=scrlbrfrm6)
-    scrlbrfrm7 = ttk.Frame(master=intfrm11)
+    scrlbrfrm7 = ttk.Frame(master=intfrm13)
     scrlbr7 = ttk.Scrollbar(master=scrlbrfrm7)
-    scrlbrfrm8 = ttk.Frame(master=intfrm12)
+    scrlbrfrm8 = ttk.Frame(master=intfrm14)
     scrlbr8 = ttk.Scrollbar(master=scrlbrfrm8)
-    scrlbrfrm9 = ttk.Frame(master=intfrm13)
+    scrlbrfrm9 = ttk.Frame(master=intfrm16)
     scrlbr9 = ttk.Scrollbar(master=scrlbrfrm9)
-    scrlbrfrm10 = ttk.Frame(master=intfrm14)
+    scrlbrfrm10 = ttk.Frame(master=intfrm17)
     scrlbr10 = ttk.Scrollbar(master=scrlbrfrm10)
-    scrlbrfrm11 = ttk.Frame(master=intfrm15)
+    scrlbrfrm11 = ttk.Frame(master=intfrm18)
     scrlbr11 = ttk.Scrollbar(master=scrlbrfrm11)
-    scrlbrfrm12 = ttk.Frame(master=intfrm16)
+    scrlbrfrm12 = ttk.Frame(master=intfrm19)
     scrlbr12 = ttk.Scrollbar(master=scrlbrfrm12)
-    scrlbrfrm13 = ttk.Frame(master=intfrm17)
+    scrlbrfrm13 = ttk.Frame(master=intfrm21)
     scrlbr13 = ttk.Scrollbar(master=scrlbrfrm13)
-    scrlbrfrm14 = ttk.Frame(master=intfrm18)
+    scrlbrfrm14 = ttk.Frame(master=intfrm22)
     scrlbr14 = ttk.Scrollbar(master=scrlbrfrm14)
-    scrlbrfrm15 = ttk.Frame(master=intfrm19)
+    scrlbrfrm15 = ttk.Frame(master=intfrm23)
     scrlbr15 = ttk.Scrollbar(master=scrlbrfrm15)
-    scrlbrfrm16 = ttk.Frame(master=intfrm20)
+    scrlbrfrm16 = ttk.Frame(master=intfrm24)
     scrlbr16 = ttk.Scrollbar(master=scrlbrfrm16)
+    scrlbrfrm17 = ttk.Frame(master=intfrm5)
+    scrlbr17 = ttk.Scrollbar(master=scrlbrfrm17)
+    scrlbrfrm18 = ttk.Frame(master=intfrm15)
+    scrlbr18 = ttk.Scrollbar(master=scrlbrfrm18)
+    scrlbrfrm19 = ttk.Frame(master=intfrm20)
+    scrlbr19 = ttk.Scrollbar(master=scrlbrfrm19)
+    scrlbrfrm20 = ttk.Frame(master=intfrm25)
+    scrlbr20 = ttk.Scrollbar(master=scrlbrfrm20)
 
     #Making tables with treeview
     treedat1 = ttk.Treeview(master=scrlbrfrm1, yscrollcommand=scrlbr1.set)
@@ -632,32 +662,32 @@ def mainwindow():
     paymentval = tk.IntVar()
     statusval = tk.IntVar()
     age_val = tk.IntVar()
-    ent_PID = ttk.Entry(master=intfrm5, width = 30)
-    lbl_PID = ttk.Label(master=intfrm5, text = "Patient ID: ")
-    ent_Name = ttk.Entry(master=intfrm5, width = 30)
-    lbl_Name = ttk.Label(master=intfrm5, text = "Name: ")
-    ent_ailment = ttk.Entry(master=intfrm5, width = 30)
-    lbl_ailment = ttk.Label(master=intfrm5, text = "Ailments: ")
-    ent_amt = ttk.Entry(master=intfrm5, width = 30)
-    lbl_amt = ttk.Label(master=intfrm5, text = "Amount: ")
-    lbl_payment = ttk.Label(master=intfrm5, text = "Payment Type:")
-    rdb_cash = ttk.Radiobutton(master=intfrm5, text="Cash", value=1, variable=paymentval)
-    rdb_card = ttk.Radiobutton(master=intfrm5, text="Card", value=2, variable=paymentval)
-    rdb_cheque = ttk.Radiobutton(master=intfrm5, text="Cheque", value=3, variable=paymentval)
-    lbl_status = ttk.Label(master=intfrm5, text = "Payment Status: ")
-    rdb_paid = ttk.Radiobutton(master=intfrm5, text="Paid", value=1, variable=statusval)
-    rdb_pending = ttk.Radiobutton(master=intfrm5, text="Pending", value=2, variable=statusval)
-    age_cbbx = ttk.Combobox(master=intfrm5, textvariable=age_val, width=5)
+    ent_PID = ttk.Entry(master=intfrm6, width = 30)
+    lbl_PID = ttk.Label(master=intfrm6, text = "Patient ID: ")
+    ent_Name = ttk.Entry(master=intfrm6, width = 30)
+    lbl_Name = ttk.Label(master=intfrm6, text = "Name: ")
+    ent_ailment = ttk.Entry(master=intfrm6, width = 30)
+    lbl_ailment = ttk.Label(master=intfrm6, text = "Ailments: ")
+    ent_amt = ttk.Entry(master=intfrm6, width = 30)
+    lbl_amt = ttk.Label(master=intfrm6, text = "Amount: ")
+    lbl_payment = ttk.Label(master=intfrm6, text = "Payment Type:")
+    rdb_cash = ttk.Radiobutton(master=intfrm6, text="Cash", value=1, variable=paymentval)
+    rdb_card = ttk.Radiobutton(master=intfrm6, text="Card", value=2, variable=paymentval)
+    rdb_cheque = ttk.Radiobutton(master=intfrm6, text="Cheque", value=3, variable=paymentval)
+    lbl_status = ttk.Label(master=intfrm6, text = "Payment Status: ")
+    rdb_paid = ttk.Radiobutton(master=intfrm6, text="Paid", value=1, variable=statusval)
+    rdb_pending = ttk.Radiobutton(master=intfrm6, text="Pending", value=2, variable=statusval)
+    age_cbbx = ttk.Combobox(master=intfrm6, textvariable=age_val, width=5)
     agelis = [int(i) for i in range(1,120)]
     age_cbbx["values"] = tuple(agelis)
     age_cbbx.state(["readonly"])
-    lbl_age = ttk.Label(master=intfrm5, text="Age: ")
-    ent_contact = ttk.Entry(master=intfrm5, width=30)
-    lbl_contact = ttk.Label(master=intfrm5, text="Contact: ")
+    lbl_age = ttk.Label(master=intfrm6, text="Age: ")
+    ent_contact = ttk.Entry(master=intfrm6, width=30)
+    lbl_contact = ttk.Label(master=intfrm6, text="Contact: ")
 
     #separators and beautification
-    sep_pay_stat = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
-    sep_pay_stat1 = ttk.Separator(master=intfrm5, orient=tk.HORIZONTAL)
+    sep_pay_stat = ttk.Separator(master=intfrm6, orient=tk.HORIZONTAL)
+    sep_pay_stat1 = ttk.Separator(master=intfrm6, orient=tk.HORIZONTAL)
 
     def addrecpat():
         try:
@@ -694,22 +724,22 @@ def mainwindow():
         except mysql.connector.errors.IntegrityError:
             messagebox.showinfo("Status", "Patient ID Already Exists!")
         
-    addbtnpat = ttk.Button(master=intfrm5, text = "Add Data", command = addrecpat)
+    addbtnpat = ttk.Button(master=intfrm6, text = "Add Data", command = addrecpat)
 
     #code fragment for adding data to SQL and to Treeview (Doctors)
     datevar_doc = tk.StringVar()
     monthvar_doc = tk.StringVar()
     yearvar_doc = tk.StringVar()
-    ent_DID = ttk.Entry(master=intfrm6, width = 30)
-    lbl_DID = ttk.Label(master=intfrm6, text = "Doctor ID: ")
-    ent_Name_doc = ttk.Entry(master=intfrm6, width = 30)
-    lbl_Name_doc = ttk.Label(master=intfrm6, text = "Name: ")
-    ent_spec = ttk.Entry(master=intfrm6, width = 30)
-    lbl_spec = ttk.Label(master=intfrm6, text = "Specialization: ")
-    lbl_DOJ = ttk.Label(master=intfrm6, text = "Date Of Joining: ")
+    ent_DID = ttk.Entry(master=intfrm7, width = 30)
+    lbl_DID = ttk.Label(master=intfrm7, text = "Doctor ID: ")
+    ent_Name_doc = ttk.Entry(master=intfrm7, width = 30)
+    lbl_Name_doc = ttk.Label(master=intfrm7, text = "Name: ")
+    ent_spec = ttk.Entry(master=intfrm7, width = 30)
+    lbl_spec = ttk.Label(master=intfrm7, text = "Specialization: ")
+    lbl_DOJ = ttk.Label(master=intfrm7, text = "Date Of Joining: ")
 
     #small frame for DOJ
-    dojfrm_doc = ttk.Frame(master=intfrm6)
+    dojfrm_doc = ttk.Frame(master=intfrm7)
 
     date_cbbx1 = ttk.Combobox(master=dojfrm_doc, textvariable = datevar_doc, width = 3)
     date_cbbx1["values"] = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
@@ -723,10 +753,10 @@ def mainwindow():
     year_cbbx1 = ttk.Combobox(master=dojfrm_doc, textvariable = yearvar_doc, width = 5)
     year_cbbx1["values"] = tuple(ylist)
     year_cbbx1.state(["readonly"])
-    ent_contact_doc = ttk.Entry(master=intfrm6, width = 30)
-    lbl_contact_doc = ttk.Label(master=intfrm6, text="Contact: ")
-    ent_sal = ttk.Entry(master=intfrm6, width = 30)
-    lbl_sal = ttk.Label(master=intfrm6, text = "Salary:")
+    ent_contact_doc = ttk.Entry(master=intfrm7, width = 30)
+    lbl_contact_doc = ttk.Label(master=intfrm7, text="Contact: ")
+    ent_sal = ttk.Entry(master=intfrm7, width = 30)
+    lbl_sal = ttk.Label(master=intfrm7, text = "Salary:")
 
     def addrecdoc():
         try:
@@ -749,22 +779,22 @@ def mainwindow():
         except mysql.connector.errors.IntegrityError:
             messagebox.showinfo("Status", "Doctor ID Already Exists!")
 
-    addbtndoc = ttk.Button(master=intfrm6, text = "Add Data", command = addrecdoc)
+    addbtndoc = ttk.Button(master=intfrm7, text = "Add Data", command = addrecdoc)
 
     #code fragment for adding data to SQL and to Treeview (Nurses)
     datevar_nur = tk.StringVar()
     monthvar_nur = tk.StringVar()
     yearvar_nur = tk.StringVar()
-    ent_NID = ttk.Entry(master=intfrm7, width = 30)
-    lbl_NID = ttk.Label(master=intfrm7, text = "Nurse ID: ")
-    ent_Name_nur = ttk.Entry(master=intfrm7, width = 30)
-    lbl_Name_nur = ttk.Label(master=intfrm7, text = "Name: ")
-    ent_dept = ttk.Entry(master=intfrm7, width = 30)
-    lbl_dept = ttk.Label(master=intfrm7, text = "Department: ")
-    lbl_DOJ_nur = ttk.Label(master=intfrm7, text = "Date Of Joining: ")
+    ent_NID = ttk.Entry(master=intfrm8, width = 30)
+    lbl_NID = ttk.Label(master=intfrm8, text = "Nurse ID: ")
+    ent_Name_nur = ttk.Entry(master=intfrm8, width = 30)
+    lbl_Name_nur = ttk.Label(master=intfrm8, text = "Name: ")
+    ent_dept = ttk.Entry(master=intfrm8, width = 30)
+    lbl_dept = ttk.Label(master=intfrm8, text = "Department: ")
+    lbl_DOJ_nur = ttk.Label(master=intfrm8, text = "Date Of Joining: ")
 
     #small frame for DOJ
-    dojfrm_nur = ttk.Frame(master=intfrm7)
+    dojfrm_nur = ttk.Frame(master=intfrm8)
 
     date_cbbx2 = ttk.Combobox(master=dojfrm_nur, textvariable = datevar_nur, width = 3)
     date_cbbx2["values"] = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
@@ -778,10 +808,10 @@ def mainwindow():
     year_cbbx2 = ttk.Combobox(master=dojfrm_nur, textvariable = yearvar_nur, width = 5)
     year_cbbx2["values"] = tuple(ylist)
     year_cbbx2.state(["readonly"])
-    ent_sal_nur = ttk.Entry(master=intfrm7, width = 30)
-    ent_contact_nur = ttk.Entry(master=intfrm7, width=30)
-    lbl_sal_nur = ttk.Label(master=intfrm7, text = "Salary:")
-    lbl_contact_nur = ttk.Label(master=intfrm7, text="Contact:")
+    ent_sal_nur = ttk.Entry(master=intfrm8, width = 30)
+    ent_contact_nur = ttk.Entry(master=intfrm8, width=30)
+    lbl_sal_nur = ttk.Label(master=intfrm8, text = "Salary:")
+    lbl_contact_nur = ttk.Label(master=intfrm8, text="Contact:")
 
     def addrecnur():
         try:
@@ -804,22 +834,22 @@ def mainwindow():
         except mysql.connector.errors.IntegrityError:
             messagebox.showinfo("Status", "Nurse ID Already Exists!")
 
-    addbtnnur = ttk.Button(master=intfrm7, text = "Add Data", command = addrecnur)
+    addbtnnur = ttk.Button(master=intfrm8, text = "Add Data", command = addrecnur)
 
     #code fragment for adding data to SQL and to Treeview (Employees)
     datevar_emp = tk.StringVar()
     monthvar_emp = tk.StringVar()
     yearvar_emp = tk.StringVar()
-    ent_EID = ttk.Entry(master=intfrm8, width = 30)
-    lbl_EID = ttk.Label(master=intfrm8, text = "Employee ID: ")
-    ent_Name_emp = ttk.Entry(master=intfrm8, width = 30)
-    lbl_Name_emp = ttk.Label(master=intfrm8, text = "Name: ")
-    ent_job = ttk.Entry(master=intfrm8, width = 30)
-    lbl_job = ttk.Label(master=intfrm8, text = "Job: ")
-    lbl_DOJ_emp = ttk.Label(master=intfrm8, text = "Date Of Joining: ")
+    ent_EID = ttk.Entry(master=intfrm9, width = 30)
+    lbl_EID = ttk.Label(master=intfrm9, text = "Employee ID: ")
+    ent_Name_emp = ttk.Entry(master=intfrm9, width = 30)
+    lbl_Name_emp = ttk.Label(master=intfrm9, text = "Name: ")
+    ent_job = ttk.Entry(master=intfrm9, width = 30)
+    lbl_job = ttk.Label(master=intfrm9, text = "Job: ")
+    lbl_DOJ_emp = ttk.Label(master=intfrm9, text = "Date Of Joining: ")
 
     #small frame for DOJ
-    dojfrm_emp = ttk.Frame(master=intfrm8)
+    dojfrm_emp = ttk.Frame(master=intfrm9)
 
     date_cbbx3 = ttk.Combobox(master=dojfrm_emp, textvariable = datevar_emp, width = 3)
     date_cbbx3["values"] = ("01", "02", "03", "04", "05", "06", "07", "08", "09", 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
@@ -833,10 +863,10 @@ def mainwindow():
     year_cbbx3 = ttk.Combobox(master=dojfrm_emp, textvariable = yearvar_emp, width = 5)
     year_cbbx3["values"] = tuple(ylist)
     year_cbbx3.state(["readonly"])
-    ent_contact_emp = ttk.Entry(master=intfrm8, width = 30)
-    lbl_contact_emp = ttk.Label(master=intfrm8, text = "Contact:")
-    ent_sal_emp = ttk.Entry(master=intfrm8, width = 30)
-    lbl_sal_emp = ttk.Label(master=intfrm8, text = "Salary:")
+    ent_contact_emp = ttk.Entry(master=intfrm9, width = 30)
+    lbl_contact_emp = ttk.Label(master=intfrm9, text = "Contact:")
+    ent_sal_emp = ttk.Entry(master=intfrm9, width = 30)
+    lbl_sal_emp = ttk.Label(master=intfrm9, text = "Salary:")
 
     def addrecemp():
         try:
@@ -859,7 +889,7 @@ def mainwindow():
         except mysql.connector.errors.IntegrityError:
             messagebox.showinfo("Status", "Employee ID Already Exists!")
 
-    addbtnemp = ttk.Button(master=intfrm8, text = "Add Data", command = addrecemp)
+    addbtnemp = ttk.Button(master=intfrm9, text = "Add Data", command = addrecemp)
 
     #Deleting a record (Patient)
     def deleteallp():
@@ -889,7 +919,7 @@ def mainwindow():
         else:
             pass
     
-    frm_delp = ttk.Frame(master=intfrm9)
+    frm_delp = ttk.Frame(master=intfrm11)
     btn_delall = ttk.Button(master=frm_delp, text="Delete All", command=deleteallp)
     btn_delsel = ttk.Button(master=frm_delp, text="Delete Selected", command=deleteselectedp)
 
@@ -921,7 +951,7 @@ def mainwindow():
         else:
             pass
     
-    frm_deld = ttk.Frame(master=intfrm10)
+    frm_deld = ttk.Frame(master=intfrm12)
     btn_delalld = ttk.Button(master=frm_deld, text="Delete All", command=deletealld)
     btn_delseld = ttk.Button(master=frm_deld, text="Delete Selected", command=deleteselectedd)
 
@@ -953,7 +983,7 @@ def mainwindow():
         else:
             pass
     
-    frm_deln = ttk.Frame(master=intfrm11)
+    frm_deln = ttk.Frame(master=intfrm13)
     btn_delalln = ttk.Button(master=frm_deln, text="Delete All", command=deletealln)
     btn_delseln = ttk.Button(master=frm_deln, text="Delete Selected", command=deleteselectedn)
 
@@ -985,7 +1015,7 @@ def mainwindow():
         else:
             pass
     
-    frm_dele = ttk.Frame(master=intfrm12)
+    frm_dele = ttk.Frame(master=intfrm14)
     btn_delalle = ttk.Button(master=frm_dele, text="Delete All", command=deletealle)
     btn_delsele = ttk.Button(master=frm_dele, text="Delete Selected", command=deleteselectede)
 
@@ -1030,7 +1060,7 @@ def mainwindow():
     paymentvalU = tk.StringVar()
     statusvalU = tk.StringVar()
     age_valU = tk.IntVar()
-    frm_updateP = ttk.Frame(master=intfrm13)
+    frm_updateP = ttk.Frame(master=intfrm16)
     #labelframes:
     lblfrm1 = ttk.LabelFrame(master=frm_updateP, padding=7)
     lblfrm2 = ttk.LabelFrame(master=frm_updateP, padding=45)
@@ -1120,7 +1150,7 @@ def mainwindow():
 
 
     #code fragment for updating data in SQL and in Treeview (Doctor table)
-    frm_updateD = ttk.Frame(master=intfrm14)
+    frm_updateD = ttk.Frame(master=intfrm17)
     lblfrm3 = ttk.LabelFrame(master=frm_updateD)
     datevar_docU = tk.StringVar()
     monthvar_docU = tk.StringVar()
@@ -1216,7 +1246,7 @@ def mainwindow():
     updatebtndoc = ttk.Button(master=btn_frm_updoc, text = "Update Data", command = updatedoc)
 
     #code fragment for updating data in SQL and in Treeview (Nurse table)
-    frm_updateN = ttk.Frame(master=intfrm15)
+    frm_updateN = ttk.Frame(master=intfrm18)
     lblfrm4 = ttk.LabelFrame(master=frm_updateN)
     datevar_nurU = tk.StringVar()
     monthvar_nurU = tk.StringVar()
@@ -1312,7 +1342,7 @@ def mainwindow():
     updatebtnnur = ttk.Button(master=btn_frm_upnur, text = "Update Data", command = updatenur)
 
     #code fragment for updating data in SQL and in Treeview (Employee table)
-    frm_updateE = ttk.Frame(master=intfrm16)
+    frm_updateE = ttk.Frame(master=intfrm19)
     lblfrm5 = ttk.LabelFrame(master=frm_updateE)
     datevar_empU = tk.StringVar()
     monthvar_empU = tk.StringVar()
@@ -1418,7 +1448,7 @@ def mainwindow():
         if len(selections) == 0:
             messagebox.showinfo("Search", "No results found")
 
-    frm_SP = ttk.Frame(master=intfrm17)
+    frm_SP = ttk.Frame(master=intfrm21)
 
     ent_SearchP = ttk.Entry(master=frm_SP, width=30)
     lbl_SearchP = ttk.Label(master=frm_SP, text="Search: ")
@@ -1435,7 +1465,7 @@ def mainwindow():
         if len(selections) == 0:
             messagebox.showinfo("Search", "No results found")
 
-    frm_SD = ttk.Frame(master=intfrm18)
+    frm_SD = ttk.Frame(master=intfrm22)
 
     ent_SearchD = ttk.Entry(master=frm_SD, width=30)
     lbl_SearchD = ttk.Label(master=frm_SD, text="Search: ")
@@ -1452,7 +1482,7 @@ def mainwindow():
         if len(selections) == 0:
             messagebox.showinfo("Search", "No results found")
 
-    frm_SN = ttk.Frame(master=intfrm19)
+    frm_SN = ttk.Frame(master=intfrm23)
 
     ent_SearchN = ttk.Entry(master=frm_SN, width=30)
     lbl_SearchN = ttk.Label(master=frm_SN, text="Search: ")
@@ -1469,7 +1499,7 @@ def mainwindow():
         if len(selections) == 0:
             messagebox.showinfo("Search", "No results found")
 
-    frm_SE = ttk.Frame(master=intfrm20)
+    frm_SE = ttk.Frame(master=intfrm24)
 
     ent_SearchE = ttk.Entry(master=frm_SE, width=30)
     lbl_SearchE= ttk.Label(master=frm_SE, text="Search: ")
@@ -1486,26 +1516,31 @@ def mainwindow():
     internalntbk.add(intfrm2, text="Doctor Table")
     internalntbk.add(intfrm3, text="Nurse Table")
     internalntbk.add(intfrm4, text="Employee Table")
+    internalntbk.add(intfrm5, text="Pharmacy")
 
-    internalntbk1.add(intfrm5, text="Patient Table")
-    internalntbk1.add(intfrm6, text="Doctor Table")
-    internalntbk1.add(intfrm7, text="Nurse Table")
-    internalntbk1.add(intfrm8, text="Employee Table")
+    internalntbk1.add(intfrm6, text="Patient Table")
+    internalntbk1.add(intfrm7, text="Doctor Table")
+    internalntbk1.add(intfrm8, text="Nurse Table")
+    internalntbk1.add(intfrm9, text="Employee Table")
+    internalntbk1.add(intfrm10, text="Pharmacy")
 
-    internalntbk2.add(intfrm9, text="Patient Table")
-    internalntbk2.add(intfrm10, text="Doctor Table")
-    internalntbk2.add(intfrm11, text="Nurse Table")
-    internalntbk2.add(intfrm12, text="Employee Table")
+    internalntbk2.add(intfrm11, text="Patient Table")
+    internalntbk2.add(intfrm12, text="Doctor Table")
+    internalntbk2.add(intfrm13, text="Nurse Table")
+    internalntbk2.add(intfrm14, text="Employee Table")
+    internalntbk2.add(intfrm15, text="Pharmacy")
 
-    internalntbk3.add(intfrm13, text="Patient Table")
-    internalntbk3.add(intfrm14, text="Doctor Table")
-    internalntbk3.add(intfrm15, text="Nurse Table")
-    internalntbk3.add(intfrm16, text="Employee Table")
+    internalntbk3.add(intfrm16, text="Patient Table")
+    internalntbk3.add(intfrm17, text="Doctor Table")
+    internalntbk3.add(intfrm18, text="Nurse Table")
+    internalntbk3.add(intfrm19, text="Employee Table")
+    internalntbk3.add(intfrm20, text="Pharmacy")
 
-    internalntbk4.add(intfrm17, text="Patient Table")
-    internalntbk4.add(intfrm18, text="Doctor Table")
-    internalntbk4.add(intfrm19, text="Nurse Table")
-    internalntbk4.add(intfrm20, text="Employee Table")
+    internalntbk4.add(intfrm21, text="Patient Table")
+    internalntbk4.add(intfrm22, text="Doctor Table")
+    internalntbk4.add(intfrm23, text="Nurse Table")
+    internalntbk4.add(intfrm24, text="Employee Table")
+    internalntbk4.add(intfrm25, text="Pharmacy")
 
     ntbk.pack()
     internalntbk.pack()
@@ -1563,79 +1598,79 @@ def mainwindow():
     treedat16.pack()
 
 
-    ent_PID.grid(row=0, column=1, pady=5)
-    lbl_PID.grid(row=0, column=0, pady=5)
-    ent_Name.grid(row=1, column=1, pady=5)
-    lbl_Name.grid(row=1, column=0, pady=5)
-    lbl_age.grid(row=2, column=0)
-    age_cbbx.grid(row=2, column=1)
-    ent_ailment.grid(row=3, column=1, pady=5)
-    lbl_ailment.grid(row=3, column=0, pady=5) 
-    lbl_payment.grid(row=4, column=0, pady=5)
-    rdb_cash.grid(row=4, column=1, sticky="w", pady=5)
-    rdb_card.grid(row=5, column=1, sticky="w", pady=5)
-    rdb_cheque.grid(row=6, column=1, sticky="w", pady=5)
-    sep_pay_stat.grid(row=7, column=1, sticky='ew', pady=5)
-    sep_pay_stat1.grid(row=7, column=0, sticky='ew', pady=5)
-    lbl_status.grid(row=8, column=0, pady=5)
-    rdb_paid.grid(row=8, column=1, sticky="w")
-    rdb_pending.grid(row=9, column=1, sticky="w")
-    ent_contact.grid(row=10, column=1, pady=5)
-    lbl_contact.grid(row=10, column=0, pady=5)
-    lbl_amt.grid(row=11, column=0, pady=5)
-    ent_amt.grid(row=11, column=1, pady=5)
-    addbtnpat.grid(row=12, column=1, pady=5)
+    ent_PID.grid(row=0, column=1, pady=5, padx=20)
+    lbl_PID.grid(row=0, column=0, pady=5, padx=20)
+    ent_Name.grid(row=1, column=1, pady=5, padx=20)
+    lbl_Name.grid(row=1, column=0, pady=5, padx=20)
+    lbl_age.grid(row=2, column=0, padx=20)
+    age_cbbx.grid(row=2, column=1, padx=20)
+    ent_ailment.grid(row=3, column=1, pady=5, padx=20)
+    lbl_ailment.grid(row=3, column=0, pady=5, padx=20) 
+    lbl_payment.grid(row=4, column=0, pady=5, padx=20)
+    rdb_cash.grid(row=4, column=1, sticky="w", pady=5, padx=20)
+    rdb_card.grid(row=5, column=1, sticky="w", pady=5, padx=20)
+    rdb_cheque.grid(row=6, column=1, sticky="w", pady=5, padx=20)
+    sep_pay_stat.grid(row=7, column=1, sticky='ew', pady=5, padx=20)
+    sep_pay_stat1.grid(row=7, column=0, sticky='ew', pady=5, padx=20)
+    lbl_status.grid(row=8, column=0, pady=5, padx=20)
+    rdb_paid.grid(row=8, column=1, sticky="w", padx=20)
+    rdb_pending.grid(row=9, column=1, sticky="w", padx=20)
+    ent_contact.grid(row=10, column=1, pady=5, padx=20)
+    lbl_contact.grid(row=10, column=0, pady=5, padx=20)
+    lbl_amt.grid(row=11, column=0, pady=5, padx=20)
+    ent_amt.grid(row=11, column=1, pady=5, padx=20)
+    addbtnpat.grid(row=12, column=1, pady=5, padx=20)
 
-    ent_DID.grid(row=0, column=1, pady=5)
-    lbl_DID.grid(row=0, column=0, pady=5)
-    ent_Name_doc.grid(row=1, column=1, pady=5)
-    lbl_Name_doc.grid(row=1, column=0, pady=5)
-    ent_spec.grid(row=2, column=1, pady=5)
-    lbl_spec.grid(row=2, column=0, pady=5)
-    dojfrm_doc.grid(row=3, column=1, pady=5)
+    ent_DID.grid(row=0, column=1, pady=5, padx=20)
+    lbl_DID.grid(row=0, column=0, pady=5, padx=20)
+    ent_Name_doc.grid(row=1, column=1, pady=5, padx=20)
+    lbl_Name_doc.grid(row=1, column=0, pady=5, padx=20)
+    ent_spec.grid(row=2, column=1, pady=5, padx=20)
+    lbl_spec.grid(row=2, column=0, pady=5, padx=20)
+    dojfrm_doc.grid(row=3, column=1, pady=5, padx=20)
     date_cbbx1.grid(row=0, column=0, padx=10, pady=5)
     month_cbbx1.grid(row=0, column=2, padx=10, pady=5)
     year_cbbx1.grid(row=0, column=4, padx=10, pady=5)
-    lbl_DOJ.grid(row=3, column=0, pady=5)
-    ent_contact_doc.grid(row=4, column=1, pady=5)
-    lbl_contact_doc.grid(row=4, column=0, pady=5)
-    ent_sal.grid(row=5, column=1, pady=5)
-    lbl_sal.grid(row=5, column=0, pady=5)
-    addbtndoc.grid(row=6, column=1, pady=5)
+    lbl_DOJ.grid(row=3, column=0, pady=5, padx=20)
+    ent_contact_doc.grid(row=4, column=1, pady=5, padx=20)
+    lbl_contact_doc.grid(row=4, column=0, pady=5, padx=20)
+    ent_sal.grid(row=5, column=1, pady=5, padx=20)
+    lbl_sal.grid(row=5, column=0, pady=5, padx=20)
+    addbtndoc.grid(row=6, column=1, pady=5, padx=20)
 
-    ent_NID.grid(row=0, column=1, pady=5)
-    lbl_NID.grid(row=0, column=0, pady=5)
-    ent_Name_nur.grid(row=1, column=1, pady=5)
-    lbl_Name_nur.grid(row=1, column=0, pady=5)
-    ent_dept.grid(row=2, column=1, pady=5)
-    lbl_dept.grid(row=2, column=0, pady=5)
-    lbl_DOJ_nur.grid(row=3, column=0, pady=5)
-    dojfrm_nur.grid(row=3, column=1, pady=5)
+    ent_NID.grid(row=0, column=1, pady=5, padx=20)
+    lbl_NID.grid(row=0, column=0, pady=5, padx=20)
+    ent_Name_nur.grid(row=1, column=1, pady=5, padx=20)
+    lbl_Name_nur.grid(row=1, column=0, pady=5, padx=20)
+    ent_dept.grid(row=2, column=1, pady=5, padx=20)
+    lbl_dept.grid(row=2, column=0, pady=5, padx=20)
+    lbl_DOJ_nur.grid(row=3, column=0, pady=5, padx=20)
+    dojfrm_nur.grid(row=3, column=1, pady=5, padx=20)
     date_cbbx2.grid(row=0, column=0, padx=10, pady=5)
     month_cbbx2.grid(row=0, column=1, padx=10, pady=5)
     year_cbbx2.grid(row=0, column=2, padx=10, pady=5)
-    ent_contact_nur.grid(row=4, column=1, pady=5)
-    lbl_contact_nur.grid(row=4, column=0, pady=5)
-    ent_sal_nur.grid(row=5, column=1, pady=5)
-    lbl_sal_nur.grid(row=5, column=0, pady=5)
-    addbtnnur.grid(row=6, column=1, pady=5)
+    ent_contact_nur.grid(row=4, column=1, pady=5, padx=20)
+    lbl_contact_nur.grid(row=4, column=0, pady=5, padx=20)
+    ent_sal_nur.grid(row=5, column=1, pady=5, padx=20)
+    lbl_sal_nur.grid(row=5, column=0, pady=5, padx=20)
+    addbtnnur.grid(row=6, column=1, pady=5, padx=20)
 
-    ent_EID.grid(row=0, column=1, pady=5)
-    lbl_EID.grid(row=0, column=0, pady=5)
-    ent_Name_emp.grid(row=1, column=1, pady=5)
-    lbl_Name_emp.grid(row=1, column=0, pady=5)
-    ent_job.grid(row=2, column=1, pady=5)
-    lbl_job.grid(row=2, column=0, pady=5)
-    lbl_DOJ_emp.grid(row=3, column=0, pady=5)
-    dojfrm_emp.grid(row=3, column=1, pady=5)
+    ent_EID.grid(row=0, column=1, pady=5, padx=20)
+    lbl_EID.grid(row=0, column=0, pady=5, padx=20)
+    ent_Name_emp.grid(row=1, column=1, pady=5, padx=20)
+    lbl_Name_emp.grid(row=1, column=0, pady=5, padx=20)
+    ent_job.grid(row=2, column=1, pady=5, padx=20)
+    lbl_job.grid(row=2, column=0, pady=5, padx=20)
+    lbl_DOJ_emp.grid(row=3, column=0, pady=5, padx=20)
+    dojfrm_emp.grid(row=3, column=1, pady=5, padx=20)
     date_cbbx3.grid(row=0, column=0, padx=10, pady=5)
     month_cbbx3.grid(row=0, column=1, padx=10, pady=5)
     year_cbbx3.grid(row=0, column=2, padx=10, pady=5)
-    ent_contact_emp.grid(row=4, column=1, pady=5)
-    lbl_contact_emp.grid(row=4, column=0, pady=5)
-    ent_sal_emp.grid(row=5, column=1, pady=5)
-    lbl_sal_emp.grid(row=5, column=0, pady=5)
-    addbtnemp.grid(row=6, column=1, pady=5)
+    ent_contact_emp.grid(row=4, column=1, pady=5, padx=20)
+    lbl_contact_emp.grid(row=4, column=0, pady=5, padx=20)
+    ent_sal_emp.grid(row=5, column=1, pady=5, padx=20)
+    lbl_sal_emp.grid(row=5, column=0, pady=5, padx=20)
+    addbtnemp.grid(row=6, column=1, pady=5, padx=20)
 
     frm_delp.pack(pady=20)
     btn_delall.pack(pady=10)
@@ -1829,7 +1864,7 @@ login.geometry(f"1024x650+{int(x)}+{int(y)}")
 login.title("Thera.py v1.0")
 style = ttk.Style()
 os.chdir(asset_path)
-login.tk.call("source", theme_path)
+login.tk.call("source", dtheme_path)
 style.theme_use("azure-dark")
 login.attributes("-alpha", 0.98)
 login.iconbitmap(ico_path)

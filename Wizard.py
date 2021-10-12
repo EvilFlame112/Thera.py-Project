@@ -38,185 +38,191 @@ def adminmain():
     if ent_host.get() != "":
         if ent_username.get() != "":
             if ent_passwd.get() != "":
-                frm_main.pack_forget()
-                frm_detes.pack_forget()
-                frm_btns.pack_forget()
-                frm_chkbtns.pack_forget()
-                lbl_welcome.pack_forget()
-                lbl_proceed.pack_forget()
-                ent_host.pack_forget()
-                ent_username.pack_forget()
-                ent_passwd.pack_forget()
-                ent_path.pack_forget()
-                ent_path.pack_forget()
-                shortcut_chkbtn.pack_forget()
-                start_shortcut_chkbtn.pack_forget()
-                lbl_host.pack_forget()
-                lbl_username.pack_forget()
-                lbl_password.pack_forget()
-                btn_wiz.pack_forget()
-                btn_quit.pack_forget()
-                btn_path.pack_forget()
+                try:
+                    conn = mysql.connector.connect(host=ent_host.get(), user=ent_username.get(), passwd=ent_passwd.get())
+                    conn.close()
+                    frm_main.pack_forget()
+                    frm_detes.pack_forget()
+                    frm_btns.pack_forget()
+                    frm_chkbtns.pack_forget()
+                    lbl_welcome.pack_forget()
+                    lbl_proceed.pack_forget()
+                    ent_host.pack_forget()
+                    ent_username.pack_forget()
+                    ent_passwd.pack_forget()
+                    ent_path.pack_forget()
+                    ent_path.pack_forget()
+                    shortcut_chkbtn.pack_forget()
+                    start_shortcut_chkbtn.pack_forget()
+                    lbl_host.pack_forget()
+                    lbl_username.pack_forget()
+                    lbl_password.pack_forget()
+                    btn_wiz.pack_forget()
+                    btn_quit.pack_forget()
+                    btn_path.pack_forget()
 
-                lblfrm = ttk.LabelFrame(master=base)
-                lbl_adminprompt = tk.Label(master=base, text="Enter a secure password.\n This cannot be changed later and is \nthe primary gateway to authorize access to all database records", font=("Helvetica", 16))
-                lbl_adminpwd = tk.Label(master=lblfrm, text="Enter admin password:", font=("Helvetica", 12))
-                ent_adminpwd = ttk.Entry(master=lblfrm, width=30, show="*")
-                lbl_reenter = tk.Label(master=lblfrm, text="Reenter admin password:", font=("Helvetica", 12))
-                ent_reenter = ttk.Entry(master=lblfrm, width=30, show="*")
+                    lblfrm = ttk.LabelFrame(master=base)
+                    lbl_adminprompt = tk.Label(master=base, text="Enter a secure password.\n This cannot be changed later and is \nthe primary gateway to authorize access to all database records", font=("Helvetica", 16))
+                    lbl_adminpwd = tk.Label(master=lblfrm, text="Enter admin password:", font=("Helvetica", 12))
+                    ent_adminpwd = ttk.Entry(master=lblfrm, width=30, show="*")
+                    lbl_reenter = tk.Label(master=lblfrm, text="Reenter admin password:", font=("Helvetica", 12))
+                    ent_reenter = ttk.Entry(master=lblfrm, width=30, show="*")
 
-                def wizmain():
-                    if ent_adminpwd.get() != "":
-                        if ent_reenter.get() != "":
-                            #shortcut tools
-                            desktopdir = winshell.desktop()
-                            shortcut_path = os.path.join(desktopdir, "TheraPy Hospital Software.lnk")
-                            start_shortcut_path = os.path.join("C:\ProgramData\Microsoft\Windows\Start Menu\Programs", "TheraPy Hospital Software.lnk")
-                            target = os.path.join(file_path1, "Thera.exe")
-                            wrkdir = os.path.join(file_path1)
-                            icon = os.path.join(file_path1, "Thera.exe")
+                    def wizmain():
+                        if ent_adminpwd.get() != "":
+                            if ent_reenter.get() != "":
+                                #shortcut tools
+                                desktopdir = winshell.desktop()
+                                shortcut_path = os.path.join(desktopdir, "TheraPy Hospital Software.lnk")
+                                start_shortcut_path = os.path.join("C:\ProgramData\Microsoft\Windows\Start Menu\Programs", "TheraPy Hospital Software.lnk")
+                                target = os.path.join(file_path1, "Thera.exe")
+                                wrkdir = os.path.join(file_path1)
+                                icon = os.path.join(file_path1, "Thera.exe")
 
-                            if shortcut_toggle.get() == 1:
-                                shell = Dispatch('WScript.Shell')
-                                shortcut = shell.CreateShortCut(shortcut_path)
-                                shortcut.Targetpath = target
-                                shortcut.WorkingDirectory = wrkdir
-                                shortcut.IconLocation = icon
-                                shortcut.save()
-                            else:
-                                pass
-                            if start_shortcut_toggle.get() == 1:
-                                shell = Dispatch('WScript.Shell')
-                                start_shortcut = shell.CreateShortcut(start_shortcut_path)
-                                start_shortcut.Targetpath = target
-                                start_shortcut.WorkingDirectory = wrkdir
-                                start_shortcut.IconLocation = icon
-                                start_shortcut.save()
-                            else:
-                                pass
+                                if shortcut_toggle.get() == 1:
+                                    shell = Dispatch('WScript.Shell')
+                                    shortcut = shell.CreateShortCut(shortcut_path)
+                                    shortcut.Targetpath = target
+                                    shortcut.WorkingDirectory = wrkdir
+                                    shortcut.IconLocation = icon
+                                    shortcut.save()
+                                else:
+                                    pass
+                                if start_shortcut_toggle.get() == 1:
+                                    shell = Dispatch('WScript.Shell')
+                                    start_shortcut = shell.CreateShortcut(start_shortcut_path)
+                                    start_shortcut.Targetpath = target
+                                    start_shortcut.WorkingDirectory = wrkdir
+                                    start_shortcut.IconLocation = icon
+                                    start_shortcut.save()
+                                else:
+                                    pass
 
-                            if ent_adminpwd.get() == ent_reenter.get():
-                                adminpass = fernet.encrypt(ent_adminpwd.get().encode())
-                                lblfrm.place_forget()
-                                lbl_adminprompt.place_forget()
-                                lbl_adminpwd.pack_forget()
-                                ent_adminpwd.pack_forget()
-                                lbl_reenter.pack_forget()
-                                ent_reenter.pack_forget()
-                                
-                                def makedb():
-                                    for i in range(15):
-                                        progress["value"] += 1
-                                        base.update_idletasks()
-                                        time.sleep(0.01)
-                                    with zipfile.ZipFile(zip_path, "r") as assetzip:
-                                        assetzip.extractall(file_path1[:-6])
-                                    for i in range(100):
-                                        progress["value"] += 0.5
-                                        base.update_idletasks()
-                                        time.sleep(0.01)
-                                    secret_path = os.path.join(file_path1, "Assets", "BackEnd", "secret.csv")
-                                    admin_path = os.path.join(file_path1, "Assets", "BackEnd", "adminpwd.csv")
-                                    with open(admin_path, "w+", newline="") as adminfile:
-                                        adminfile.seek(0)
-                                        writer = csv.writer(adminfile)
-                                        listadmin = [adminpass]
-                                        writer.writerow(listadmin)
-                                        adminfile.close()
-                                    with open(secret_path, "w+", newline="") as secret:
-                                        secret.seek(0)
-                                        list1 = [host, user, password]
-                                        writer = csv.writer(secret)
-                                        writer.writerow(list1)
-                                        secret.close()
-                                    with open(secret_path, "r") as secret:
-                                        secret.seek(0)
-                                        reader = csv.reader(secret)
-                                        vals = next(reader)
-                                        secret.close()
-                                    conn=mysql.connector.connect(host=vals[0], user=vals[1],  passwd=fernet.decrypt(eval(vals[2])).decode())
-                                    cur = conn.cursor()
-                                    cur.execute("CREATE DATABASE IF NOT EXISTS hospitaldata")
-                                    cur.execute("use hospitaldata")
-                                
-                                    cur.execute("CREATE TABLE IF NOT EXISTS patient(Patient_Id int PRIMARY KEY, Name varchar(50), Age int, Ailment varchar(50), Admission_Status varchar(11),Payment_Type varchar(10), Payment_Status varchar(50), Contact decimal(10,0), Amount decimal(10,2))")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS chdoctor(Slno int PRIMARY KEY,FOREIGN KEY (Ch_Id) REFERENCES patient(Patient_Id),Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS doctor(Doctor_Id int primary key,Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS nurse(Nurse_Id int primary key,Name varchar(50),Department varchar(50),DOJ date, Contact bigint,Salary decimal(10,2))")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS employee(Employee_Id int primary key,Name varchar(50),Job VARCHAR(50),DOJ date, Contact bigint,Salary decimal(10,2))")
-                                   
+                                if ent_adminpwd.get() == ent_reenter.get():
+                                    adminpass = fernet.encrypt(ent_adminpwd.get().encode())
+                                    lblfrm.place_forget()
+                                    lbl_adminprompt.place_forget()
+                                    lbl_adminpwd.pack_forget()
+                                    ent_adminpwd.pack_forget()
+                                    lbl_reenter.pack_forget()
+                                    ent_reenter.pack_forget()
                                     
-                                    for i in range(70):
+                                    def makedb():
+                                        for i in range(15):
+                                            progress["value"] += 1
+                                            base.update_idletasks()
+                                            time.sleep(0.01)
+                                        with zipfile.ZipFile(zip_path, "r") as assetzip:
+                                            assetzip.extractall(file_path1[:-6])
+                                        for i in range(100):
+                                            progress["value"] += 0.5
+                                            base.update_idletasks()
+                                            time.sleep(0.01)
+                                        secret_path = os.path.join(file_path1, "Assets", "BackEnd", "secret.csv")
+                                        admin_path = os.path.join(file_path1, "Assets", "BackEnd", "adminpwd.csv")
+                                        with open(admin_path, "w+", newline="") as adminfile:
+                                            adminfile.seek(0)
+                                            writer = csv.writer(adminfile)
+                                            listadmin = [adminpass]
+                                            writer.writerow(listadmin)
+                                            adminfile.close()
+                                        with open(secret_path, "w+", newline="") as secret:
+                                            secret.seek(0)
+                                            list1 = [host, user, password]
+                                            writer = csv.writer(secret)
+                                            writer.writerow(list1)
+                                            secret.close()
+                                        with open(secret_path, "r") as secret:
+                                            secret.seek(0)
+                                            reader = csv.reader(secret)
+                                            vals = next(reader)
+                                            secret.close()
+                                        conn=mysql.connector.connect(host=vals[0], user=vals[1],  passwd=fernet.decrypt(eval(vals[2])).decode())
+                                        cur = conn.cursor()
+                                        cur.execute("CREATE DATABASE IF NOT EXISTS hospitaldata")
+                                        cur.execute("use hospitaldata")
+                                    
+                                        cur.execute("CREATE TABLE IF NOT EXISTS patient(Patient_Id int PRIMARY KEY, Name varchar(50), Age int, Ailment varchar(50), Admission_Status varchar(11),Payment_Type varchar(10), Payment_Status varchar(50), Contact decimal(10,0), Amount decimal(10,2))")
+                                        cur.execute("CREATE TABLE IF NOT EXISTS chdoctor(Slno int PRIMARY KEY,FOREIGN KEY (Ch_Id) REFERENCES patient(Patient_Id),Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
+                                        cur.execute("CREATE TABLE IF NOT EXISTS doctor(Doctor_Id int primary key,Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
+                                        cur.execute("CREATE TABLE IF NOT EXISTS nurse(Nurse_Id int primary key,Name varchar(50),Department varchar(50),DOJ date, Contact bigint,Salary decimal(10,2))")
+                                        cur.execute("CREATE TABLE IF NOT EXISTS employee(Employee_Id int primary key,Name varchar(50),Job VARCHAR(50),DOJ date, Contact bigint,Salary decimal(10,2))")
+                                        cur.execute("CREATE TABLE IF NOT EXISTS pharmacy(Item_Code int primary key, Medicine_Name varchar(50), QIS int, MRP decimal(9,2) ")
+                                    
+                                        
+                                        for i in range(70):
 
-                                        progress["value"] += 0.5
-                                        base.update_idletasks()
-                                        time.sleep(0.01)
-                                    messagebox.showinfo("Status", "Installed successfully!")
-                                    base.destroy()
-                                    final_win = tk.Tk()
-                                    style = ttk.Style()
-                                    final_win.tk.call("source", theme_path)
-                                    final_win.iconbitmap(ico_path)
-                                    final_win.title("TheraPy Wizard")
-                                    final_win.resizable(False, False)
-                                    style.theme_use("azure-dark")
-                                    x = (final_win.winfo_screenwidth()/2)-300
-                                    y = (final_win.winfo_screenheight()/2)-300
-                                    final_win.geometry(f"1080x600+{int(x)}+{int(y)}")
+                                            progress["value"] += 0.5
+                                            base.update_idletasks()
+                                            time.sleep(0.01)
+                                        messagebox.showinfo("Status", "Installed successfully!")
+                                        base.destroy()
+                                        final_win = tk.Tk()
+                                        style = ttk.Style()
+                                        final_win.tk.call("source", theme_path)
+                                        final_win.iconbitmap(ico_path)
+                                        final_win.title("TheraPy Wizard")
+                                        final_win.resizable(False, False)
+                                        style.theme_use("azure-dark")
+                                        x = (final_win.winfo_screenwidth()/2)-300
+                                        y = (final_win.winfo_screenheight()/2)-300
+                                        final_win.geometry(f"1080x600+{int(x)}+{int(y)}")
 
-                                    tmpimg = Image.open(bg_path)
-                                    tmp1img = tmpimg.resize((300,600))
-                                    img = ImageTk.PhotoImage(tmp1img)
+                                        tmpimg = Image.open(bg_path)
+                                        tmp1img = tmpimg.resize((300,600))
+                                        img = ImageTk.PhotoImage(tmp1img)
 
-                                    lbl_img = tk.Label(master=final_win, image=img)
-                                    lbl_finish = tk.Label(master=final_win, text="Finalization", font = ("Helvetica", 50), justify="left")
-                                    lbl_note = tk.Label(master=final_win, text="Setup has successfully installed Thera.Py on your device.\nClick Finish to exit the wizard", font = ("Helvetica", 14), justify='left')
-                                    btn_exit = ttk.Button(master=final_win, text="Finish", command=final_win.destroy, width=30)
-                                    lbl_img.pack(side=tk.LEFT, fill="both")
+                                        lbl_img = tk.Label(master=final_win, image=img)
+                                        lbl_finish = tk.Label(master=final_win, text="Finalization", font = ("Helvetica", 50), justify="left")
+                                        lbl_note = tk.Label(master=final_win, text="Setup has successfully installed Thera.Py on your device.\nClick Finish to exit the wizard", font = ("Helvetica", 14), justify='left')
+                                        btn_exit = ttk.Button(master=final_win, text="Finish", command=final_win.destroy, width=30)
+                                        lbl_img.pack(side=tk.LEFT, fill="both")
 
-                                    lbl_finish.place(x=310, y=200)
-                                    lbl_note.place(x=310, y=280)
-                                    btn_exit.place(x=850, y=550)
-                                    final_win.mainloop()
+                                        lbl_finish.place(x=310, y=200)
+                                        lbl_note.place(x=310, y=280)
+                                        btn_exit.place(x=850, y=550)
+                                        final_win.mainloop()
 
-                                host = ent_host.get()
-                                user = ent_username.get()
-                                password = fernet.encrypt(ent_passwd.get().encode())
-                                style.theme_use('default')
-                                style.configure("TProgressbar", background="green")
-                                style.configure("TLabel", background="grey20", foreground="white")
-                                style.configure("TLabelframe", background="grey20")
-                                style.configure("TLabelframe.Label", background="grey20")
-                                style.configure("TButton", background="grey40", foreground="white", borderwidth=0)
-                                frm_install = ttk.Labelframe(master=base)
-                                lbl_install = tk.Label(master=frm_install, text="Install", font = ("Helvetica", 25))
-                                btn_install = ttk.Button(master=frm_install, command= makedb, text="Install", width=20)
-                                lbl_instruct = ttk.Label(master=frm_install, text="Click the install button to install")
-                                progress = ttk.Progressbar(master=frm_install, orient=tk.HORIZONTAL, length=500, mode="determinate")
+                                    host = ent_host.get()
+                                    user = ent_username.get()
+                                    password = fernet.encrypt(ent_passwd.get().encode())
+                                    style.theme_use('default')
+                                    style.configure("TProgressbar", background="green")
+                                    style.configure("TLabel", background="grey20", foreground="white")
+                                    style.configure("TLabelframe", background="grey20")
+                                    style.configure("TLabelframe.Label", background="grey20")
+                                    style.configure("TButton", background="grey40", foreground="white", borderwidth=0)
+                                    frm_install = ttk.Labelframe(master=base)
+                                    lbl_install = tk.Label(master=frm_install, text="Install", font = ("Helvetica", 25))
+                                    btn_install = ttk.Button(master=frm_install, command= makedb, text="Install", width=20)
+                                    lbl_instruct = ttk.Label(master=frm_install, text="Click the install button to install")
+                                    progress = ttk.Progressbar(master=frm_install, orient=tk.HORIZONTAL, length=500, mode="determinate")
 
-                                frm_install.place(x=400, y=50)
-                                lbl_install.grid(row=0, pady=20, padx=50)
-                                lbl_instruct.grid(row=1, pady=20, padx=50)
-                                btn_install.grid(row=3, pady=20, padx=50)
-                                progress.grid(row=2, pady=100, padx=50)
-                                
+                                    frm_install.place(x=400, y=50)
+                                    lbl_install.grid(row=0, pady=20, padx=50)
+                                    lbl_instruct.grid(row=1, pady=20, padx=50)
+                                    btn_install.grid(row=3, pady=20, padx=50)
+                                    progress.grid(row=2, pady=100, padx=50)
+                                    
+                                else:
+                                    messagebox.showinfo("Status", "Passwords do not match. Please check your password")
+                                    ent_adminpwd.delete(0, tk.END)
+                                    ent_reenter.delete(0, tk.END)  
                             else:
-                                messagebox.showinfo("Status", "Passwords do not match. Please check your password")
-                                ent_adminpwd.delete(0, tk.END)
-                                ent_reenter.delete(0, tk.END)  
+                                messagebox.showinfo("Status", "Please Fill all fields before proceeding")
                         else:
                             messagebox.showinfo("Status", "Please Fill all fields before proceeding")
-                    else:
-                        messagebox.showinfo("Status", "Please Fill all fields before proceeding")
-                btn_adminsave = ttk.Button(master=lblfrm, text="Submit", command=wizmain)
+                    btn_adminsave = ttk.Button(master=lblfrm, text="Submit", command=wizmain)
 
-                lbl_adminprompt.place(x=400,y=100)
-                lblfrm.place(x=400,y=200)
-                lbl_adminpwd.grid(row=0, column=0, padx=200, pady=10)
-                ent_adminpwd.grid(row=1, column=0, padx=200, pady=10)
-                lbl_reenter.grid(row=2, column=0, padx=200, pady=10)
-                ent_reenter.grid(row=3, column=0, padx=200, pady=10)
-                btn_adminsave.grid(row=4, column=0, padx=200, pady=20)
+                    lbl_adminprompt.place(x=400,y=100)
+                    lblfrm.place(x=400,y=200)
+                    lbl_adminpwd.grid(row=0, column=0, padx=200, pady=10)
+                    ent_adminpwd.grid(row=1, column=0, padx=200, pady=10)
+                    lbl_reenter.grid(row=2, column=0, padx=200, pady=10)
+                    ent_reenter.grid(row=3, column=0, padx=200, pady=10)
+                    btn_adminsave.grid(row=4, column=0, padx=200, pady=20)
+                except mysql.connector.DatabaseError:
+                    messagebox.showinfo("Error", "MySQL Credentials incorrect. Connection could not be established. Kindly recheck the given credentials")
             else:
                 messagebox.showinfo("Status", "Please Fill all fields before proceeding")
         else:
