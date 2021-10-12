@@ -61,7 +61,7 @@ def purgeE():
     cur.execute("CREATE TABLE IF NOT EXISTS employee(Employee_Id int primary key,Name varchar(50),Job VARCHAR(50),DOJ date,Contact bigint,Salary decimal(10,2))")
 def purgePh():
     cur.execute("drop table pharmacy")
-     cur.execute("CREATE TABLE IF NOT EXISTS pharmacy(Item_Code int primary key, Medicine_Name varchar(50), QIS int, MRP decimal(9,2) ")
+    cur.execute("CREATE TABLE IF NOT EXISTS pharmacy(Item_Code int primary key, Medicine_Name varchar(50), QIS int, MRP decimal(9,2) ")
 
 
 def query(tablename):
