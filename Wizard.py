@@ -138,16 +138,11 @@ def adminmain():
                                     cur = conn.cursor()
                                     cur.execute("CREATE DATABASE IF NOT EXISTS hospitaldata")
                                     cur.execute("use hospitaldata")
-                                
-                                    cur.execute("CREATE TABLE IF NOT EXISTS patient(Patient_Id int PRIMARY KEY, Name varchar(50), Age int, Ailment varchar(50), Admission_Status varchar(11),Payment_Type varchar(10), Payment_Status varchar(50), Contact decimal(10,0), Amount decimal(10,2))")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS chdoctor(Slno int PRIMARY KEY,FOREIGN KEY (Ch_Id) REFERENCES patient(Patient_Id),Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
+                                    cur.execute("CREATE TABLE IF NOT EXISTS patient(Patient_Id int PRIMARY KEY, Name varchar(50), Age int, Ailment varchar(50), Payment_Type varchar(10), Payment_Status varchar(50), Contact decimal(10,0), Amount decimal(10,2))")
                                     cur.execute("CREATE TABLE IF NOT EXISTS doctor(Doctor_Id int primary key,Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
                                     cur.execute("CREATE TABLE IF NOT EXISTS nurse(Nurse_Id int primary key,Name varchar(50),Department varchar(50),DOJ date, Contact bigint,Salary decimal(10,2))")
                                     cur.execute("CREATE TABLE IF NOT EXISTS employee(Employee_Id int primary key,Name varchar(50),Job VARCHAR(50),DOJ date, Contact bigint,Salary decimal(10,2))")
-                                   
-                                    
                                     for i in range(70):
-
                                         progress["value"] += 0.5
                                         base.update_idletasks()
                                         time.sleep(0.01)
