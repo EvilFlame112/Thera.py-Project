@@ -98,7 +98,6 @@ def adminmain():
                                 else:
                                     pass
 
-<<<<<<< HEAD
                                 if ent_adminpwd.get() == ent_reenter.get():
                                     adminpass = fernet.encrypt(ent_adminpwd.get().encode())
                                     lblfrm.place_forget()
@@ -168,71 +167,6 @@ def adminmain():
                                         x = (final_win.winfo_screenwidth()/2)-300
                                         y = (final_win.winfo_screenheight()/2)-300
                                         final_win.geometry(f"1080x600+{int(x)}+{int(y)}")
-=======
-                            if ent_adminpwd.get() == ent_reenter.get():
-                                adminpass = fernet.encrypt(ent_adminpwd.get().encode())
-                                lblfrm.place_forget()
-                                lbl_adminprompt.place_forget()
-                                lbl_adminpwd.pack_forget()
-                                ent_adminpwd.pack_forget()
-                                lbl_reenter.pack_forget()
-                                ent_reenter.pack_forget()
-                                
-                                def makedb():
-                                    for i in range(15):
-                                        progress["value"] += 1
-                                        base.update_idletasks()
-                                        time.sleep(0.01)
-                                    with zipfile.ZipFile(zip_path, "r") as assetzip:
-                                        assetzip.extractall(file_path1[:-6])
-                                    for i in range(100):
-                                        progress["value"] += 0.5
-                                        base.update_idletasks()
-                                        time.sleep(0.01)
-                                    secret_path = os.path.join(file_path1, "Assets", "BackEnd", "secret.csv")
-                                    admin_path = os.path.join(file_path1, "Assets", "BackEnd", "adminpwd.csv")
-                                    with open(admin_path, "w+", newline="") as adminfile:
-                                        adminfile.seek(0)
-                                        writer = csv.writer(adminfile)
-                                        listadmin = [adminpass]
-                                        writer.writerow(listadmin)
-                                        adminfile.close()
-                                    with open(secret_path, "w+", newline="") as secret:
-                                        secret.seek(0)
-                                        list1 = [host, user, password]
-                                        writer = csv.writer(secret)
-                                        writer.writerow(list1)
-                                        secret.close()
-                                    with open(secret_path, "r") as secret:
-                                        secret.seek(0)
-                                        reader = csv.reader(secret)
-                                        vals = next(reader)
-                                        secret.close()
-                                    conn=mysql.connector.connect(host=vals[0], user=vals[1],  passwd=fernet.decrypt(eval(vals[2])).decode())
-                                    cur = conn.cursor()
-                                    cur.execute("CREATE DATABASE IF NOT EXISTS hospitaldata")
-                                    cur.execute("use hospitaldata")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS patient(Patient_Id int PRIMARY KEY, Name varchar(50), Age int, Ailment varchar(50), Payment_Type varchar(10), Payment_Status varchar(50), Contact decimal(10,0), Amount decimal(10,2))")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS doctor(Doctor_Id int primary key,Name varchar(50),Specialization varchar(50),DOJ date,Contact bigint, Salary decimal(10,2)) ")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS nurse(Nurse_Id int primary key,Name varchar(50),Department varchar(50),DOJ date, Contact bigint,Salary decimal(10,2))")
-                                    cur.execute("CREATE TABLE IF NOT EXISTS employee(Employee_Id int primary key,Name varchar(50),Job VARCHAR(50),DOJ date, Contact bigint,Salary decimal(10,2))")
-                                    for i in range(70):
-                                        progress["value"] += 0.5
-                                        base.update_idletasks()
-                                        time.sleep(0.01)
-                                    messagebox.showinfo("Status", "Installed successfully!")
-                                    base.destroy()
-                                    final_win = tk.Tk()
-                                    style = ttk.Style()
-                                    final_win.tk.call("source", theme_path)
-                                    final_win.iconbitmap(ico_path)
-                                    final_win.title("TheraPy Wizard")
-                                    final_win.resizable(False, False)
-                                    style.theme_use("azure-dark")
-                                    x = (final_win.winfo_screenwidth()/2)-300
-                                    y = (final_win.winfo_screenheight()/2)-300
-                                    final_win.geometry(f"1080x600+{int(x)}+{int(y)}")
->>>>>>> parent of 9253770 (updated)
 
                                         tmpimg = Image.open(bg_path)
                                         tmp1img = tmpimg.resize((300,600))
